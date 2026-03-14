@@ -149,10 +149,11 @@ body {
 
 /* POPUP */
 .set-edit-popup {
-  position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%);
-  width: auto; min-width: 180px; background: white; border-radius: 14px;
-  border: 0.5px solid #E2EAF0; padding: 14px 16px; z-index: 200;
-  box-shadow: 0 4px 20px rgba(74,144,184,.14);
+  position: fixed; top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: auto; min-width: 200px; background: white; border-radius: 14px;
+  border: 0.5px solid #E2EAF0; padding: 18px 20px; z-index: 200;
+  box-shadow: 0 8px 32px rgba(74,144,184,.18);
 }
 .popup-title { font-size: 10px; color: #94A8B8; margin-bottom: 10px; text-transform: uppercase; letter-spacing: .6px; }
 .popup-row { display: flex; align-items: center; gap: 8px; }
@@ -287,7 +288,12 @@ body {
 
 <!-- HISTORY -->
 <div class="screen" id="screen-history">
-  <div class="hist-head"><div class="hist-title">História</div></div>
+  <div class="hist-head">
+    <div style="display:flex;align-items:center;justify-content:space-between">
+      <div class="hist-title">História</div>
+      <button onclick="exportToday()" style="background:#E8F3F9;border:0.5px solid #C8DFE9;border-radius:10px;padding:7px 14px;font-size:12px;font-weight:500;color:#4A90B8;cursor:pointer;font-family:inherit">Kopírovať dnes</button>
+    </div>
+  </div>
   <div class="divider"></div>
   <div id="histContent"></div>
 </div>
@@ -714,13 +720,14 @@ function renderHistory(){
         ${items.map(l=>{
           const ex=getEx(l.code), wt=l.weight?` · ${l.weight} kg`:'';
           const s=Array.isArray(l.sets)?l.sets:[];
-          return `<div class="line-item" style="cursor:default">
+          return `<div class="line-item" onclick="openLogForId('${l.id}')">
             <div class="li-dot"></div>
             <div class="li-main">
               <div class="li-name">${ex?ex.name:l.code}</div>
               <div class="li-meta">${l.code} · ${s.join(' ')}${wt}</div>
             </div>
-            <button class="li-del" onclick="delLogH('${l.id}')">✕</button>
+            <span class="li-arr">›</span>
+            <button class="li-del" onclick="event.stopPropagation();delLogH('${l.id}')">✕</button>
           </div>`;
         }).join('')}
       </div>
@@ -801,6 +808,43 @@ function renderStats(){
 }
 
 function setStatPeriod(p){statPeriod=p;renderStats()}
+
+// ---- EXPORT ----
+function exportToday(){
+  const td=today();
+  const tl=cachedLogs.filter(l=>l.date===td);
+  if(!tl.length){showToast('Dnes žiadne cviky');return}
+
+  // Group by block
+  let lines=[`Tréning ${fmtDate(td)}`,``];
+  CATALOG.forEach(b=>{
+    const items=tl.filter(l=>l.block===b.block);
+    if(!items.length) return;
+    lines.push(`${b.block}`);
+    items.forEach(l=>{
+      const ex=getEx(l.code);
+      const name=ex?ex.name:l.code;
+      const s=Array.isArray(l.sets)?l.sets:[];
+      const wt=l.weight?` · ${l.weight} kg`:'';
+      lines.push(`${l.code} — ${name}${wt} · ${s.join(' ')}`);
+    });
+    lines.push('');
+  });
+
+  const text=lines.join('\n').trim();
+  if(navigator.clipboard?.writeText){
+    navigator.clipboard.writeText(text).then(()=>showToast('✅ Skopírované!')).catch(()=>fallbackCopy(text));
+  } else { fallbackCopy(text); }
+}
+
+function fallbackCopy(text){
+  const ta=document.createElement('textarea');
+  ta.value=text; ta.style.position='fixed'; ta.style.opacity='0';
+  document.body.appendChild(ta); ta.focus(); ta.select();
+  try{document.execCommand('copy');showToast('✅ Skopírované!')}
+  catch(e){showToast('⚠️ Kopírovanie zlyhalo')}
+  document.body.removeChild(ta);
+}
 </script>
 </body>
 </html>
