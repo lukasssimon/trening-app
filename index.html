@@ -531,20 +531,27 @@ async function deleteLogDB(id){const {error}=await sb.from('training_logs').dele
 
 // ---- INIT ----
 async function initApp(){
-  // First try to get existing session directly
-  const { data:{ session } } = await sb.auth.getSession();
-  if(session?.user){
-    currentUser = session.user;
-    const name = currentUser.user_metadata?.full_name || currentUser.email || 'Luk';
-    document.getElementById('homeGreet').textContent = `Ahoj, ${name.split(' ')[0]}`;
-    await fetchLogs();
-    showApp();
-  } else {
+  console.log('[init] starting');
+  try {
+    const { data:{ session } } = await sb.auth.getSession();
+    console.log('[init] getSession:', session ? 'HAS SESSION' : 'NO SESSION');
+    if(session?.user){
+      currentUser = session.user;
+      const name = currentUser.user_metadata?.full_name || currentUser.email || 'Luk';
+      document.getElementById('homeGreet').textContent = `Ahoj, ${name.split(' ')[0]}`;
+      await fetchLogs();
+      console.log('[init] logs fetched:', cachedLogs.length);
+      showApp();
+    } else {
+      showLoginScreen();
+    }
+  } catch(e){
+    console.error('[init] error:', e);
     showLoginScreen();
   }
 
-  // Then listen for future changes (login/logout)
   sb.auth.onAuthStateChange(async(event, session)=>{
+    console.log('[auth] event:', event);
     if(event === 'SIGNED_IN' && session?.user && !currentUser){
       currentUser = session.user;
       const name = currentUser.user_metadata?.full_name || currentUser.email || 'Luk';
@@ -557,8 +564,6 @@ async function initApp(){
     }
   });
 }
-
-initApp();
 
 // ---- UTILS ----
 function today(){return new Date().toISOString().slice(0,10)}
@@ -1124,7 +1129,9 @@ function renderStats(){
     ?top.map(([n,c],i)=>`<div class="top-item"><span class="top-n">#${i+1}</span><span style="font-size:12px;color:#1C2B3A;flex:1">${n}</span><div class="top-bar"><div class="top-bar-f" style="width:${Math.round(c/maxC*100)}%"></div></div><span class="top-cnt">${c}×</span></div>`).join('')
     :'<div class="empty-state">Žiadne dáta.</div>';
 }
-function setStatPeriod(p){statPeriod=p;renderStats()}
+// Start app — must be last line so all functions are defined
+initApp();
+
 
 // ---- TRAINING RULES TABLE ----
 function renderTrainingRules(){
