@@ -159,15 +159,9 @@ body {
 .ex-line.active .ex-name-t{color:#1C2B3A;font-weight:500}
 .ex-sel{width:6px;height:6px;border-radius:50%;background:#4A90B8;opacity:0;flex-shrink:0}
 .ex-line.active .ex-sel{opacity:1}
-.set-edit-popup{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);width:auto;min-width:200px;background:white;border-radius:14px;border:0.5px solid #E2EAF0;padding:18px 20px;z-index:200;box-shadow:0 8px 32px rgba(74,144,184,.18)}
-.popup-title{font-size:10px;color:#94A8B8;margin-bottom:10px;text-transform:uppercase;letter-spacing:.6px}
-.popup-row{display:flex;align-items:center;gap:8px}
-.popup-input{width:58px;background:#F5F8FC;border:0.5px solid #E2EAF0;border-radius:8px;padding:7px 8px;font-size:16px;font-weight:600;color:#1C2B3A;text-align:center;outline:none;font-family:inherit}
-.popup-input:focus{border-color:#4A90B8;background:white}
-.popup-ok{background:#4A90B8;color:white;border:none;border-radius:8px;padding:7px 14px;font-size:13px;font-weight:500;cursor:pointer;font-family:inherit}
-.popup-del{background:none;border:none;color:#D0E4EF;font-size:16px;cursor:pointer;padding:4px 2px;transition:color .15s}
-.popup-del:hover{color:#E07070}
-.popup-overlay{position:fixed;inset:0;z-index:199}
+.set-inline-wrap{display:flex;align-items:center;gap:7px}
+.set-inline-input{width:58px;background:white;border:0.5px solid #4A90B8;border-radius:8px;padding:6px 8px;font-size:14px;font-weight:600;color:#1C2B3A;text-align:center;outline:none;font-family:inherit}
+.set-inline-ok{background:#4A90B8;color:white;border:none;border-radius:8px;padding:6px 12px;font-size:13px;font-weight:500;cursor:pointer;font-family:inherit}
 
 /* HISTORY */
 .hist-head{padding:24px 22px 0}
@@ -346,16 +340,6 @@ body {
   <button class="nb" id="nb-stats" onclick="showScreen('stats')"><span class="nb-label">Štatistiky</span><div class="nb-line"></div></button>
 </nav>
 
-<div id="popupOverlay" class="popup-overlay" style="display:none" onclick="closePopup()"></div>
-<div id="setPopup" class="set-edit-popup" style="display:none">
-  <div class="popup-title" id="popupTitle">Nová séria</div>
-  <div class="popup-row">
-    <input type="number" id="popupInput" class="popup-input" min="1" placeholder="10">
-    <button class="popup-del" id="popupDel" onclick="deleteSet()">✕</button>
-    <button class="popup-ok" onclick="confirmSet()">OK</button>
-  </div>
-</div>
-
 <!-- IMPORT MODAL -->
 <div id="importOverlay" style="display:none;position:fixed;inset:0;background:rgba(28,43,58,.45);z-index:300;overflow-y:auto">
   <div style="min-height:100%;display:flex;align-items:flex-start;justify-content:center;padding:24px 16px 40px">
@@ -396,7 +380,7 @@ const CFG = {
   thresholds:     { core:4, mobility:5, strength:8, legs:4 },
   block_mapping: {
     core:     ['LL0','LL1','LL2','DBG','DBX','DBI','DBW','DB2','HBK','HBT','HBI','HBS','HBL','HBR','QBR','SIT'],
-    mobility: ['CAT','WV','CAR','WSL','OAS','XHB','TUR','Kt1','Kt2','Kt3','Kt4','PFS','DD','CP','HF','SRB'],
+    mobility: ['CAT','WV','CAR','WSL','OAS','XHB','TUR','Kt1','Kt2','Kt3','Kt4','PFS','DD','CP','DHS','DHF','SRB'],
     strength: ['C1','C1S','C1N','C2','C2R','C3','C4','C4A','C5','C5K','C6','C6S'],
     legs:     ['HF2','GS','SS','SQ','SQH','LUN','HBF']
   },
@@ -464,7 +448,8 @@ const CATALOG = [
     {code:"PFS",name:"Prone finger support",desc:"Ležíš na bruchu opretý o prsty rúk.",w:false},
     {code:"DD",name:"Down dog",desc:"Zo štyroch vystieraš nohy a tlačíš boky hore.",w:false},
     {code:"CP",name:"Child pose",desc:"Z kľaku sadneš na päty a natiahneš ruky dopredu.",w:false},
-    {code:"HF",name:"Hip flow",desc:"Striedaš pohyby bedra dopredu a do rotácie 15–10–5.",w:false},
+    {code:"DHS",name:"Dead hang – nohy opreté",desc:"Visíš na hrazde a časť váhy necháš na opretých nohách.",w:false},
+    {code:"DHF",name:"Dead hang – nohy voľne",desc:"Voľne visíš na hrazde bez opory nôh a uvoľníš ramená.",w:false},
     {code:"SRB",name:"Scapular row",desc:"Držíš sa rebriny a pohybuješ telom len cez lopatky.",w:false}
   ]},
   {block:"Blok 3 Silový",icon:"💪",exercises:[
@@ -967,7 +952,7 @@ async function delLog(id){
 }
 
 // ---- LOG ----
-let selBlock=null,selCode=null,sets=[],editIdx=null,editingId=null;
+let selBlock=null,selCode=null,sets=[],editIdx=null,editingId=null,addingSetInline=false;
 
 function openLogForId(id){
   const log=cachedLogs.find(l=>l.id===id);if(!log) return;
@@ -999,7 +984,7 @@ function goLog(){
 }
 
 function resetLog(){
-  selBlock=null;selCode=null;sets=[];editingId=null;
+  selBlock=null;selCode=null;sets=[];editingId=null;addingSetInline=false;
   document.getElementById('logDate').value=today();
   document.getElementById('logWeight').value='';
   document.getElementById('exSection').style.display='none';
@@ -1016,7 +1001,7 @@ function renderBlockChips(){
 }
 
 function pickBlock(bname){
-  selBlock=bname;selCode=null;sets=[];editingId=null;
+  selBlock=bname;selCode=null;sets=[];editingId=null;addingSetInline=false;
   renderBlockChips();renderExLines();
   document.getElementById('exSection').style.display='block';
   document.getElementById('selAndSeries').style.display='none';
@@ -1042,50 +1027,62 @@ function pickEx(code){
   document.getElementById('dateRowWrap').style.display='block';
   renderSets();
   setTimeout(()=>document.getElementById('selAndSeries').scrollIntoView({behavior:'smooth',block:'nearest'}),80);
-  setTimeout(()=>addSet(),150);
+  setTimeout(()=>startInlineAddSet(),150);
 }
 
 function renderSets(){
-  document.getElementById('setsRow').innerHTML=
-    sets.map((s,i)=>`<button class="set-chip" onclick="openPopup(${i})">${s}</button>`).join('')+
-    `<button class="set-chip-add" onclick="addSet()">+ séria</button>`;
+  const existing=sets.map((v,i)=>`<button class="set-chip" onclick="startEditInlineSet(${i})">${v}</button>`).join('');
+  const defaultValue=(editIdx!==null && sets[editIdx]) ? sets[editIdx] : (sets.length ? sets[sets.length-1] : 10);
+  const editor=addingSetInline ? `<span class="set-inline-wrap"><input type="number" id="inlineSetInput" class="set-inline-input" min="1" value="${defaultValue}"><button class="set-inline-ok" onclick="confirmInlineSet()">OK</button></span>` : '';
+  const addBtn=addingSetInline ? '' : `<button class="set-chip-add" onclick="startInlineAddSet()">+ séria</button>`;
+  document.getElementById('setsRow').innerHTML=existing+editor+addBtn;
   document.getElementById('seriesHint').textContent=sets.length?`${sets.length} sér. · ${sets.reduce((a,b)=>a+b,0)} celkom`:'';
+  if(addingSetInline){
+    setTimeout(()=>{
+      const inp=document.getElementById('inlineSetInput');
+      if(!inp) return;
+      inp.focus();
+      inp.select();
+      inp.onkeydown=(e)=>{
+        if(e.key==='Enter') confirmInlineSet();
+        if(e.key==='Escape') cancelInlineSet();
+      };
+      inp.onblur=()=>setTimeout(()=>{
+        const active=document.activeElement;
+        if(active && active.classList && active.classList.contains('set-inline-ok')) return;
+        if(document.getElementById('inlineSetInput')) cancelInlineSet();
+      },120);
+    },0);
+  }
 }
 
-function addSet(){
+function startInlineAddSet(){
+  addingSetInline=true;
   editIdx=null;
-  document.getElementById('popupTitle').textContent='Nová séria';
-  document.getElementById('popupInput').value=sets.length?sets[sets.length-1]:10;
-  document.getElementById('popupDel').style.display='none';
-  document.getElementById('popupOverlay').style.display='block';
-  document.getElementById('setPopup').style.display='block';
-  setTimeout(()=>{const i=document.getElementById('popupInput');i.focus();i.select()},50);
+  renderSets();
 }
 
-function openPopup(i){
+function startEditInlineSet(i){
+  addingSetInline=true;
   editIdx=i;
-  document.getElementById('popupTitle').textContent=`Séria ${i+1}`;
-  document.getElementById('popupInput').value=sets[i];
-  document.getElementById('popupDel').style.display='block';
-  document.getElementById('popupOverlay').style.display='block';
-  document.getElementById('setPopup').style.display='block';
-  setTimeout(()=>{const inp=document.getElementById('popupInput');inp.focus();inp.select()},50);
+  renderSets();
 }
 
-function closePopup(){document.getElementById('popupOverlay').style.display='none';document.getElementById('setPopup').style.display='none'}
+function cancelInlineSet(){
+  addingSetInline=false;
+  editIdx=null;
+  renderSets();
+}
 
-function confirmSet(){
-  const v=parseInt(document.getElementById('popupInput').value);
-  if(!v||v<=0){closePopup();return}
+function confirmInlineSet(){
+  const input=document.getElementById('inlineSetInput');
+  const v=parseInt(input?.value,10);
+  if(!v||v<=0){cancelInlineSet();return}
   if(editIdx!==null) sets[editIdx]=v; else sets.push(v);
-  closePopup();renderSets();
+  addingSetInline=false;
+  editIdx=null;
+  renderSets();
 }
-
-function deleteSet(){if(editIdx!==null) sets.splice(editIdx,1);closePopup();renderSets()}
-
-document.getElementById('popupInput').addEventListener('keydown',e=>{
-  if(e.key==='Enter') confirmSet();if(e.key==='Escape') closePopup();
-});
 
 async function saveAndAnother(){
   const date=document.getElementById('logDate').value;
