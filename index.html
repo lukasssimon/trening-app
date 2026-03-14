@@ -4,6 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>Tréning</title>
+<link rel="icon" href="icon.png">
+<link rel="apple-touch-icon" href="icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Tréning">
+<meta name="application-name" content="Tréning">
+<meta name="theme-color" content="#4A90B8">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
@@ -240,6 +247,9 @@ body {
 .set-inline-wrap{display:flex;align-items:center;gap:10px}
 .set-inline-input{width:88px;background:white;border:1px solid #4A90B8;border-radius:16px;padding:12px 10px;font-size:28px;font-weight:700;color:#1C2B3A;text-align:center;outline:none;font-family:inherit}
 .set-inline-ok{background:#4A90B8;color:white;border:none;border-radius:16px;padding:12px 18px;font-size:18px;font-weight:700;cursor:pointer;font-family:inherit;min-height:58px}
+.set-remove-row{flex-basis:100%;margin-top:4px}
+.set-remove-last{background:none;border:none;color:#94A8B8;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;padding:4px 2px}
+.set-remove-last:hover{color:#6E879A}
 
 @media (max-width: 700px){
   .bchips{grid-template-columns:1fr 1fr}
@@ -1236,21 +1246,39 @@ function renderExLines(){
 }
 
 
+function getCurrentWeightValue(){
+  const raw=document.getElementById('logWeight')?.value;
+  if(raw===undefined || raw===null || raw==='') return null;
+  const parsed=parseFloat(raw);
+  return Number.isFinite(parsed) ? parsed : null;
+}
+
+function weightsEqual(a,b){
+  if(a===null && b===null) return true;
+  if(a===null || b===null) return false;
+  return Number(a)===Number(b);
+}
+
 function syncExistingLogForCurrentSelection(){
   if(!selCode) return false;
+  const ex=getEx(selCode);
   const selectedDate=document.getElementById('logDate').value || today();
-  const existing=(cachedLogs||[]).find(l=>l.date===selectedDate && l.code===selCode);
+  const currentWeight=getCurrentWeightValue();
+  const existing=(cachedLogs||[]).find(l=>{
+    if(l.date!==selectedDate || l.code!==selCode) return false;
+    if(!ex?.w) return true;
+    return weightsEqual(l.weight ?? null, currentWeight);
+  });
   if(existing){
     editingId=existing.id;
     sets=Array.isArray(existing.sets)?[...existing.sets]:[];
-    document.getElementById('logWeight').value=existing.weight ?? '';
+    if(ex?.w) document.getElementById('logWeight').value=existing.weight ?? '';
     document.getElementById('logTitle').textContent='Doplniť cvik';
     document.getElementById('selectedInfo').style.display='block';
     return true;
   }
   editingId=null;
   sets=[];
-  document.getElementById('logWeight').value='';
   document.getElementById('logTitle').textContent='Nový cvik';
   document.getElementById('selectedInfo').style.display='none';
   return false;
@@ -1277,7 +1305,8 @@ function renderSets(){
   const defaultValue=(editIdx!==null && sets[editIdx]) ? sets[editIdx] : (sets.length ? sets[sets.length-1] : 10);
   const editor=addingSetInline ? `<span class="set-inline-wrap"><input type="number" id="inlineSetInput" class="set-inline-input" min="1" value="${defaultValue}"><button class="set-inline-ok" onclick="confirmInlineSet()">OK</button></span>` : '';
   const addBtn=addingSetInline ? '' : `<button class="set-chip-add" onclick="startInlineAddSet()">+ séria</button>`;
-  document.getElementById('setsRow').innerHTML=existing+editor+addBtn;
+  const removeBtn=sets.length ? `<div class="set-remove-row"><button class="set-remove-last" onclick="removeLastSet()">zmazať poslednú sériu</button></div>` : '';
+  document.getElementById('setsRow').innerHTML=existing+editor+addBtn+removeBtn;
   document.getElementById('seriesHint').textContent=sets.length?`${sets.length} sér. · ${sets.reduce((a,b)=>a+b,0)} celkom`:'';
   if(addingSetInline){
     setTimeout(()=>{
@@ -1311,6 +1340,14 @@ function startEditInlineSet(i){
 }
 
 function cancelInlineSet(){
+  addingSetInline=false;
+  editIdx=null;
+  renderSets();
+}
+
+function removeLastSet(){
+  if(!sets.length) return;
+  sets.pop();
   addingSetInline=false;
   editIdx=null;
   renderSets();
@@ -1672,6 +1709,17 @@ async function confirmImport(){
 
 document.getElementById('logDate').addEventListener('change', ()=>{
   if(!selCode) return;
+  const hadExisting=syncExistingLogForCurrentSelection();
+  renderSets();
+  if(!hadExisting && !sets.length){
+    startInlineAddSet();
+  }
+});
+
+document.getElementById('logWeight').addEventListener('change', ()=>{
+  if(!selCode) return;
+  const ex=getEx(selCode);
+  if(!ex?.w) return;
   const hadExisting=syncExistingLogForCurrentSelection();
   renderSets();
   if(!hadExisting && !sets.length){
