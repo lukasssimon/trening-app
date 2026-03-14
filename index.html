@@ -530,18 +530,35 @@ async function insertLog(e){
 async function deleteLogDB(id){const {error}=await sb.from('training_logs').delete().eq('id',id);if(error) throw error}
 
 // ---- INIT ----
-sb.auth.onAuthStateChange(async(event,session)=>{
-  if(event==='INITIAL_SESSION'&&!session) return;
+async function initApp(){
+  // First try to get existing session directly
+  const { data:{ session } } = await sb.auth.getSession();
   if(session?.user){
-    currentUser=session.user;
-    const name=currentUser.user_metadata?.full_name||currentUser.email||'Luk';
-    document.getElementById('homeGreet').textContent=`Ahoj, ${name.split(' ')[0]}`;
-    try { await fetchLogs(); } catch(e){ console.error('fetchLogs error:',e); cachedLogs=[]; }
+    currentUser = session.user;
+    const name = currentUser.user_metadata?.full_name || currentUser.email || 'Luk';
+    document.getElementById('homeGreet').textContent = `Ahoj, ${name.split(' ')[0]}`;
+    await fetchLogs();
     showApp();
   } else {
     showLoginScreen();
   }
-});
+
+  // Then listen for future changes (login/logout)
+  sb.auth.onAuthStateChange(async(event, session)=>{
+    if(event === 'SIGNED_IN' && session?.user && !currentUser){
+      currentUser = session.user;
+      const name = currentUser.user_metadata?.full_name || currentUser.email || 'Luk';
+      document.getElementById('homeGreet').textContent = `Ahoj, ${name.split(' ')[0]}`;
+      await fetchLogs();
+      showApp();
+    } else if(event === 'SIGNED_OUT'){
+      currentUser = null; cachedLogs = [];
+      showLoginScreen();
+    }
+  });
+}
+
+initApp();
 
 // ---- UTILS ----
 function today(){return new Date().toISOString().slice(0,10)}
