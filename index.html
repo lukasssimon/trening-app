@@ -85,6 +85,11 @@ body {
 .plan-reason{font-size:10px;color:#B8C8D4;line-height:1.5}
 .plan-divider{height:0.5px;background:#E2EAF0;margin:10px 0}
 
+
+.plan-progress{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.plan-progress-chip{font-size:10px;padding:4px 8px;border-radius:20px;background:#F5F8FC;color:#94A8B8;border:0.5px solid #E2EAF0}
+.plan-progress-chip.done{background:#F0F9F4;color:#56B870;border-color:rgba(86,184,112,.3)}
+
 /* RULES TABLE */
 .rules-table { width:100%; border-collapse:collapse; }
 .rules-table th { font-size:9px; color:#94A8B8; text-align:left; padding:4px 6px; font-weight:500; text-transform:uppercase; letter-spacing:.4px; border-bottom:0.5px solid #E2EAF0; }
@@ -638,6 +643,27 @@ function areaCompleted(counts){
   return r;
 }
 
+function getTodayProgressCounts(){
+  const logs=(cachedLogs||[]).filter(l=>l.date===today());
+  return areaSetCounts(logs);
+}
+
+function renderTodayProgressChips(){
+  const counts=getTodayProgressCounts();
+  const items=[
+    {key:'core', label:'Core'},
+    {key:'mobility', label:'Chrbát'},
+    {key:'strength', label:'Silový'},
+    {key:'legs', label:'Nohy'}
+  ];
+  return `<div class="plan-progress">${items.map(item=>{
+    const val=counts[item.key]||0;
+    const target=CFG.thresholds[item.key]||0;
+    const cls=val>=target?'done':'';
+    return `<span class="plan-progress-chip ${cls}">${item.label} ${val}/${target}</span>`;
+  }).join('')}</div>`;
+}
+
 // Get weekly stats from Monday to today
 function getWeekData(referenceDate){
   const mon=getMonday(referenceDate||new Date());
@@ -850,7 +876,8 @@ function renderSuggestedPlan(){
               ${idx===0?'<b>':''}${CFG.area_icons[a]||'😴'} ${CFG.area_labels[a]||'Voľno'}${idx===0?'</b>':''}
             </span>`).join('')}
           </div>
-          <div class="plan-reason">${pd.reason}</div>`}
+          <div class="plan-reason">${pd.reason}</div>
+          ${i===0 ? renderTodayProgressChips() : ''}`}
       </div>`).join('')}
   </div>`;
 }
