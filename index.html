@@ -746,7 +746,6 @@ function pickDayAreas(targetDate, weekData){
 }
 
 function renderSuggestedPlan(){
-  try {
   const now=new Date();
   const wd=getWeekData(now);
   const tgt=CFG.weekly_targets;
@@ -782,7 +781,6 @@ function renderSuggestedPlan(){
           <div class="plan-reason">${pd.reason}</div>`}
       </div>`).join('')}
   </div>`;
-  } catch(e){ console.error('renderSuggestedPlan error:',e); document.getElementById('suggestedPlan').innerHTML=''; }
 }
 
 // ---- TIMETABLE ----
@@ -794,19 +792,14 @@ function renderTimeTable(){
   const areas=['core','mobility','strength','legs'];
   const areaNames={core:'Core',mobility:'Chrbát',strength:'Silový',legs:'Nohy'};
   const dayLabels=['Po','Ut','St','Šv','Pi','So','Ne'];
-
-  // Build data
   const data={};
   areas.forEach(a=>{data[a]=days.map(d=>{
     const ds=dateStr(d);
-    const logs=cachedLogs.filter(l=>l.date===ds);
-    const cnt=logs.reduce((sum,l)=>{
+    return (cachedLogs||[]).filter(l=>l.date===ds).reduce((sum,l)=>{
       if(CFG.block_mapping[a].includes(l.code)) return sum+setsOf(l).length;
       return sum;
     },0);
-    return cnt;
   })});
-
   let html=`<table class="tt-table">
     <thead class="tt-head"><tr>
       <th></th>
@@ -825,7 +818,6 @@ function renderTimeTable(){
     </tr>`).join('')}
     </tbody>
   </table>`;
-
   document.getElementById('timeTable').innerHTML=html;
 }
 
