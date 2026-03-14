@@ -191,53 +191,65 @@ body {
 
 /* LOG */
 #screen-log{background:white;min-height:100vh}
-.back-row{display:flex;align-items:center;gap:10px;padding:20px 22px 0;cursor:pointer}
-.back-arr{width:28px;height:28px;border-radius:8px;background:#F5F8FC;border:0.5px solid #E2EAF0;display:flex;align-items:center;justify-content:center}
-.back-ico{width:7px;height:7px;border-left:1.5px solid #94A8B8;border-bottom:1.5px solid #94A8B8;transform:rotate(45deg) translate(1px,-1px)}
-.back-title{font-size:16px;font-weight:600;color:#1C2B3A}
-.f-sec{padding:20px 22px 0}
-.f-label{font-size:10px;color:#94A8B8;text-transform:uppercase;letter-spacing:.8px;margin-bottom:12px}
-.bchips{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.bchip{background:#F5F8FC;border:0.5px solid #E2EAF0;border-radius:12px;padding:10px 12px;font-size:12px;color:#94A8B8;cursor:pointer;transition:all .15s;text-align:left;font-family:inherit}
-.bchip .ic{font-size:15px;display:block;margin-bottom:4px}
-.bchip:hover{border-color:#C8DFE9;color:#4A90B8}
-.bchip.active{background:#E8F3F9;border-color:#4A90B8;color:#4A90B8;font-weight:500}
-.sel-and-series{margin:14px 22px 0;background:#F5F8FC;border:0.5px solid #E2EAF0;border-radius:14px;padding:14px;display:none}
-.sel-display-inner{margin-bottom:12px}
-.sel-top{display:flex;align-items:center;gap:8px;margin-bottom:3px}
-.sel-code{font-size:11px;color:#4A90B8;font-family:monospace;font-weight:600}
-.sel-name{font-size:13px;color:#1C2B3A;font-weight:500}
-.sel-desc{font-size:11px;color:#7AAABF;line-height:1.5}
-.inline-row{display:flex;align-items:baseline;gap:8px;padding:10px 0;border-bottom:0.5px solid #E2EAF0}
-.inline-label{font-size:12px;color:#94A8B8;flex:1}
-.inline-input{width:80px;background:white;border:0.5px solid #E2EAF0;border-radius:8px;padding:6px 10px;font-size:14px;font-weight:500;color:#1C2B3A;text-align:center;outline:none;font-family:inherit;transition:border-color .15s}
-.inline-input:focus{border-color:#4A90B8}
-.inline-unit{font-size:12px;color:#94A8B8}
-.series-section{margin-top:12px}
-.series-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
-.series-label{font-size:10px;color:#94A8B8;text-transform:uppercase;letter-spacing:.8px}
-.series-hint{font-size:11px;color:#4A90B8;font-weight:500}
-.sets-row{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:10px}
-.set-chip{background:#E8F3F9;border-radius:8px;padding:6px 10px;font-size:14px;font-weight:500;color:#4A90B8;cursor:pointer;border:1px solid #C8DFE9;transition:all .15s;font-family:inherit}
+.back-row{display:flex;align-items:center;gap:12px;padding:20px 16px 0;cursor:pointer}
+.back-arr{width:34px;height:34px;border-radius:10px;background:#F5F8FC;border:0.5px solid #E2EAF0;display:flex;align-items:center;justify-content:center}
+.back-ico{width:8px;height:8px;border-left:1.5px solid #94A8B8;border-bottom:1.5px solid #94A8B8;transform:rotate(45deg) translate(1px,-1px)}
+.back-title{font-size:20px;font-weight:700;color:#1C2B3A}
+.f-sec{padding:18px 16px 0}
+.f-label{font-size:12px;color:#94A8B8;text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;font-weight:600}
+.bchips{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.bchip{background:#F8FBFE;border:1px solid #D9E7F0;border-radius:22px;padding:18px 16px;min-height:94px;font-size:16px;color:#7E94A8;cursor:pointer;transition:all .15s;text-align:left;font-family:inherit;display:flex;flex-direction:column;justify-content:center;gap:8px}
+.bchip .ic{font-size:24px;display:block;margin-bottom:0}
+.bchip:hover{border-color:#AFCDE0;color:#4A90B8}
+.bchip.active{background:#EAF5FC;border-color:#4A90B8;color:#2F6F95;font-weight:700;box-shadow:0 6px 16px rgba(74,144,184,.12)}
+.sel-and-series{margin:12px 16px 0;background:#F8FBFE;border:1px solid #DCE8F0;border-radius:24px;padding:20px 18px 18px;display:none;box-shadow:0 8px 20px rgba(28,43,58,.05)}
+.sel-display-inner{margin-bottom:18px}
+.sel-top{display:flex;align-items:center;gap:10px;margin-bottom:6px}
+.sel-code{font-size:18px;color:#4A90B8;font-family:monospace;font-weight:700}
+.sel-name{font-size:34px;line-height:1.05;color:#1C2B3A;font-weight:800}
+.sel-desc{font-size:19px;color:#7AAABF;line-height:1.45;margin-top:10px;max-width:32ch}
+.inline-row{display:flex;align-items:center;gap:10px;padding:16px 0;border-bottom:1px solid #E2EAF0}
+.inline-label{font-size:18px;color:#94A8B8;flex:1}
+.inline-input{width:120px;background:white;border:1px solid #D3E1EA;border-radius:16px;padding:12px 14px;font-size:22px;font-weight:700;color:#1C2B3A;text-align:center;outline:none;font-family:inherit;transition:border-color .15s, box-shadow .15s}
+.inline-input:focus{border-color:#4A90B8;box-shadow:0 0 0 3px rgba(74,144,184,.12)}
+.inline-unit{font-size:16px;color:#94A8B8;font-weight:600}
+.series-section{margin-top:18px}
+.series-header{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;margin-bottom:14px}
+.series-label{font-size:12px;color:#94A8B8;text-transform:uppercase;letter-spacing:1px;font-weight:700}
+.series-hint{font-size:15px;color:#4A90B8;font-weight:700}
+.sets-row{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:14px}
+.set-chip{background:#EAF5FC;border-radius:16px;padding:14px 18px;min-width:64px;min-height:58px;font-size:30px;font-weight:700;color:#4A90B8;cursor:pointer;border:1px solid #C8DFE9;transition:all .15s;font-family:inherit;display:flex;align-items:center;justify-content:center}
 .set-chip:hover{background:#D8EBF5}
-.set-chip-add{background:white;border:0.5px dashed #C8DFE9;border-radius:8px;padding:6px 10px;font-size:14px;color:#B8C8D4;cursor:pointer;transition:all .15s;font-family:inherit}
+.set-chip-add{background:white;border:1.5px dashed #C8DFE9;border-radius:16px;padding:14px 18px;min-width:116px;min-height:58px;font-size:30px;color:#B8C8D4;cursor:pointer;transition:all .15s;font-family:inherit;display:flex;align-items:center;justify-content:center}
 .set-chip-add:hover{border-color:#4A90B8;color:#4A90B8}
-.save-area{padding:12px 0 0}
-.save-btn{width:100%;background:#4A90B8;border:none;border-radius:14px;padding:15px;color:white;font-size:14px;font-weight:500;cursor:pointer;font-family:inherit;transition:background .15s}
+.save-area{padding:18px 0 4px}
+.save-btn{width:100%;background:#4A90B8;border:none;border-radius:22px;padding:20px 18px;color:white;font-size:24px;font-weight:800;cursor:pointer;font-family:inherit;transition:background .15s;box-shadow:0 10px 22px rgba(74,144,184,.18)}
 .save-btn:hover{background:#3A7FA8}
 .save-btn:disabled{background:#B8C8D4;cursor:not-allowed}
-.ex-lines{display:flex;flex-direction:column}
-.ex-line{display:flex;align-items:center;gap:10px;padding:12px 0;border-bottom:0.5px solid #E2EAF0;cursor:pointer}
+.ex-lines{display:flex;flex-direction:column;background:white;border-top:1px solid #EEF3F7}
+.ex-line{display:flex;align-items:center;gap:12px;padding:18px 0;border-bottom:1px solid #E7EEF4;cursor:pointer;transition:background .15s, padding-left .15s}
 .ex-line:last-child{border-bottom:none}
-.ex-code-t{font-size:10px;color:#B8C8D4;font-family:monospace;min-width:30px}
-.ex-line.active .ex-code-t{color:#4A90B8;font-weight:600}
-.ex-name-t{font-size:13px;color:#94A8B8;flex:1}
-.ex-line.active .ex-name-t{color:#1C2B3A;font-weight:500}
-.ex-sel{width:6px;height:6px;border-radius:50%;background:#4A90B8;opacity:0;flex-shrink:0}
+.ex-line:hover{background:#FAFCFE}
+.ex-code-t{font-size:18px;color:#6E9BC1;font-family:monospace;min-width:48px;font-weight:700}
+.ex-line.active{background:#EEF7FD;padding-left:8px;border-left:4px solid #4A90B8}
+.ex-line.active .ex-code-t{color:#4A90B8;font-weight:800}
+.ex-name-t{font-size:22px;color:#8BA3B8;flex:1;line-height:1.25}
+.ex-line.active .ex-name-t{color:#1C2B3A;font-weight:700}
+.ex-sel{width:10px;height:10px;border-radius:50%;background:#4A90B8;opacity:0;flex-shrink:0;margin-right:8px}
 .ex-line.active .ex-sel{opacity:1}
-.set-inline-wrap{display:flex;align-items:center;gap:7px}
-.set-inline-input{width:58px;background:white;border:0.5px solid #4A90B8;border-radius:8px;padding:6px 8px;font-size:14px;font-weight:600;color:#1C2B3A;text-align:center;outline:none;font-family:inherit}
-.set-inline-ok{background:#4A90B8;color:white;border:none;border-radius:8px;padding:6px 12px;font-size:13px;font-weight:500;cursor:pointer;font-family:inherit}
+.set-inline-wrap{display:flex;align-items:center;gap:10px}
+.set-inline-input{width:88px;background:white;border:1px solid #4A90B8;border-radius:16px;padding:12px 10px;font-size:28px;font-weight:700;color:#1C2B3A;text-align:center;outline:none;font-family:inherit}
+.set-inline-ok{background:#4A90B8;color:white;border:none;border-radius:16px;padding:12px 18px;font-size:18px;font-weight:700;cursor:pointer;font-family:inherit;min-height:58px}
+
+@media (max-width: 700px){
+  .bchips{grid-template-columns:1fr 1fr}
+  .date-mobile-row{padding:0 16px}
+}
+
+@media (min-width: 900px){
+  #screen-log{max-width:720px;margin:0 auto}
+  .back-row,.f-sec,.date-mobile-row{padding-left:18px;padding-right:18px}
+}
 
 /* HISTORY */
 .hist-head{padding:24px 22px 0}
@@ -387,7 +399,7 @@ body {
     <div class="bchips" id="blockChips"></div>
   </div>
   <div class="sel-and-series" id="selAndSeries">
-    <div class="sel-display-inner" id="selDisplayInner"></div>
+    <div class="sel-display-inner" id="selDisplayInner"></div><div id="selectedInfo" style="display:none;font-size:14px;color:#4A90B8;background:#EEF7FD;border:1px solid #C8DFE9;border-radius:14px;padding:10px 12px;margin-bottom:14px;font-weight:600">Na tento deň už existuje záznam — dopĺňaš ďalšie série.</div>
     <div id="weightRowWrap" style="display:none">
       <div class="inline-row">
         <span class="inline-label">Váha činiek</span>
@@ -406,14 +418,14 @@ body {
       <button class="save-btn" id="saveBtnMain" onclick="saveAndAnother()">Uložiť</button>
     </div>
   </div>
-  <div id="dateRowWrap" style="display:none;padding:0 22px">
+  <div id="dateRowWrap" class="date-mobile-row" style="display:none;padding:0 16px">
     <div class="inline-row">
       <span class="inline-label">Dátum</span>
       <input type="date" id="logDate" class="inline-input" style="width:130px;font-size:12px;">
     </div>
   </div>
   <div class="f-sec" id="exSection" style="display:none;margin-top:14px">
-    <div class="f-label">Cvik</div>
+    <div class="f-label">Cviky v bloku</div>
     <div class="ex-lines" id="exLines"></div>
   </div>
 </div>
@@ -1127,6 +1139,7 @@ function resetLog(){
   document.getElementById('selAndSeries').style.display='none';
   document.getElementById('dateRowWrap').style.display='none';
   document.getElementById('weightRowWrap').style.display='none';
+  const infoEl=document.getElementById('selectedInfo'); if(infoEl) infoEl.style.display='none';
   renderBlockChips();renderSets();
 }
 
@@ -1163,12 +1176,14 @@ function syncExistingLogForCurrentSelection(){
     sets=Array.isArray(existing.sets)?[...existing.sets]:[];
     document.getElementById('logWeight').value=existing.weight ?? '';
     document.getElementById('logTitle').textContent='Doplniť cvik';
+    document.getElementById('selectedInfo').style.display='block';
     return true;
   }
   editingId=null;
   sets=[];
   document.getElementById('logWeight').value='';
   document.getElementById('logTitle').textContent='Nový cvik';
+  document.getElementById('selectedInfo').style.display='none';
   return false;
 }
 
