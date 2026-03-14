@@ -1233,6 +1233,12 @@ function renderStats(){
     ?top.map(([n,c],i)=>`<div class="top-item"><span class="top-n">#${i+1}</span><span style="font-size:12px;color:#1C2B3A;flex:1">${n}</span><div class="top-bar"><div class="top-bar-f" style="width:${Math.round(c/maxC*100)}%"></div></div><span class="top-cnt">${c}×</span></div>`).join('')
     :'<div class="empty-state">Žiadne dáta.</div>';
 }
+
+function setStatPeriod(period){
+  statPeriod = period;
+  renderStats();
+}
+
 // ---- TRAINING RULES TABLE ----
 function renderTrainingRules(){
   const container=document.getElementById('trainingRules');
