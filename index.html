@@ -709,101 +709,150 @@ function renderWeekDash(){
 }
 
 // ---- SUGGESTED PLAN (today + next 2 days) ----
-function pickDayAreas(targetDate, weekData){
-  const w=weekData.weekly, tgt=CFG.weekly_targets;
-  const yd=dateStr(addDays(new Date(targetDate),-1));
-  const ydComp=weekData.byDay[yd]?.completed||{};
-  const tdIdx=weekData.days.indexOf(targetDate);
+function cloneWeeklyState(weekly){
+  return {core:weekly.core||0,mobility:weekly.mobility||0,strength:weekly.strength||0,legs:weekly.legs||0};
+}
 
-  // Check if all targets met
+function getRealCompletedForDate(dateStrValue){
+  const logs=cachedLogs.filter(l=>l.date===dateStrValue);
+  const counts=areaSetCounts(logs);
+  return areaCompleted(counts);
+}
+
+function getPreviousRealCompleted(targetDateStr){
+  return getRealCompletedForDate(dateStr(addDays(new Date(targetDateStr),-1)));
+}
+
+function getDaysLeftInWeek(targetDateStr){
+  const day=new Date(targetDateStr).getDay();
+  return Math.max(1, 7 - (day === 0 ? 7 : day) + 1);
+}
+
+function getUrgencyScore(area, state, targetDateStr){
+  const done=state.weekly[area]||0;
+  const target=CFG.weekly_targets[area]||1;
+  const remaining=Math.max(0,target-done);
+  if(remaining<=0) return 0;
+  const daysLeft=getDaysLeftInWeek(targetDateStr);
+  const base={strength:100,legs:90,core:80,mobility:70}[area] || 0;
+  const urgency=remaining / daysLeft;
+  return base * urgency;
+}
+
+function pickDayAreas(targetDateStr, state, prevMainArea=null){
+  const tgt=CFG.weekly_targets;
+  const w=state.weekly;
+  const realPrev=state.prevCompleted || getPreviousRealCompleted(targetDateStr);
   const allMet=Object.keys(tgt).every(a=>(w[a]||0)>=tgt[a]);
-  if(allMet) return{areas:[],allMet:true,reason:'Všetky týždenné ciele sú splnené.'};
+  if(allMet) return {main:'rest',areas:['rest'],allMet:true,reason:'Všetky týždenné ciele sú splnené.'};
 
-  // Score each area
-  const BASE={strength:100,legs:95,core:50,mobility:40};
   const scores={strength:0,legs:0,core:0,mobility:0};
-  for(const a of Object.keys(scores)){
-    const done=w[a]||0, target=tgt[a]||1;
-    const deficit=Math.max(0,target-done);
-    scores[a]=deficit>0?BASE[a]*(deficit/target):0;
-    // Penalise if done yesterday
-    if(ydComp[a]) scores[a]-=(a==='strength'||a==='legs')?35:20;
-    // Streak penalty
-    const sk=areaStreakBefore(a,targetDate,weekData);
-    if(a==='core'&&sk>=2) scores[a]-=20;
-    if(a==='mobility'&&sk>=2) scores[a]-=15;
+  for(const area of Object.keys(scores)){
+    scores[area]=getUrgencyScore(area, state, targetDateStr);
   }
 
-  // Sort by score
-  const ranked=Object.entries(scores).sort((a,b)=>b[1]-a[1]);
+  // hard rules across real history and virtual future
+  if(realPrev.strength || prevMainArea==='strength') scores.strength=-Infinity;
+  if(realPrev.legs || prevMainArea==='legs') scores.legs=-Infinity;
+
+  // soft repeat penalties for support categories only
+  if(realPrev.core || prevMainArea==='core') scores.core-=12;
+  if(realPrev.mobility || prevMainArea==='mobility') scores.mobility-=10;
+
   const priorityOrder=['strength','legs','core','mobility'];
+  const ranked=priorityOrder
+    .map(area=>({area,score:scores[area]}))
+    .sort((a,b)=>b.score-a.score || priorityOrder.indexOf(a.area)-priorityOrder.indexOf(b.area));
 
-  // Pick main (highest priority primary if possible)
-  let main=null;
-  for(const a of priorityOrder){
-    if(scores[a]>0){main=a;break}
-  }
-  if(!main) main='mobility'; // fallback
+  let main='mobility';
+  const positiveMain=ranked.find(x=>x.score>0);
+  if(positiveMain) main=positiveMain.area;
 
-  // Pick up to 2 supports, max 3 total, no strength+legs
   const supports=[];
-  for(const[a]of ranked){
-    if(a===main) continue;
+  const supportCandidates=['core','mobility','legs','strength'];
+  for(const area of supportCandidates){
+    if(area===main) continue;
     if(supports.length>=2) break;
-    if(main==='strength'&&a==='legs') continue;
-    if(main==='legs'&&a==='strength') continue;
-    if(scores[a]>0||(a==='core'||a==='mobility')) supports.push(a);
-    // pad with mobility/core even if score=0 to reach 3 total
-  }
-  // Pad to reach 3 total if needed
-  for(const a of ['core','mobility','strength','legs']){
-    if(supports.length+1>=3) break;
-    if(a===main||supports.includes(a)) continue;
-    if(main==='strength'&&a==='legs') continue;
-    if(main==='legs'&&a==='strength') continue;
-    supports.push(a);
+    if((main==='strength' && area==='legs') || (main==='legs' && area==='strength')) continue;
+    if((state.weekly[area]||0) >= (CFG.weekly_targets[area]||0) && (area==='strength' || area==='legs')) continue;
+    const score=scores[area];
+    if(score>8 || (['core','mobility'].includes(area) && score>0)) supports.push(area);
   }
 
   const areas=[main,...supports].slice(0,3);
-
-  // Build reason
   const reasons=[];
-  if(main==='strength') reasons.push(`Silový: ${w.strength}/${tgt.strength}`);
-  else if(main==='legs') reasons.push(`Nohy: ${w.legs}/${tgt.legs}`);
-  else if(main==='core') reasons.push(`Core: ${w.core}/${tgt.core}`);
-  else reasons.push(`Mobilita: ${w.mobility}/${tgt.mobility}`);
-  if(ydComp.strength&&main==='legs') reasons.push('Silový bol včera');
-  if(ydComp.legs&&main==='strength') reasons.push('Nohy boli včera');
+  const mainLabel={strength:'Silový',legs:'Nohy',core:'Core',mobility:'Mobilita',rest:'Voľno'}[main];
+  if(main!=='rest') reasons.push(`${mainLabel}: ${w[main]||0}/${tgt[main]||0}`);
+  if(realPrev.strength && main!=='strength') reasons.push('Včera bol silový');
+  if(realPrev.legs && main!=='legs') reasons.push('Včera boli nohy');
+  const deficits=Object.keys(tgt)
+    .map(a=>({a,remaining:Math.max(0,(tgt[a]||0)-(w[a]||0))}))
+    .filter(x=>x.remaining>0)
+    .sort((a,b)=>b.remaining-a.remaining)
+    .slice(0,2)
+    .map(x=>`${CFG.area_labels[x.a]} chýba ${x.remaining}×`);
+  reasons.push(...deficits);
 
-  return{areas,allMet:false,reason:reasons.join(' · ')};
+  return {main,areas,allMet:false,reason:reasons.join(' · '),scores,realPrev};
 }
 
 function renderSuggestedPlan(){
   const container=document.getElementById('suggestedPlan');
   if(!container) return;
   const now=new Date();
-  const wd=getWeekData(now);
-  const tgt=CFG.weekly_targets;
-  const w=wd.weekly;
-  const allMet=Object.keys(tgt).every(a=>(w[a]||0)>=tgt[a]);
-  if(allMet){
+  const todayStr=dateStr(now);
+  const initialWeekData=getWeekData(now);
+  let simulatedState={
+    weekStart: dateStr(getMonday(now)),
+    weekly: cloneWeeklyState(initialWeekData.weekly),
+    prevCompleted: getPreviousRealCompleted(todayStr)
+  };
+
+  const targetKeys=Object.keys(CFG.weekly_targets);
+  const alreadyMet=targetKeys.every(a=>(simulatedState.weekly[a]||0)>=CFG.weekly_targets[a]);
+  if(alreadyMet){
     container.innerHTML=`<div class="plan-card" style="padding:14px 18px">
       <div style="font-size:13px;color:#56B870;font-weight:500;margin-bottom:4px">✅ Všetky ciele splnené</div>
       <div style="font-size:12px;color:#94A8B8">Dnes môže byť regenerácia alebo voliteľný tréning.</div>
     </div>`;
-    updatePlannerDebug({mode:'suggestedPlan', allMet:true, weekly:w, targets:tgt});
+    updatePlannerDebug({mode:'suggestedPlan', allMet:true, weekly:simulatedState.weekly, targets:CFG.weekly_targets});
     return;
   }
+
   const planDays=[];
+  let prevMainArea=null;
   for(let i=0;i<=2;i++){
-    const d=addDays(now,i);
-    const ds=dateStr(d);
-    const label=i===0 ? `${CFG.day_labels_full[d.getDay()]} – Dnes` : CFG.day_labels_full[d.getDay()];
-    const effectiveWd=d.getDay()===1 && i>0 ? getWeekData(d) : wd;
-    const {areas,allMet:dayAllMet,reason}=pickDayAreas(ds,effectiveWd);
-    planDays.push({date:ds,dayName:label,areas,allMet:dayAllMet,reason});
+    const dayDate=addDays(now,i);
+    const ds=dateStr(dayDate);
+    const dayWeekStart=dateStr(getMonday(dayDate));
+
+    if(dayWeekStart!==simulatedState.weekStart){
+      simulatedState.weekStart=dayWeekStart;
+      simulatedState.weekly={core:0,mobility:0,strength:0,legs:0};
+    }
+
+    const label=i===0 ? `${CFG.day_labels_full[dayDate.getDay()]} – Dnes` : CFG.day_labels_full[dayDate.getDay()];
+    const picked=pickDayAreas(ds, simulatedState, prevMainArea);
+    planDays.push({date:ds,dayName:label,...picked,weeklyBefore:cloneWeeklyState(simulatedState.weekly)});
+
+    if(!picked.allMet && picked.main && picked.main!=='rest'){
+      simulatedState.weekly[picked.main]=(simulatedState.weekly[picked.main]||0)+1;
+      simulatedState.prevCompleted={strength:false,legs:false,core:false,mobility:false};
+      simulatedState.prevCompleted[picked.main]=true;
+      prevMainArea=picked.main;
+    } else {
+      simulatedState.prevCompleted={strength:false,legs:false,core:false,mobility:false};
+      prevMainArea='rest';
+    }
   }
-  updatePlannerDebug({mode:'suggestedPlan', allMet:false, weekly:w, targets:tgt, planDays});
+
+  updatePlannerDebug({
+    mode:'suggestedPlan',
+    targets:CFG.weekly_targets,
+    generatedAt:todayStr,
+    planDays
+  });
+
   container.innerHTML=`<div class="plan-card">
     ${planDays.map((pd,i)=>`
       ${i>0?'<div class="plan-divider"></div>':''}
@@ -813,7 +862,7 @@ function renderSuggestedPlan(){
           ?`<div style="font-size:12px;color:#56B870">Všetky ciele splnené – voľno / regenerácia</div>`
           :`<div class="plan-areas">
             ${pd.areas.map((a,idx)=>`<span class="plan-area-chip ${CFG.chip_class[a]||'rest'}">
-              ${idx===0?'<b>':''}${CFG.area_icons[a]} ${CFG.area_labels[a]}${idx===0?'</b>':''}
+              ${idx===0?'<b>':''}${CFG.area_icons[a]||'😴'} ${CFG.area_labels[a]||'Voľno'}${idx===0?'</b>':''}
             </span>`).join('')}
           </div>
           <div class="plan-reason">${pd.reason}</div>`}
