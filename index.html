@@ -61,6 +61,15 @@ body {
 .li-del:hover{color:#E07070}
 .empty-state{padding:28px 22px;font-size:13px;color:#B8C8D4}
 
+/* WEEKLY DASHBOARD */
+.week-dash{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:8px;padding:0 22px;margin-bottom:4px}
+.week-dash-item{background:white;border:0.5px solid #E2EAF0;border-radius:14px;padding:12px 8px;text-align:center}
+.week-dash-icon{font-size:18px;line-height:1;margin-bottom:4px}
+.week-dash-val{font-size:20px;font-weight:700;color:#1C2B3A;line-height:1}
+.week-dash-val.full{color:#56B870}
+.week-dash-val.warn{color:#F9A825}
+.week-dash-label{font-size:9px;color:#94A8B8;margin-top:3px;text-transform:uppercase;letter-spacing:.4px}
+
 /* RECOMMENDATION CARD */
 .rec-card{margin:0 22px 4px;background:white;border:0.5px solid #E2EAF0;border-radius:16px;padding:16px 18px}
 .rec-type-row{display:flex;align-items:center;gap:10px;margin-bottom:5px}
@@ -73,10 +82,6 @@ body {
 .rec-reasons{margin-bottom:12px;display:flex;flex-direction:column;gap:3px}
 .rec-reason{font-size:11px;color:#94A8B8;display:flex;gap:6px;line-height:1.5}
 .rec-reason::before{content:'·';color:#C8DFE9;flex-shrink:0}
-.rec-week{display:flex;flex-wrap:wrap;gap:5px}
-.rec-pill{font-size:10px;font-family:monospace;padding:3px 9px;border-radius:20px;background:#F5F8FC;border:0.5px solid #E2EAF0;color:#B8C8D4}
-.rec-pill.done{background:#E8F3F9;border-color:#4A90B8;color:#4A90B8}
-.rec-pill.full{background:#F0F9F4;border-color:#56B870;color:#56B870}
 
 /* SUGGESTED PLAN */
 .plan-card{margin:0 22px 4px;background:white;border:0.5px solid #E2EAF0;border-radius:16px;padding:16px 18px}
@@ -235,6 +240,9 @@ body {
     <div class="home-sub" id="homeSub"></div>
     <span class="home-logout" onclick="logout()">odhlásiť sa</span>
   </div>
+  <!-- Weekly dashboard -->
+  <div class="divider"></div>
+  <div id="weekDash"></div>
   <!-- Recommended today -->
   <div class="divider"></div>
   <div class="sec-label">Odporúčané na dnes</div>
@@ -663,76 +671,100 @@ function renderRecommendation(){
     </div>`;
 }
 
-// ---- SUGGESTED PLAN (next 2 days) ----
-function getSuggestedAreas(targetDate, weekData){
-  const w=weekData.weekly;
-  const tgt=CFG.weekly_targets;
-  const td=targetDate;
-  const yd=dateStr(addDays(new Date(td),-1));
-  const dyd=dateStr(addDays(new Date(td),-2));
+// ---- SUGGESTED PLAN (next 2 days, exactly 3 areas per day) ----
+function pickDayAreas(targetDate, weekData){
+  const w=weekData.weekly, tgt=CFG.weekly_targets;
+  const yd=dateStr(addDays(new Date(targetDate),-1));
   const ydComp=weekData.byDay[yd]?.completed||{};
-  const dydComp=weekData.byDay[dyd]?.completed||{};
-  const tdIdx=weekData.days.indexOf(td);
-  const eligible=[];
+  const tdIdx=weekData.days.indexOf(targetDate);
 
-  for(const area of CFG.area_priority){
-    if(w[area]>=tgt[area]) continue; // weekly limit reached
+  // Check if all targets met
+  const allMet=Object.keys(tgt).every(a=>(w[a]||0)>=tgt[a]);
+  if(allMet) return{areas:[],allMet:true,reason:'Všetky týždenné ciele sú splnené.'};
 
-    // Streak block rule for core and mobility (not 3 in a row)
-    if(area==='core'||area==='mobility'){
-      const streak=areaStreakBefore(area,td,weekData);
-      if(streak>=3) continue;
-    }
-
-    // Strength: not on consecutive days
-    if(area==='strength'&&ydComp.strength) continue;
-
-    // Legs: not if done last 2 days
-    if(area==='legs'&&ydComp.legs&&dydComp.legs) continue;
-
-    eligible.push(area);
+  // Score each area
+  const BASE={strength:100,legs:95,core:50,mobility:40};
+  const scores={strength:0,legs:0,core:0,mobility:0};
+  for(const a of Object.keys(scores)){
+    const done=w[a]||0, target=tgt[a]||1;
+    const deficit=Math.max(0,target-done);
+    scores[a]=deficit>0?BASE[a]*(deficit/target):0;
+    // Penalise if done yesterday
+    if(ydComp[a]) scores[a]-=(a==='strength'||a==='legs')?35:20;
+    // Streak penalty
+    const sk=areaStreakBefore(a,targetDate,weekData);
+    if(a==='core'&&sk>=2) scores[a]-=20;
+    if(a==='mobility'&&sk>=2) scores[a]-=15;
   }
 
-  // Apply priority and max 2 areas
-  if(eligible.length===0) return{areas:['rest'],reason:'Všetky ciele sú na ceste.'};
+  // Sort by score
+  const ranked=Object.entries(scores).sort((a,b)=>b[1]-a[1]);
+  const priorityOrder=['strength','legs','core','mobility'];
 
-  // Pick best combo of max 2
-  let chosen=[];
-  if(eligible.length===1){chosen=[eligible[0]]}
-  else {
-    // Try to find allowed combo
-    const top=eligible.slice(0,3);
-    let found=false;
-    for(const[a,b] of CFG.combos){
-      if(top.includes(a)&&top.includes(b)){chosen=[a,b];found=true;break}
-    }
-    if(!found) chosen=[top[0],top[1]||null].filter(Boolean).slice(0,2);
+  // Pick main (highest priority primary if possible)
+  let main=null;
+  for(const a of priorityOrder){
+    if(scores[a]>0){main=a;break}
+  }
+  if(!main) main='mobility'; // fallback
+
+  // Pick up to 2 supports, max 3 total, no strength+legs
+  const supports=[];
+  for(const[a]of ranked){
+    if(a===main) continue;
+    if(supports.length>=2) break;
+    if(main==='strength'&&a==='legs') continue;
+    if(main==='legs'&&a==='strength') continue;
+    if(scores[a]>0||(a==='core'||a==='mobility')) supports.push(a);
+    // pad with mobility/core even if score=0 to reach 3 total
+  }
+  // Pad to reach 3 total if needed
+  for(const a of ['core','mobility','strength','legs']){
+    if(supports.length+1>=3) break;
+    if(a===main||supports.includes(a)) continue;
+    if(main==='strength'&&a==='legs') continue;
+    if(main==='legs'&&a==='strength') continue;
+    supports.push(a);
   }
 
+  const areas=[main,...supports].slice(0,3);
+
+  // Build reason
   const reasons=[];
-  chosen.forEach(a=>{
-    if(a==='legs') reasons.push(`Nohy: ${w.legs}/${tgt.legs} tento týždeň`);
-    else if(a==='strength') reasons.push(`Silový: ${w.strength}/${tgt.strength} tento týždeň`);
-    else if(a==='core') reasons.push(`Core: ${w.core}/${tgt.core} tento týždeň`);
-    else if(a==='mobility') reasons.push(`Chrbát/Mobilita: ${w.mobility}/${tgt.mobility} tento týždeň`);
-  });
+  if(main==='strength') reasons.push(`Silový: ${w.strength}/${tgt.strength}`);
+  else if(main==='legs') reasons.push(`Nohy: ${w.legs}/${tgt.legs}`);
+  else if(main==='core') reasons.push(`Core: ${w.core}/${tgt.core}`);
+  else reasons.push(`Mobilita: ${w.mobility}/${tgt.mobility}`);
+  if(ydComp.strength&&main==='legs') reasons.push('Silový bol včera');
+  if(ydComp.legs&&main==='strength') reasons.push('Nohy boli včera');
 
-  return{areas:chosen,reason:reasons.join(' · ')};
+  return{areas,allMet:false,reason:reasons.join(' · ')};
 }
 
 function renderSuggestedPlan(){
   const now=new Date();
-  const td=today();
   const wd=getWeekData(now);
+
+  // Check overall all-met
+  const tgt=CFG.weekly_targets;
+  const w=wd.weekly;
+  const allMet=Object.keys(tgt).every(a=>(w[a]||0)>=tgt[a]);
+
+  if(allMet){
+    document.getElementById('suggestedPlan').innerHTML=`<div class="plan-card" style="padding:14px 18px">
+      <div style="font-size:13px;color:#56B870;font-weight:500;margin-bottom:4px">✅ Všetky ciele splnené</div>
+      <div style="font-size:12px;color:#94A8B8">Dnes môže byť regenerácia alebo voliteľný tréning.</div>
+    </div>`;
+    return;
+  }
 
   const planDays=[];
   for(let i=1;i<=2;i++){
     const d=addDays(now,i);
     const ds=dateStr(d);
-    // If next day crosses to new week, recalculate weekData
-    const effectiveWd=d.getDay()===1?getWeekData(d):wd; // Monday = new week
-    const {areas,reason}=getSuggestedAreas(ds,effectiveWd);
-    planDays.push({date:ds,dayName:CFG.day_labels_full[d.getDay()],areas,reason});
+    const effectiveWd=d.getDay()===1?getWeekData(d):wd;
+    const{areas,allMet:dayAllMet,reason}=pickDayAreas(ds,effectiveWd);
+    planDays.push({date:ds,dayName:CFG.day_labels_full[d.getDay()],areas,allMet:dayAllMet,reason});
   }
 
   document.getElementById('suggestedPlan').innerHTML=`<div class="plan-card">
@@ -740,10 +772,14 @@ function renderSuggestedPlan(){
       ${i>0?'<div class="plan-divider"></div>':''}
       <div class="plan-day">
         <div class="plan-day-label">${pd.dayName}</div>
-        <div class="plan-areas">
-          ${pd.areas.map(a=>`<span class="plan-area-chip ${CFG.chip_class[a]||'rest'}">${a==='rest'?'😴 Voľno':CFG.area_icons[a]+' '+CFG.area_labels[a]}</span>`).join('')}
-        </div>
-        <div class="plan-reason">${pd.reason}</div>
+        ${pd.allMet
+          ?`<div style="font-size:12px;color:#56B870">Všetky ciele splnené – voľno / regenerácia</div>`
+          :`<div class="plan-areas">
+            ${pd.areas.map((a,idx)=>`<span class="plan-area-chip ${CFG.chip_class[a]||'rest'}">
+              ${idx===0?'<b>':''}${CFG.area_icons[a]} ${CFG.area_labels[a]}${idx===0?'</b>':''}
+            </span>`).join('')}
+          </div>
+          <div class="plan-reason">${pd.reason}</div>`}
       </div>`).join('')}
   </div>`;
 }
@@ -801,7 +837,7 @@ function showScreen(name){
   document.getElementById('screen-'+name).classList.add('active');
   const nb=document.getElementById('nb-'+name);if(nb)nb.classList.add('active');
   document.getElementById('fabBtn').classList.toggle('hidden',name==='log');
-  if(name==='home'){renderHome();renderSuggestedPlan();renderTimeTable();renderRecommendation();renderTrainingRules()}
+  if(name==='home'){renderHome();renderWeekDash();renderRecommendation();renderSuggestedPlan();renderTimeTable();renderTrainingRules()}
   if(name==='history') renderHistory();
   if(name==='stats') renderStats();
 }
@@ -844,7 +880,7 @@ function renderHome(){
 }
 
 async function delLog(id){
-  try{await deleteLogDB(id);cachedLogs=cachedLogs.filter(l=>l.id!==id);renderHome();renderSuggestedPlan();renderTimeTable();renderRecommendation();renderTrainingRules();showToast('Zmazané')}
+  try{await deleteLogDB(id);cachedLogs=cachedLogs.filter(l=>l.id!==id);renderHome();renderWeekDash();renderRecommendation();renderSuggestedPlan();renderTimeTable();renderTrainingRules();showToast('Zmazané')}
   catch(e){showToast('⚠️ Chyba pri mazaní')}
 }
 
