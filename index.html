@@ -504,16 +504,19 @@ function showApp(){
   document.getElementById('loginScreen').style.display='none';
   document.getElementById('mainNav').style.display='flex';
   document.getElementById('fabBtn').classList.remove('hidden');
-  renderHome();
-  renderWeekDash();
-  renderRecommendation();
-  renderSuggestedPlan();
-  renderTimeTable();
-  renderTrainingRules();
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.querySelectorAll('.nb').forEach(b=>b.classList.remove('active'));
   document.getElementById('screen-home').classList.add('active');
   document.getElementById('nb-home').classList.add('active');
+  // defer renders to next tick so all functions are guaranteed defined
+  setTimeout(()=>{
+    renderHome();
+    renderWeekDash();
+    renderRecommendation();
+    renderSuggestedPlan();
+    renderTimeTable();
+    renderTrainingRules();
+  }, 0);
 }
 
 // ---- DB ----
