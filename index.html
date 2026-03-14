@@ -291,11 +291,59 @@ body {
   <div class="hist-head">
     <div style="display:flex;align-items:center;justify-content:space-between">
       <div class="hist-title">História</div>
-      <button onclick="exportToday()" style="background:#E8F3F9;border:0.5px solid #C8DFE9;border-radius:10px;padding:7px 14px;font-size:12px;font-weight:500;color:#4A90B8;cursor:pointer;font-family:inherit">Kopírovať dnes</button>
+      <div style="display:flex;gap:8px">
+        <button onclick="openImport()" style="background:#F5F8FC;border:0.5px solid #E2EAF0;border-radius:10px;padding:7px 14px;font-size:12px;font-weight:500;color:#94A8B8;cursor:pointer;font-family:inherit">Importovať</button>
+        <button onclick="exportToday()" style="background:#E8F3F9;border:0.5px solid #C8DFE9;border-radius:10px;padding:7px 14px;font-size:12px;font-weight:500;color:#4A90B8;cursor:pointer;font-family:inherit">Kopírovať dnes</button>
+      </div>
     </div>
   </div>
   <div class="divider"></div>
   <div id="histContent"></div>
+</div>
+
+<!-- IMPORT MODAL -->
+<div id="importOverlay" style="display:none;position:fixed;inset:0;background:rgba(28,43,58,.45);z-index:300;overflow-y:auto">
+  <div style="min-height:100%;display:flex;align-items:flex-start;justify-content:center;padding:24px 16px 40px">
+    <div style="background:white;border-radius:20px;width:100%;max-width:400px;padding:24px;margin-top:8px">
+
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
+        <div style="font-size:16px;font-weight:600;color:#1C2B3A">Importovať z ChatGPT</div>
+        <button onclick="closeImport()" style="background:none;border:none;font-size:20px;color:#94A8B8;cursor:pointer;padding:2px 6px">✕</button>
+      </div>
+
+      <div style="font-size:12px;color:#94A8B8;margin-bottom:16px;line-height:1.6">
+        V ChatGPT odfot papier a požiadaj ho o JSON vo formáte nižšie. Skopíruj odpoveď sem.
+      </div>
+
+      <!-- Prompt na kopírovanie -->
+      <div style="background:#F5F8FC;border:0.5px solid #E2EAF0;border-radius:10px;padding:12px;margin-bottom:4px;font-size:11px;color:#4A90B8;font-family:monospace;line-height:1.7;white-space:pre-wrap" id="importPromptBox">Odfot môj tréningový záznam a vráť JSON v tomto formáte, nič iné nepíš:
+[
+  {"code":"DBG","sets":[10,10,10],"weight":null},
+  {"code":"C2","sets":[10,15],"weight":5}
+]</div>
+      <button onclick="copyPrompt()" style="background:none;border:none;font-size:11px;color:#94A8B8;cursor:pointer;font-family:inherit;padding:4px 0;margin-bottom:16px">⎘ skopírovať prompt</button>
+
+      <!-- Date picker -->
+      <div style="display:flex;align-items:baseline;gap:10px;margin-bottom:14px">
+        <span style="font-size:12px;color:#94A8B8;flex:1">Dátum záznamu</span>
+        <input type="date" id="importDate" style="background:#F5F8FC;border:0.5px solid #E2EAF0;border-radius:8px;padding:6px 10px;font-size:13px;font-weight:500;color:#1C2B3A;outline:none;font-family:inherit">
+      </div>
+
+      <!-- JSON input -->
+      <textarea id="importJson" placeholder='Vlož JSON sem...' style="width:100%;min-height:130px;background:#F5F8FC;border:0.5px solid #E2EAF0;border-radius:10px;padding:12px;font-size:13px;font-family:monospace;color:#1C2B3A;outline:none;resize:vertical;line-height:1.5"></textarea>
+
+      <button onclick="parseImport()" style="width:100%;background:#4A90B8;border:none;border-radius:12px;padding:13px;color:white;font-size:14px;font-weight:500;cursor:pointer;font-family:inherit;margin-top:10px">Skontrolovať</button>
+
+      <!-- PREVIEW -->
+      <div id="importPreview" style="display:none;margin-top:16px">
+        <div style="font-size:10px;color:#94A8B8;text-transform:uppercase;letter-spacing:.8px;margin-bottom:10px">Náhľad — skontroluj pred uložením</div>
+        <div id="importPreviewList"></div>
+        <div id="importWarnings" style="font-size:11px;color:#E07070;margin-top:8px;line-height:1.7"></div>
+        <button onclick="confirmImport()" id="importConfirmBtn" style="width:100%;background:#2DCE89;border:none;border-radius:12px;padding:13px;color:white;font-size:14px;font-weight:500;cursor:pointer;font-family:inherit;margin-top:12px">Uložiť do tréningu</button>
+      </div>
+
+    </div>
+  </div>
 </div>
 
 <!-- STATS -->
@@ -844,6 +892,109 @@ function fallbackCopy(text){
   try{document.execCommand('copy');showToast('✅ Skopírované!')}
   catch(e){showToast('⚠️ Kopírovanie zlyhalo')}
   document.body.removeChild(ta);
+}
+
+// ---- IMPORT ----
+let importParsed = [];
+
+function openImport(){
+  document.getElementById('importDate').value = today();
+  document.getElementById('importJson').value = '';
+  document.getElementById('importPreview').style.display = 'none';
+  importParsed = [];
+  document.getElementById('importOverlay').style.display = 'block';
+  document.body.style.overflow = 'hidden';
+}
+
+function closeImport(){
+  document.getElementById('importOverlay').style.display = 'none';
+  document.body.style.overflow = '';
+}
+
+function copyPrompt(){
+  const text = document.getElementById('importPromptBox').textContent;
+  if(navigator.clipboard?.writeText){
+    navigator.clipboard.writeText(text).then(()=>showToast('✅ Prompt skopírovaný!')).catch(()=>fallbackCopy(text));
+  } else { fallbackCopy(text); }
+}
+
+function parseImport(){
+  const raw = document.getElementById('importJson').value.trim();
+  if(!raw){ showToast('⚠️ Vlož JSON'); return; }
+
+  let parsed;
+  try {
+    // Strip markdown code fences if ChatGPT added them
+    const clean = raw.replace(/^```[a-z]*\n?/,'').replace(/```$/,'').trim();
+    parsed = JSON.parse(clean);
+  } catch(e) {
+    showToast('⚠️ Neplatný JSON — skontroluj formát');
+    return;
+  }
+
+  if(!Array.isArray(parsed) || !parsed.length){ showToast('⚠️ JSON musí byť pole [ ]'); return; }
+
+  importParsed = [];
+  const warnings = [];
+  const previewLines = [];
+
+  parsed.forEach((item, i) => {
+    const code = (item.code||'').trim().toUpperCase();
+    const sets = Array.isArray(item.sets) ? item.sets.map(Number).filter(n=>n>0) : [];
+    const weight = item.weight ? parseFloat(item.weight) : null;
+
+    if(!code){ warnings.push(`Položka ${i+1}: chýba code`); return; }
+    if(!sets.length){ warnings.push(`${code}: žiadne série`); return; }
+
+    // Find in catalog — case-insensitive
+    const ex = (() => {
+      for(const b of CATALOG){
+        const e = b.exercises.find(x => x.code.toUpperCase() === code);
+        if(e) return {...e, block: b.block};
+      }
+      return null;
+    })();
+
+    if(!ex){ warnings.push(`⚠️ Kód „${code}" neexistuje v katalógu — preskočený`); return; }
+
+    importParsed.push({ code: ex.code, block: ex.block, sets, weight });
+
+    const wt = weight ? ` · ${weight} kg` : '';
+    previewLines.push(`
+      <div style="display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:0.5px solid #E2EAF0">
+        <div style="width:7px;height:7px;border-radius:50%;background:#2DCE89;flex-shrink:0"></div>
+        <div style="flex:1">
+          <div style="font-size:13px;font-weight:500;color:#1C2B3A">${ex.name}</div>
+          <div style="font-size:11px;color:#4A90B8;font-family:monospace;margin-top:2px">${ex.code}${wt} · ${sets.join(' ')}</div>
+        </div>
+      </div>`);
+  });
+
+  document.getElementById('importPreviewList').innerHTML = previewLines.join('') || '<div style="font-size:13px;color:#B8C8D4;padding:8px 0">Žiadne platné záznamy</div>';
+  document.getElementById('importWarnings').innerHTML = warnings.join('<br>');
+  document.getElementById('importConfirmBtn').style.display = importParsed.length ? 'block' : 'none';
+  document.getElementById('importPreview').style.display = 'block';
+}
+
+async function confirmImport(){
+  if(!importParsed.length){ showToast('Nič na uloženie'); return; }
+  const date = document.getElementById('importDate').value || today();
+  const btn = document.getElementById('importConfirmBtn');
+  btn.textContent = 'Ukladám...'; btn.style.background = '#B8C8D4';
+
+  try {
+    for(const item of importParsed){
+      await insertLog({ date, block: item.block, code: item.code, sets: item.sets, weight: item.weight });
+    }
+    await fetchLogs();
+    closeImport();
+    showToast(`✅ Importovaných ${importParsed.length} cvikov!`);
+    renderHistory();
+  } catch(e) {
+    showToast('⚠️ Chyba pri ukladaní');
+  } finally {
+    btn.textContent = 'Uložiť do tréningu'; btn.style.background = '#2DCE89';
+  }
 }
 </script>
 </body>
