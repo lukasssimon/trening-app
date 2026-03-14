@@ -381,13 +381,13 @@ body {
 // TRAINING CONFIG
 // =============================================
 const CFG = {
-  weekly_targets: { core:5, mobility:5, strength:3, legs:2 },
-  thresholds:     { core:4, mobility:5, strength:8, legs:4 },
+  weekly_targets: { core:5, mobility:5, strength:3, legs:3 },
+  thresholds:     { core:4, mobility:5, strength:8, legs:5 },
   block_mapping: {
     core:     ['LL0','LL1','LL2','DBG','DBX','DBI','DBW','DB2','HBK','HBT','HBI','HBS','HBL','HBR','QBR','SIT'],
     mobility: ['CAT','WV','CAR','WSL','OAS','XHB','TUR','Kt1','Kt2','Kt3','Kt4','PFS','DD','CP','DHS','DHF','SRB'],
     strength: ['C1','C1S','C1N','C2','C2R','C3','C4','C4A','C5','C5K','C6','C6S'],
-    legs:     ['HF2','GS','SS','SQ','SQH','LUN','HBF']
+    legs:     ['HF2','GS','SS','SQ','SQW','SQH','LUN','HBF']
   },
   // Area priority: legs > strength > core > mobility
   area_priority: ['legs','strength','core','mobility'],
@@ -1241,7 +1241,7 @@ function renderTrainingRules(){
     {area:'Core',        icon:'🧘', weekly:'5× týždenne', threshold:'≥ 4 série', desc:'Cviky stability trupu, zvyčajne na začiatku tréningu.'},
     {area:'Chrbát / Mob.',icon:'🌊',weekly:'5× týždenne', threshold:'≥ 5 sérií', desc:'Mobilita chrbtice, stabilita lopatiek, aktivácia chrbta.'},
     {area:'Silový',      icon:'💪', weekly:'3× týždenne', threshold:'≥ 8 sérií', desc:'Cviky s činkami: shoulder press, biceps, RSD a ďalšie.'},
-    {area:'Nohy',        icon:'🦵', weekly:'2× týždenne', threshold:'≥ 4 série', desc:'Drepy, výpady, split squaty a hip flow.'}
+    {area:'Nohy',        icon:'🦵', weekly:'3× týždenne', threshold:'≥ 5 sérií', desc:'Drepy, výpady, split squaty a hip flow.'}
   ];
   container.innerHTML=`
     <table class="rules-table">
