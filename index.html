@@ -1044,17 +1044,39 @@ function renderExLines(){
   ).join('');
 }
 
+
+function syncExistingLogForCurrentSelection(){
+  if(!selCode) return false;
+  const selectedDate=document.getElementById('logDate').value || today();
+  const existing=(cachedLogs||[]).find(l=>l.date===selectedDate && l.code===selCode);
+  if(existing){
+    editingId=existing.id;
+    sets=Array.isArray(existing.sets)?[...existing.sets]:[];
+    document.getElementById('logWeight').value=existing.weight ?? '';
+    document.getElementById('logTitle').textContent='Doplniť cvik';
+    return true;
+  }
+  editingId=null;
+  sets=[];
+  document.getElementById('logWeight').value='';
+  document.getElementById('logTitle').textContent='Nový cvik';
+  return false;
+}
+
 function pickEx(code){
-  selCode=code;editingId=null;sets=[];renderExLines();
+  selCode=code;
+  renderExLines();
   const ex=getEx(code);
   document.getElementById('selDisplayInner').innerHTML=`<div class="sel-top"><span class="sel-code">${ex.code}</span><span class="sel-name">${ex.name}</span></div><div class="sel-desc">${ex.desc}</div>`;
   document.getElementById('weightRowWrap').style.display=ex.w?'block':'none';
-  document.getElementById('logWeight').value='';
   document.getElementById('selAndSeries').style.display='block';
   document.getElementById('dateRowWrap').style.display='block';
+  const hadExisting=syncExistingLogForCurrentSelection();
   renderSets();
   setTimeout(()=>document.getElementById('selAndSeries').scrollIntoView({behavior:'smooth',block:'nearest'}),80);
-  setTimeout(()=>startInlineAddSet(),150);
+  if(!hadExisting || !sets.length){
+    setTimeout(()=>startInlineAddSet(),150);
+  }
 }
 
 function renderSets(){
@@ -1299,6 +1321,16 @@ async function confirmImport(){
   }catch(e){showToast('⚠️ Chyba pri ukladaní')}
   finally{btn.textContent='Uložiť do tréningu';btn.style.background='#2DCE89'}
 }
+
+
+document.getElementById('logDate').addEventListener('change', ()=>{
+  if(!selCode) return;
+  const hadExisting=syncExistingLogForCurrentSelection();
+  renderSets();
+  if(!hadExisting && !sets.length){
+    startInlineAddSet();
+  }
+});
 
 // Start app — must be last line so all functions are defined
 initApp();
