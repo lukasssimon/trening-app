@@ -70,19 +70,6 @@ body {
 .week-dash-val.warn{color:#F9A825}
 .week-dash-label{font-size:9px;color:#94A8B8;margin-top:3px;text-transform:uppercase;letter-spacing:.4px}
 
-/* RECOMMENDATION CARD */
-.rec-card{margin:0 22px 4px;background:white;border:0.5px solid #E2EAF0;border-radius:16px;padding:16px 18px}
-.rec-type-row{display:flex;align-items:center;gap:10px;margin-bottom:5px}
-.rec-icon{font-size:20px;line-height:1}
-.rec-type{font-size:15px;font-weight:600;color:#1C2B3A;flex:1}
-.rec-intensity{font-size:10px;font-family:monospace;padding:3px 9px;border-radius:20px;background:#E8F3F9;color:#4A90B8;border:0.5px solid #C8DFE9}
-.rec-intensity.high{background:rgba(229,115,115,.1);color:#E57373;border-color:rgba(229,115,115,.3)}
-.rec-intensity.low{background:#F0F9F4;color:#56B870;border-color:rgba(86,184,112,.3)}
-.rec-subtitle{font-size:12px;color:#4A90B8;margin-bottom:10px}
-.rec-reasons{margin-bottom:12px;display:flex;flex-direction:column;gap:3px}
-.rec-reason{font-size:11px;color:#94A8B8;display:flex;gap:6px;line-height:1.5}
-.rec-reason::before{content:'·';color:#C8DFE9;flex-shrink:0}
-
 /* SUGGESTED PLAN */
 .plan-card{margin:0 22px 4px;background:white;border:0.5px solid #E2EAF0;border-radius:16px;padding:16px 18px}
 .plan-day{margin-bottom:12px}
@@ -119,11 +106,6 @@ body {
 .tt-cell.today-col{outline:2px solid #4A90B8;outline-offset:-2px}
 .tt-col-today th,.tt-col-today td{background:rgba(74,144,184,.04);border-radius:4px}
 
-
-.rec-week{display:flex;gap:6px;flex-wrap:wrap}
-.rec-pill{font-size:10px;padding:4px 8px;border-radius:20px;background:#F5F8FC;color:#94A8B8;border:0.5px solid #E2EAF0}
-.rec-pill.done{background:#E8F3F9;color:#4A90B8;border-color:#C8DFE9}
-.rec-pill.full{background:#F0F9F4;color:#56B870;border-color:rgba(86,184,112,.3)}
 .debug-card{background:white;border:0.5px solid #E2EAF0;border-radius:14px;padding:12px 14px}
 .debug-row{display:flex;justify-content:space-between;gap:10px;font-size:11px;color:#94A8B8;padding:4px 0}
 .debug-row span:last-child{color:#1C2B3A;max-width:62%;text-align:right;word-break:break-word}
@@ -255,10 +237,6 @@ body {
   <!-- Weekly dashboard -->
   <div class="divider"></div>
   <div id="weekDash"></div>
-  <!-- Recommended today -->
-  <div class="divider"></div>
-  <div class="sec-label">Odporúčané na dnes</div>
-  <div id="recCard"></div>
   <!-- Suggested plan -->
   <div class="divider"></div>
   <div class="sec-label">Navrhovaný plán</div>
@@ -629,7 +607,6 @@ function renderHomeScreen(){
   safeRender('todayBlocks', renderHome, 'Dnešný tréning sa nepodarilo načítať.');
   safeRender('weekDash', renderWeekDash, 'Týždenný prehľad zatiaľ nie je dostupný.');
   safeRender('timeTable', renderTimeTable, 'Time table sa nepodarilo načítať.');
-  safeRender('recCard', renderRecommendation, 'Odporúčanie sa nepodarilo vypočítať.');
   safeRender('suggestedPlan', renderSuggestedPlan, 'Navrhovaný plán sa nepodarilo vypočítať.');
   safeRender('trainingRules', renderTrainingRules, 'Pravidlá sa nepodarilo zobraziť.');
 }
@@ -731,81 +708,7 @@ function renderWeekDash(){
   document.getElementById('weekDash').innerHTML=html;
 }
 
-// ---- TODAY RECOMMENDATION ----
-function getRecommendation(){
-  const td=today();
-  const wd=getWeekData(new Date());
-  const w=wd.weekly;
-  const tgt=CFG.weekly_targets;
-  const reasons=[];
-  let type='light';
-
-  const yd=dateStr(addDays(new Date(),-1));
-  const ydComp=wd.byDay[yd]?.completed||{};
-
-  // Consecutive training days
-  let consec=0;
-  for(let i=1;i<=7;i++){
-    const d=dateStr(addDays(new Date(),-i));
-    if(isTrainingDay(d)) consec++;
-    else break;
-  }
-
-  if(consec>=5){
-    type='rest';reasons.push(`${consec} tréningové dni za sebou.`);reasons.push('Regenerácia je súčasť tréningu.');
-  } else if(ydComp.strength&&!ydComp.legs&&w.legs<tgt.legs){
-    type='legs';reasons.push('Včera bol silový deň.');reasons.push(`Nohy tento týždeň: ${w.legs}/${tgt.legs}.`);
-  } else if(ydComp.strength){
-    type='mobility';reasons.push('Včera bol silový deň.');reasons.push('Dnes odporúčam rozhýbanie a mobilitu.');
-  } else if(w.legs<tgt.legs&&w.legs===0){
-    type='legs';reasons.push(`Nohy tento týždeň: ${w.legs}/${tgt.legs}.`);reasons.push('Nohy tento týždeň ešte neboli.');
-  } else if(w.strength<tgt.strength){
-    type='strength';reasons.push(`Silový tréning: ${w.strength}/${tgt.strength} tento týždeň.`);
-  } else if(w.legs<tgt.legs){
-    type='legs';reasons.push(`Nohy: ${w.legs}/${tgt.legs} tento týždeň.`);
-  } else if(w.core<tgt.core){
-    type='core';reasons.push(`Core: ${w.core}/${tgt.core} tento týždeň.`);
-  } else if(w.mobility<tgt.mobility){
-    type='mobility';reasons.push(`Chrbát/Mobilita: ${w.mobility}/${tgt.mobility} tento týždeň.`);
-  } else {
-    type='light';reasons.push('Všetky týždenné ciele sú splnené.');reasons.push('Dnes môžeš ísť ľahko.');
-  }
-
-  const rec=CFG.rec_types[type];
-  const sub=rec.subtitles[new Date().getDay()%rec.subtitles.length];
-  const result={type,icon:rec.icon,label:rec.label,intensity:rec.intensity,subtitle:sub,reasons,weekly:w};
-  updatePlannerDebug({mode:'todayRecommendation', result, weeklyTargets:tgt, yesterday:ydComp});
-  return result;
-}
-
-function renderRecommendation(){
-  const container=document.getElementById('recCard');
-  if(!container) return;
-  const{type,icon,label,intensity,subtitle,reasons,weekly}=getRecommendation();
-  const tgt=CFG.weekly_targets;
-  function pill(a,val,t){
-    const cls=val>=t?'full':val>0?'done':'';
-    return`<span class="rec-pill ${cls}">${CFG.area_icons[a]} ${val}/${t}</span>`;
-  }
-  container.innerHTML=`
-    <div class="rec-card">
-      <div class="rec-type-row">
-        <span class="rec-icon">${icon}</span>
-        <span class="rec-type">${label}</span>
-        <span class="rec-intensity ${intensity}">${intensity==='high'?'vysoká':intensity==='medium'?'stredná':'nízka'}</span>
-      </div>
-      <div class="rec-subtitle">${subtitle}</div>
-      <div class="rec-reasons">${reasons.map(r=>`<div class="rec-reason">${r}</div>`).join('')}</div>
-      <div class="rec-week">
-        ${pill('core',weekly.core,tgt.core)}
-        ${pill('mobility',weekly.mobility,tgt.mobility)}
-        ${pill('strength',weekly.strength,tgt.strength)}
-        ${pill('legs',weekly.legs,tgt.legs)}
-      </div>
-    </div>`;
-}
-
-// ---- SUGGESTED PLAN (next 2 days, exactly 3 areas per day) ----
+// ---- SUGGESTED PLAN (today + next 2 days) ----
 function pickDayAreas(targetDate, weekData){
   const w=weekData.weekly, tgt=CFG.weekly_targets;
   const yd=dateStr(addDays(new Date(targetDate),-1));
@@ -888,16 +791,19 @@ function renderSuggestedPlan(){
       <div style="font-size:13px;color:#56B870;font-weight:500;margin-bottom:4px">✅ Všetky ciele splnené</div>
       <div style="font-size:12px;color:#94A8B8">Dnes môže byť regenerácia alebo voliteľný tréning.</div>
     </div>`;
+    updatePlannerDebug({mode:'suggestedPlan', allMet:true, weekly:w, targets:tgt});
     return;
   }
   const planDays=[];
-  for(let i=1;i<=2;i++){
+  for(let i=0;i<=2;i++){
     const d=addDays(now,i);
     const ds=dateStr(d);
-    const effectiveWd=d.getDay()===1?getWeekData(d):wd;
-    const{areas,allMet:dayAllMet,reason}=pickDayAreas(ds,effectiveWd);
-    planDays.push({date:ds,dayName:CFG.day_labels_full[d.getDay()],areas,allMet:dayAllMet,reason});
+    const label=i===0 ? `${CFG.day_labels_full[d.getDay()]} – Dnes` : CFG.day_labels_full[d.getDay()];
+    const effectiveWd=d.getDay()===1 && i>0 ? getWeekData(d) : wd;
+    const {areas,allMet:dayAllMet,reason}=pickDayAreas(ds,effectiveWd);
+    planDays.push({date:ds,dayName:label,areas,allMet:dayAllMet,reason});
   }
+  updatePlannerDebug({mode:'suggestedPlan', allMet:false, weekly:w, targets:tgt, planDays});
   container.innerHTML=`<div class="plan-card">
     ${planDays.map((pd,i)=>`
       ${i>0?'<div class="plan-divider"></div>':''}
@@ -1007,7 +913,7 @@ function renderHome(){
 }
 
 async function delLog(id){
-  try{await deleteLogDB(id);cachedLogs=cachedLogs.filter(l=>l.id!==id);renderHome();renderWeekDash();renderRecommendation();renderSuggestedPlan();renderTimeTable();renderTrainingRules();showToast('Zmazané')}
+  try{await deleteLogDB(id);cachedLogs=cachedLogs.filter(l=>l.id!==id);renderHomeScreen();showToast('Zmazané')}
   catch(e){showToast('⚠️ Chyba pri mazaní')}
 }
 
