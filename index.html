@@ -259,28 +259,74 @@ body {
 
 /* STATS */
 .stats-head{padding:24px 22px 0}
-.stats-title{font-size:20px;font-weight:600;color:#1C2B3A}
-.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:16px 22px 0}
-.stat-card{background:white;border:0.5px solid #E2EAF0;border-radius:14px;padding:16px}
-.stat-l{font-size:11px;color:#94A8B8;margin-bottom:6px}
-.stat-v{font-size:26px;font-weight:600;color:#4A90B8}
-.top-list{padding:0 22px}
-.top-item{display:flex;align-items:center;gap:10px;padding:11px 0;border-bottom:0.5px solid #E2EAF0}
-.top-item:last-child{border-bottom:none}
-.top-n{font-size:10px;color:#B8C8D4;min-width:18px;font-family:monospace}
-.top-bar{flex:1;height:3px;background:#E2EAF0;border-radius:2px;overflow:hidden}
-.top-bar-f{height:100%;background:#4A90B8;border-radius:2px}
-.top-cnt{font-size:11px;color:#4A90B8;min-width:24px;text-align:right;font-weight:500}
+.stats-title{font-size:28px;font-weight:800;color:#1C2B3A}
+.stats-hero{margin:16px 22px 0;background:linear-gradient(135deg,#EAF5FC 0%,#F8FBFE 100%);border:1px solid #DCE8F0;border-radius:24px;padding:18px 18px 16px;box-shadow:0 8px 20px rgba(28,43,58,.05)}
+.stats-hero-top{display:flex;justify-content:space-between;align-items:flex-start;gap:16px}
+.stats-hero-label{font-size:11px;color:#4A90B8;text-transform:uppercase;letter-spacing:1px;font-weight:700;margin-bottom:6px}
+.stats-hero-title{font-size:28px;line-height:1.05;font-weight:800;color:#1C2B3A}
+.stats-hero-sub{font-size:14px;color:#7C98AF;margin-top:8px;line-height:1.5}
+.stats-hero-pill{background:white;border:1px solid #D3E4EE;border-radius:18px;padding:10px 12px;min-width:88px;text-align:center}
+.stats-hero-pill-label{font-size:10px;color:#94A8B8;text-transform:uppercase;letter-spacing:.7px;margin-bottom:4px}
+.stats-hero-pill-value{font-size:24px;font-weight:800;color:#4A90B8;line-height:1}
 .period-row{display:flex;gap:8px;padding:16px 22px 0;flex-wrap:wrap}
-.period-btn{padding:6px 14px;font-size:11px;background:#F5F8FC;border:0.5px solid #E2EAF0;border-radius:20px;color:#94A8B8;cursor:pointer;font-family:inherit;transition:all .15s}
+.period-btn{padding:10px 16px;font-size:13px;background:#F5F8FC;border:1px solid #E2EAF0;border-radius:999px;color:#94A8B8;cursor:pointer;font-family:inherit;transition:all .15s;font-weight:700}
 .period-btn.active{background:#E8F3F9;border-color:#4A90B8;color:#4A90B8}
-.day-summary{margin:0 22px;background:#E8F3F9;border-radius:14px;padding:16px}
-.day-summary-title{font-size:10px;color:#4A90B8;text-transform:uppercase;letter-spacing:.8px;margin-bottom:12px;font-weight:600}
-.day-sum-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
-.day-sum-item{background:white;border-radius:10px;padding:10px 12px}
-.day-sum-l{font-size:10px;color:#94A8B8;margin-bottom:4px}
-.day-sum-v{font-size:20px;font-weight:600;color:#4A90B8}
-.day-weights{font-size:11px;color:#7AAABF;line-height:1.8}
+.day-summary{margin:0 22px;background:#E8F3F9;border-radius:18px;padding:18px}
+.day-summary-title{font-size:11px;color:#4A90B8;text-transform:uppercase;letter-spacing:1px;margin-bottom:14px;font-weight:700}
+.day-sum-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+.day-sum-item{background:white;border-radius:14px;padding:12px 14px}
+.day-sum-l{font-size:11px;color:#94A8B8;margin-bottom:5px}
+.day-sum-v{font-size:24px;font-weight:800;color:#4A90B8}
+.day-weights{font-size:12px;color:#7AAABF;line-height:1.8}
+.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:16px 22px 0}
+.stat-card{background:white;border:1px solid #E2EAF0;border-radius:18px;padding:16px;box-shadow:0 4px 12px rgba(28,43,58,.03)}
+.stat-l{font-size:11px;color:#94A8B8;margin-bottom:6px;text-transform:uppercase;letter-spacing:.7px;font-weight:700}
+.stat-v{font-size:30px;font-weight:800;color:#4A90B8;line-height:1}
+.stats-section{padding:18px 22px 0}
+.stats-section-title{font-size:12px;color:#94A8B8;text-transform:uppercase;letter-spacing:1px;font-weight:700;margin-bottom:12px}
+.stats-card{background:white;border:1px solid #E2EAF0;border-radius:22px;padding:16px 16px 14px;box-shadow:0 4px 12px rgba(28,43,58,.03)}
+.block-list{display:flex;flex-direction:column;gap:12px}
+.block-item{padding:12px 0;border-bottom:1px solid #EEF3F7}
+.block-item:last-child{border-bottom:none;padding-bottom:0}
+.block-top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:8px}
+.block-name{font-size:16px;font-weight:800;color:#1C2B3A;display:flex;align-items:center;gap:8px}
+.block-meta{font-size:12px;color:#7C98AF;text-align:right;line-height:1.4}
+.block-bar{height:10px;background:#EEF3F7;border-radius:999px;overflow:hidden}
+.block-fill{height:100%;border-radius:999px}
+.block-fill.core{background:#4A90B8}
+.block-fill.mobility{background:#56B870}
+.block-fill.strength{background:#E57373}
+.block-fill.legs{background:#F9A825}
+.gap-list{display:flex;flex-direction:column;gap:10px}
+.gap-row{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid #EEF3F7}
+.gap-row:last-child{border-bottom:none;padding-bottom:0}
+.gap-name{font-size:15px;font-weight:700;color:#1C2B3A}
+.gap-val{font-size:13px;font-weight:700;color:#4A90B8}
+.gap-done{color:#56B870}
+.trend-list{display:flex;flex-direction:column;gap:10px}
+.trend-row{display:grid;grid-template-columns:32px 1fr 40px;align-items:center;gap:10px}
+.trend-day{font-size:12px;font-weight:700;color:#94A8B8;text-transform:uppercase}
+.trend-bar{height:14px;background:#EEF3F7;border-radius:999px;overflow:hidden}
+.trend-fill{height:100%;background:#4A90B8;border-radius:999px}
+.trend-val{font-size:12px;color:#4A90B8;font-weight:700;text-align:right}
+.top-list{padding:0}
+.top-item{display:flex;align-items:center;gap:10px;padding:12px 0;border-bottom:1px solid #EAF0F4}
+.top-item:last-child{border-bottom:none}
+.top-n{font-size:11px;color:#B8C8D4;min-width:22px;font-family:monospace;font-weight:700}
+.top-main{flex:1;min-width:0}
+.top-name{font-size:14px;color:#1C2B3A;font-weight:700;line-height:1.3}
+.top-sub{font-size:11px;color:#94A8B8;margin-top:2px}
+.top-bar{flex:1;height:6px;background:#E2EAF0;border-radius:999px;overflow:hidden}
+.top-bar-f{height:100%;background:#4A90B8;border-radius:999px}
+.top-cnt{font-size:12px;color:#4A90B8;min-width:28px;text-align:right;font-weight:800}
+.record-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.record-item{background:#F8FBFE;border:1px solid #E2EAF0;border-radius:16px;padding:12px}
+.record-label{font-size:11px;color:#94A8B8;line-height:1.35;margin-bottom:6px}
+.record-value{font-size:18px;font-weight:800;color:#1C2B3A;line-height:1.2}
+@media (max-width:640px){
+  .stats-hero-top{flex-direction:column}
+  .stat-grid,.record-grid{grid-template-columns:1fr 1fr}
+}
 .toast{position:fixed;top:20px;left:50%;transform:translateX(-50%) translateY(-60px);background:#1C2B3A;color:white;font-size:12px;font-weight:500;padding:10px 20px;border-radius:30px;transition:transform .25s ease;z-index:999;white-space:nowrap}
 .toast.show{transform:translateX(-50%) translateY(0)}
 
@@ -449,11 +495,34 @@ body {
 <div class="screen" id="screen-stats">
   <div class="stats-head"><div class="stats-title">Štatistiky</div></div>
   <div class="period-row" id="statPeriod"></div>
+  <div id="statsHero"></div>
   <div id="daySummaryWrap"></div>
   <div class="stat-grid" id="statGrid"></div>
-  <div class="divider" style="margin-top:20px"></div>
-  <div class="sec-label" style="margin-top:0">Najčastejšie cviky</div>
-  <div class="top-list" id="topList"></div>
+
+  <div class="stats-section">
+    <div class="stats-section-title">Rozdelenie tréningu podľa blokov</div>
+    <div class="stats-card" id="blockStats"></div>
+  </div>
+
+  <div class="stats-section">
+    <div class="stats-section-title">Tento týždeň chýba</div>
+    <div class="stats-card" id="weeklyGaps"></div>
+  </div>
+
+  <div class="stats-section">
+    <div class="stats-section-title">Posledných 7 dní</div>
+    <div class="stats-card" id="trend7"></div>
+  </div>
+
+  <div class="stats-section">
+    <div class="stats-section-title">Najčastejšie cviky</div>
+    <div class="stats-card"><div class="top-list" id="topList"></div></div>
+  </div>
+
+  <div class="stats-section" style="padding-bottom:22px">
+    <div class="stats-section-title">Osobné rekordy</div>
+    <div class="stats-card" id="recordStats"></div>
+  </div>
 </div>
 
 <button class="fab hidden" id="fabBtn" onclick="goLog()">＋</button>
@@ -1315,46 +1384,194 @@ async function delLogH(id){
 
 // ---- STATS ----
 let statPeriod='day';
+
 function renderStats(){
   document.getElementById('statPeriod').innerHTML=['day','week','month','all'].map(p=>
     `<button class="period-btn ${statPeriod===p?'active':''}" onclick="setStatPeriod('${p}')">${p==='day'?'Dnes':p==='week'?'Týždeň':p==='month'?'Mesiac':'Všetko'}</button>`
   ).join('');
-  const now=new Date(),td=today();
+
+  const now=new Date(), td=today();
   let filtered=cachedLogs;
-  if(statPeriod==='day') filtered=cachedLogs.filter(l=>l.date===td);
-  else if(statPeriod==='week'){const day=now.getDay()||7;const mon=new Date(now);mon.setDate(now.getDate()-day+1);filtered=cachedLogs.filter(l=>l.date>=mon.toISOString().slice(0,10))}
-  else if(statPeriod==='month') filtered=cachedLogs.filter(l=>l.date>=new Date(now.getFullYear(),now.getMonth(),1).toISOString().slice(0,10));
+  if(statPeriod==='day'){
+    filtered=cachedLogs.filter(l=>l.date===td);
+  } else if(statPeriod==='week'){
+    const day=now.getDay()||7;
+    const mon=new Date(now);
+    mon.setDate(now.getDate()-day+1);
+    filtered=cachedLogs.filter(l=>l.date>=mon.toISOString().slice(0,10));
+  } else if(statPeriod==='month'){
+    filtered=cachedLogs.filter(l=>l.date>=new Date(now.getFullYear(),now.getMonth(),1).toISOString().slice(0,10));
+  }
+
+  const days=new Set(filtered.map(l=>l.date)).size;
+  const totalSets=filtered.reduce((a,l)=>a+setsOf(l).length,0);
+  const totalReps=filtered.reduce((a,l)=>a+setsOf(l).reduce((b,s)=>b+s,0),0);
+  const weightedLogs=filtered.filter(l=>l.weight);
+  const streakVal=streak();
+
+  const blockIcons={core:'🧘', mobility:'🌊', strength:'💪', legs:'🦵'};
+  const blockNames={core:'Core', mobility:'Chrbát / Mobilita', strength:'Silový', legs:'Nohy'};
+  const blockColors={core:'core', mobility:'mobility', strength:'strength', legs:'legs'};
+  const blockTotals={
+    core:{days:new Set(), sets:0, reps:0},
+    mobility:{days:new Set(), sets:0, reps:0},
+    strength:{days:new Set(), sets:0, reps:0},
+    legs:{days:new Set(), sets:0, reps:0}
+  };
+
+  filtered.forEach(l=>{
+    const setCount=setsOf(l).length;
+    const repCount=setsOf(l).reduce((sum,v)=>sum+v,0);
+    for(const area of ['core','mobility','strength','legs']){
+      if(CFG.block_mapping[area].includes(l.code)){
+        blockTotals[area].days.add(l.date);
+        blockTotals[area].sets += setCount;
+        blockTotals[area].reps += repCount;
+      }
+    }
+  });
+
+  const strongestBlock = Object.entries(blockTotals).sort((a,b)=>b[1].sets-a[1].sets)[0]?.[0] || 'core';
+  const weakestBlock = Object.entries(blockTotals).sort((a,b)=>a[1].sets-b[1].sets)[0]?.[0] || 'legs';
+
+  document.getElementById('statsHero').innerHTML = `
+    <div class="stats-hero">
+      <div class="stats-hero-top">
+        <div>
+          <div class="stats-hero-label">${statPeriod==='day'?'Dnes':statPeriod==='week'?'Tento týždeň':statPeriod==='month'?'Tento mesiac':'Celá história'}</div>
+          <div class="stats-hero-title">${days} tréningových dní</div>
+          <div class="stats-hero-sub">Najsilnejší blok: ${blockIcons[strongestBlock]} ${blockNames[strongestBlock]} · Najslabší blok: ${blockIcons[weakestBlock]} ${blockNames[weakestBlock]}</div>
+        </div>
+        <div class="stats-hero-pill">
+          <div class="stats-hero-pill-label">Séria dní</div>
+          <div class="stats-hero-pill-value">${streakVal}</div>
+        </div>
+      </div>
+    </div>`;
+
   const dswrap=document.getElementById('daySummaryWrap');
   if(statPeriod==='day'){
-    const daySets=filtered.reduce((a,l)=>a+setsOf(l).length,0);
-    const dayReps=filtered.reduce((a,l)=>a+setsOf(l).reduce((b,s)=>b+s,0),0);
-    const wused=filtered.filter(l=>l.weight).map(l=>{const ex=getEx(l.code);return`${ex?ex.name:l.code} — ${l.weight} kg`});
+    const wused=weightedLogs.map(l=>{const ex=getEx(l.code);return `${ex?ex.name:l.code} — ${l.weight} kg`;});
     dswrap.innerHTML=`<div style="padding:16px 22px 0"><div class="day-summary">
       <div class="day-summary-title">Dnešný sumár · ${fmtDate(td)}</div>
       <div class="day-sum-grid">
         <div class="day-sum-item"><div class="day-sum-l">Cviky</div><div class="day-sum-v">${filtered.length}</div></div>
-        <div class="day-sum-item"><div class="day-sum-l">Série</div><div class="day-sum-v">${daySets}</div></div>
-        <div class="day-sum-item"><div class="day-sum-l">Opakovania</div><div class="day-sum-v">${dayReps}</div></div>
-        <div class="day-sum-item"><div class="day-sum-l">Séria dní 🔥</div><div class="day-sum-v">${streak()}</div></div>
+        <div class="day-sum-item"><div class="day-sum-l">Série</div><div class="day-sum-v">${totalSets}</div></div>
+        <div class="day-sum-item"><div class="day-sum-l">Opakovania</div><div class="day-sum-v">${totalReps}</div></div>
+        <div class="day-sum-item"><div class="day-sum-l">Séria dní 🔥</div><div class="day-sum-v">${streakVal}</div></div>
       </div>
       ${wused.length?`<div class="day-weights">${wused.join('<br>')}</div>`:''}
     </div></div>`;
-  } else {dswrap.innerHTML=''}
-  const days=new Set(filtered.map(l=>l.date)).size;
-  const totalSets=filtered.reduce((a,l)=>a+setsOf(l).length,0);
-  const totalReps=filtered.reduce((a,l)=>a+setsOf(l).reduce((b,s)=>b+s,0),0);
+  } else {
+    dswrap.innerHTML='';
+  }
+
   document.getElementById('statGrid').innerHTML=`
     <div class="stat-card"><div class="stat-l">Tréningové dni</div><div class="stat-v">${days}</div></div>
     <div class="stat-card"><div class="stat-l">Celkové série</div><div class="stat-v">${totalSets}</div></div>
     <div class="stat-card"><div class="stat-l">Celkové opakovania</div><div class="stat-v">${totalReps}</div></div>
-    <div class="stat-card"><div class="stat-l">Séria dní 🔥</div><div class="stat-v">${streak()}</div></div>`;
+    <div class="stat-card"><div class="stat-l">Cviky s váhou</div><div class="stat-v">${weightedLogs.length}</div></div>`;
+
+  const maxBlockSets = Math.max(1, ...Object.values(blockTotals).map(v=>v.sets));
+  document.getElementById('blockStats').innerHTML = `<div class="block-list">
+    ${['core','mobility','strength','legs'].map(area=>{
+      const data=blockTotals[area];
+      const width=Math.round((data.sets/maxBlockSets)*100);
+      return `<div class="block-item">
+        <div class="block-top">
+          <div class="block-name">${blockIcons[area]} ${blockNames[area]}</div>
+          <div class="block-meta">${data.days.size} dní · ${data.sets} sérií · ${data.reps} op.</div>
+        </div>
+        <div class="block-bar"><div class="block-fill ${blockColors[area]}" style="width:${width}%"></div></div>
+      </div>`;
+    }).join('')}
+  </div>`;
+
+  const currentWeek = getWeekData(new Date());
+  document.getElementById('weeklyGaps').innerHTML = `<div class="gap-list">
+    ${['core','mobility','strength','legs'].map(area=>{
+      const done=currentWeek.weekly[area]||0;
+      const target=CFG.weekly_targets[area]||0;
+      const remaining=Math.max(0,target-done);
+      return `<div class="gap-row">
+        <div class="gap-name">${blockIcons[area]} ${blockNames[area]}</div>
+        <div class="gap-val ${remaining===0?'gap-done':''}">${remaining===0?'splnené':`chýba ${remaining}×`} · ${done}/${target}</div>
+      </div>`;
+    }).join('')}
+  </div>`;
+
+  const last7=[];
+  for(let i=6;i>=0;i--){
+    const d=addDays(new Date(), -i);
+    const ds=dateStr(d);
+    const logs=cachedLogs.filter(l=>l.date===ds);
+    last7.push({
+      label: CFG.day_labels_sk[d.getDay()],
+      sets: logs.reduce((sum,l)=>sum+setsOf(l).length,0)
+    });
+  }
+  const max7=Math.max(1, ...last7.map(x=>x.sets));
+  document.getElementById('trend7').innerHTML = `<div class="trend-list">
+    ${last7.map(item=>`<div class="trend-row">
+      <div class="trend-day">${item.label}</div>
+      <div class="trend-bar"><div class="trend-fill" style="width:${Math.round((item.sets/max7)*100)}%"></div></div>
+      <div class="trend-val">${item.sets}</div>
+    </div>`).join('')}
+  </div>`;
+
   const exCount={};
-  filtered.forEach(l=>{const ex=getEx(l.code);exCount[ex?ex.name:l.code]=(exCount[ex?ex.name:l.code]||0)+1});
-  const top=Object.entries(exCount).sort((a,b)=>b[1]-a[1]).slice(0,6);
-  const maxC=top[0]?top[0][1]:1;
-  document.getElementById('topList').innerHTML=top.length
-    ?top.map(([n,c],i)=>`<div class="top-item"><span class="top-n">#${i+1}</span><span style="font-size:12px;color:#1C2B3A;flex:1">${n}</span><div class="top-bar"><div class="top-bar-f" style="width:${Math.round(c/maxC*100)}%"></div></div><span class="top-cnt">${c}×</span></div>`).join('')
-    :'<div class="empty-state">Žiadne dáta.</div>';
+  filtered.forEach(l=>{
+    const ex=getEx(l.code);
+    const name=ex?ex.name:l.code;
+    if(!exCount[name]) exCount[name]={count:0, area:'', code:l.code};
+    exCount[name].count += 1;
+    const area = ['core','mobility','strength','legs'].find(a=>CFG.block_mapping[a].includes(l.code)) || '';
+    exCount[name].area = area;
+  });
+  const top=Object.entries(exCount).sort((a,b)=>b[1].count-a[1].count).slice(0,6);
+  const maxC=top[0]?top[0][1].count:1;
+  document.getElementById('topList').innerHTML = top.length
+    ? top.map(([name,info],i)=>`<div class="top-item">
+        <span class="top-n">#${i+1}</span>
+        <div class="top-main">
+          <div class="top-name">${name}</div>
+          <div class="top-sub">${info.code} · ${blockNames[info.area] || '—'}</div>
+        </div>
+        <div class="top-bar"><div class="top-bar-f" style="width:${Math.round(info.count/maxC*100)}%"></div></div>
+        <span class="top-cnt">${info.count}×</span>
+      </div>`).join('')
+    : '<div class="empty-state">Žiadne dáta.</div>';
+
+  const maxWeight = weightedLogs.reduce((best,l)=>!best || (l.weight||0)>(best.weight||0)?l:best,null);
+  const longestExercise = Object.entries(exCount).sort((a,b)=>b[1].count-a[1].count)[0];
+  const maxDaySetsMap={};
+  cachedLogs.forEach(l=>{
+    maxDaySetsMap[l.date]=(maxDaySetsMap[l.date]||0)+setsOf(l).length;
+  });
+  const bestDay = Object.entries(maxDaySetsMap).sort((a,b)=>b[1]-a[1])[0];
+  const maxSingleExerciseReps = filtered.reduce((best,l)=>{
+    const reps=setsOf(l).reduce((sum,v)=>sum+v,0);
+    return reps > best.reps ? {reps, name:(getEx(l.code)?.name || l.code)} : best;
+  }, {reps:0, name:'—'});
+
+  document.getElementById('recordStats').innerHTML = `<div class="record-grid">
+    <div class="record-item">
+      <div class="record-label">Najvyššia váha</div>
+      <div class="record-value">${maxWeight ? `${getEx(maxWeight.code)?.name || maxWeight.code} · ${maxWeight.weight} kg` : '—'}</div>
+    </div>
+    <div class="record-item">
+      <div class="record-label">Najčastejší cvik</div>
+      <div class="record-value">${longestExercise ? `${longestExercise[0]} · ${longestExercise[1].count}×` : '—'}</div>
+    </div>
+    <div class="record-item">
+      <div class="record-label">Najviac sérií za deň</div>
+      <div class="record-value">${bestDay ? `${bestDay[1]} sérií` : '—'}</div>
+    </div>
+    <div class="record-item">
+      <div class="record-label">Najviac opakovaní v cviku</div>
+      <div class="record-value">${maxSingleExerciseReps.reps ? `${maxSingleExerciseReps.name} · ${maxSingleExerciseReps.reps}` : '—'}</div>
+    </div>
+  </div>`;
 }
 
 function setStatPeriod(period){
