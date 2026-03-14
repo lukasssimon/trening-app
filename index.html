@@ -73,6 +73,37 @@ body {
 .home-logout:hover { color: #94A8B8; }
 .divider { height: 0.5px; background: #E2EAF0; margin: 20px 22px; }
 .sec-label { font-size: 10px; color: #94A8B8; padding: 0 22px; margin-bottom: 4px; text-transform: uppercase; letter-spacing: .8px; }
+
+/* RECOMMENDATION CARD */
+.rec-card {
+  margin: 0 22px 4px;
+  background: white; border: 0.5px solid #E2EAF0;
+  border-radius: 16px; padding: 16px 18px;
+}
+.rec-type-row { display: flex; align-items: center; gap: 10px; margin-bottom: 5px; }
+.rec-icon { font-size: 20px; line-height: 1; }
+.rec-type { font-size: 15px; font-weight: 600; color: #1C2B3A; flex: 1; }
+.rec-intensity {
+  font-size: 10px; font-family: monospace;
+  padding: 3px 9px; border-radius: 20px;
+  background: #E8F3F9; color: #4A90B8; border: 0.5px solid #C8DFE9;
+}
+.rec-intensity.high { background: rgba(229,115,115,.1); color: #E57373; border-color: rgba(229,115,115,.3); }
+.rec-intensity.low { background: #F0F9F4; color: #56B870; border-color: rgba(86,184,112,.3); }
+.rec-subtitle { font-size: 12px; color: #4A90B8; margin-bottom: 10px; }
+.rec-reasons { margin-bottom: 12px; display: flex; flex-direction: column; gap: 3px; }
+.rec-reason { font-size: 11px; color: #94A8B8; display: flex; gap: 6px; line-height: 1.5; }
+.rec-reason::before { content: '·'; color: #C8DFE9; flex-shrink: 0; }
+.rec-week { display: flex; flex-wrap: wrap; gap: 5px; }
+.rec-pill {
+  font-size: 10px; font-family: monospace;
+  padding: 3px 9px; border-radius: 20px;
+  background: #F5F8FC; border: 0.5px solid #E2EAF0; color: #B8C8D4;
+}
+.rec-pill.done { background: #E8F3F9; border-color: #4A90B8; color: #4A90B8; }
+.rec-pill.warn { background: #FFF8E1; border-color: #FFD54F; color: #F9A825; }
+.rec-pill.full { background: #F0F9F4; border-color: #56B870; color: #56B870; }
+
 .block-group { margin-bottom: 4px; }
 .block-group-label { font-size: 10px; color: #94A8B8; text-transform: uppercase; letter-spacing: .8px; padding: 14px 22px 4px; display: flex; align-items: center; gap: 6px; }
 .block-group-label span { font-size: 13px; }
@@ -102,26 +133,21 @@ body {
 .bchip .ic { font-size: 15px; display: block; margin-bottom: 4px; }
 .bchip:hover { border-color: #C8DFE9; color: #4A90B8; }
 .bchip.active { background: #E8F3F9; border-color: #4A90B8; color: #4A90B8; font-weight: 500; }
-
-/* Selected exercise + series — shown ABOVE ex list */
 .sel-and-series {
   margin: 14px 22px 0;
   background: #F5F8FC; border: 0.5px solid #E2EAF0;
-  border-radius: 14px; padding: 14px;
-  display: none;
+  border-radius: 14px; padding: 14px; display: none;
 }
 .sel-display-inner { margin-bottom: 12px; }
 .sel-top { display: flex; align-items: center; gap: 8px; margin-bottom: 3px; }
 .sel-code { font-size: 11px; color: #4A90B8; font-family: monospace; font-weight: 600; }
 .sel-name { font-size: 13px; color: #1C2B3A; font-weight: 500; }
 .sel-desc { font-size: 11px; color: #7AAABF; line-height: 1.5; }
-
 .inline-row { display: flex; align-items: baseline; gap: 8px; padding: 10px 0; border-bottom: 0.5px solid #E2EAF0; }
 .inline-label { font-size: 12px; color: #94A8B8; flex: 1; }
 .inline-input { width: 80px; background: white; border: 0.5px solid #E2EAF0; border-radius: 8px; padding: 6px 10px; font-size: 14px; font-weight: 500; color: #1C2B3A; text-align: center; outline: none; font-family: inherit; transition: border-color .15s; }
-.inline-input:focus { border-color: #4A90B8; background: white; }
+.inline-input:focus { border-color: #4A90B8; }
 .inline-unit { font-size: 12px; color: #94A8B8; }
-
 .series-section { margin-top: 12px; }
 .series-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
 .series-label { font-size: 10px; color: #94A8B8; text-transform: uppercase; letter-spacing: .8px; }
@@ -131,12 +157,10 @@ body {
 .set-chip:hover { background: #D8EBF5; }
 .set-chip-add { background: white; border: 0.5px dashed #C8DFE9; border-radius: 8px; padding: 6px 10px; font-size: 14px; color: #B8C8D4; cursor: pointer; transition: all .15s; font-family: inherit; }
 .set-chip-add:hover { border-color: #4A90B8; color: #4A90B8; }
-
-.save-area { padding: 16px 22px 6px; }
+.save-area { padding: 12px 0 0; }
 .save-btn { width: 100%; background: #4A90B8; border: none; border-radius: 14px; padding: 15px; color: white; font-size: 14px; font-weight: 500; cursor: pointer; font-family: inherit; transition: background .15s; }
 .save-btn:hover { background: #3A7FA8; }
 .save-btn:disabled { background: #B8C8D4; cursor: not-allowed; }
-
 .ex-lines { display: flex; flex-direction: column; }
 .ex-line { display: flex; align-items: center; gap: 10px; padding: 12px 0; border-bottom: 0.5px solid #E2EAF0; cursor: pointer; }
 .ex-line:last-child { border-bottom: none; }
@@ -147,7 +171,7 @@ body {
 .ex-sel { width: 6px; height: 6px; border-radius: 50%; background: #4A90B8; opacity: 0; flex-shrink: 0; }
 .ex-line.active .ex-sel { opacity: 1; }
 
-/* POPUP */
+/* POPUP — center screen so keyboard doesn't push it */
 .set-edit-popup {
   position: fixed; top: 50%; left: 50%;
   transform: translate(-50%, -50%);
@@ -187,8 +211,6 @@ body {
 .period-row { display: flex; gap: 8px; padding: 16px 22px 0; flex-wrap: wrap; }
 .period-btn { padding: 6px 14px; font-size: 11px; background: #F5F8FC; border: 0.5px solid #E2EAF0; border-radius: 20px; color: #94A8B8; cursor: pointer; font-family: inherit; transition: all .15s; }
 .period-btn.active { background: #E8F3F9; border-color: #4A90B8; color: #4A90B8; }
-
-/* Day summary */
 .day-summary { margin: 0 22px; background: #E8F3F9; border-radius: 14px; padding: 16px; }
 .day-summary-title { font-size: 10px; color: #4A90B8; text-transform: uppercase; letter-spacing: .8px; margin-bottom: 12px; font-weight: 600; }
 .day-sum-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px; }
@@ -235,6 +257,7 @@ body {
     <span class="home-logout" onclick="logout()">odhlásiť sa</span>
   </div>
   <div class="divider"></div>
+  <div id="recCard"></div>
   <div id="todayBlocks"></div>
 </div>
 
@@ -244,13 +267,10 @@ body {
     <div class="back-arr"><div class="back-ico"></div></div>
     <div class="back-title" id="logTitle">Nový cvik</div>
   </div>
-
   <div class="f-sec" style="margin-top:16px">
     <div class="f-label">Blok</div>
     <div class="bchips" id="blockChips"></div>
   </div>
-
-  <!-- Selected exercise + series block — above ex list -->
   <div class="sel-and-series" id="selAndSeries">
     <div class="sel-display-inner" id="selDisplayInner"></div>
     <div id="weightRowWrap" style="display:none">
@@ -267,20 +287,17 @@ body {
       </div>
       <div class="sets-row" id="setsRow"></div>
     </div>
-    <div class="save-area" style="padding:12px 0 0">
+    <div class="save-area">
       <button class="save-btn" id="saveBtnMain" onclick="saveAndAnother()">Uložiť</button>
     </div>
   </div>
-
-  <!-- Date row -->
-  <div id="dateRowWrap" style="display:none; padding: 0 22px;">
+  <div id="dateRowWrap" style="display:none;padding:0 22px">
     <div class="inline-row">
       <span class="inline-label">Dátum</span>
       <input type="date" id="logDate" class="inline-input" style="width:130px;font-size:12px;">
     </div>
   </div>
-
-  <div class="f-sec" id="exSection" style="display:none; margin-top:14px">
+  <div class="f-sec" id="exSection" style="display:none;margin-top:14px">
     <div class="f-label">Cvik</div>
     <div class="ex-lines" id="exLines"></div>
   </div>
@@ -299,51 +316,6 @@ body {
   </div>
   <div class="divider"></div>
   <div id="histContent"></div>
-</div>
-
-<!-- IMPORT MODAL -->
-<div id="importOverlay" style="display:none;position:fixed;inset:0;background:rgba(28,43,58,.45);z-index:300;overflow-y:auto">
-  <div style="min-height:100%;display:flex;align-items:flex-start;justify-content:center;padding:24px 16px 40px">
-    <div style="background:white;border-radius:20px;width:100%;max-width:400px;padding:24px;margin-top:8px">
-
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
-        <div style="font-size:16px;font-weight:600;color:#1C2B3A">Importovať z ChatGPT</div>
-        <button onclick="closeImport()" style="background:none;border:none;font-size:20px;color:#94A8B8;cursor:pointer;padding:2px 6px">✕</button>
-      </div>
-
-      <div style="font-size:12px;color:#94A8B8;margin-bottom:16px;line-height:1.6">
-        V ChatGPT odfot papier a požiadaj ho o JSON vo formáte nižšie. Skopíruj odpoveď sem.
-      </div>
-
-      <!-- Prompt na kopírovanie -->
-      <div style="background:#F5F8FC;border:0.5px solid #E2EAF0;border-radius:10px;padding:12px;margin-bottom:4px;font-size:11px;color:#4A90B8;font-family:monospace;line-height:1.7;white-space:pre-wrap" id="importPromptBox">Odfot môj tréningový záznam a vráť JSON v tomto formáte, nič iné nepíš:
-[
-  {"code":"DBG","sets":[10,10,10],"weight":null},
-  {"code":"C2","sets":[10,15],"weight":5}
-]</div>
-      <button onclick="copyPrompt()" style="background:none;border:none;font-size:11px;color:#94A8B8;cursor:pointer;font-family:inherit;padding:4px 0;margin-bottom:16px">⎘ skopírovať prompt</button>
-
-      <!-- Date picker -->
-      <div style="display:flex;align-items:baseline;gap:10px;margin-bottom:14px">
-        <span style="font-size:12px;color:#94A8B8;flex:1">Dátum záznamu</span>
-        <input type="date" id="importDate" style="background:#F5F8FC;border:0.5px solid #E2EAF0;border-radius:8px;padding:6px 10px;font-size:13px;font-weight:500;color:#1C2B3A;outline:none;font-family:inherit">
-      </div>
-
-      <!-- JSON input -->
-      <textarea id="importJson" placeholder='Vlož JSON sem...' style="width:100%;min-height:130px;background:#F5F8FC;border:0.5px solid #E2EAF0;border-radius:10px;padding:12px;font-size:13px;font-family:monospace;color:#1C2B3A;outline:none;resize:vertical;line-height:1.5"></textarea>
-
-      <button onclick="parseImport()" style="width:100%;background:#4A90B8;border:none;border-radius:12px;padding:13px;color:white;font-size:14px;font-weight:500;cursor:pointer;font-family:inherit;margin-top:10px">Skontrolovať</button>
-
-      <!-- PREVIEW -->
-      <div id="importPreview" style="display:none;margin-top:16px">
-        <div style="font-size:10px;color:#94A8B8;text-transform:uppercase;letter-spacing:.8px;margin-bottom:10px">Náhľad — skontroluj pred uložením</div>
-        <div id="importPreviewList"></div>
-        <div id="importWarnings" style="font-size:11px;color:#E07070;margin-top:8px;line-height:1.7"></div>
-        <button onclick="confirmImport()" id="importConfirmBtn" style="width:100%;background:#2DCE89;border:none;border-radius:12px;padding:13px;color:white;font-size:14px;font-weight:500;cursor:pointer;font-family:inherit;margin-top:12px">Uložiť do tréningu</button>
-      </div>
-
-    </div>
-  </div>
 </div>
 
 <!-- STATS -->
@@ -376,10 +348,74 @@ body {
   </div>
 </div>
 
+<!-- IMPORT MODAL -->
+<div id="importOverlay" style="display:none;position:fixed;inset:0;background:rgba(28,43,58,.45);z-index:300;overflow-y:auto">
+  <div style="min-height:100%;display:flex;align-items:flex-start;justify-content:center;padding:24px 16px 40px">
+    <div style="background:white;border-radius:20px;width:100%;max-width:400px;padding:24px;margin-top:8px">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
+        <div style="font-size:16px;font-weight:600;color:#1C2B3A">Importovať z ChatGPT</div>
+        <button onclick="closeImport()" style="background:none;border:none;font-size:20px;color:#94A8B8;cursor:pointer;padding:2px 6px">✕</button>
+      </div>
+      <div style="font-size:12px;color:#94A8B8;margin-bottom:16px;line-height:1.6">V ChatGPT odfot papier a požiadaj ho o JSON vo formáte nižšie. Skopíruj odpoveď sem.</div>
+      <div style="background:#F5F8FC;border:0.5px solid #E2EAF0;border-radius:10px;padding:12px;margin-bottom:4px;font-size:11px;color:#4A90B8;font-family:monospace;line-height:1.7;white-space:pre-wrap" id="importPromptBox">Odfot môj tréningový záznam a vráť JSON v tomto formáte, nič iné nepíš:
+[
+  {"code":"DBG","sets":[10,10,10],"weight":null},
+  {"code":"C2","sets":[10,15],"weight":5}
+]</div>
+      <button onclick="copyPrompt()" style="background:none;border:none;font-size:11px;color:#94A8B8;cursor:pointer;font-family:inherit;padding:4px 0;margin-bottom:16px">⎘ skopírovať prompt</button>
+      <div style="display:flex;align-items:baseline;gap:10px;margin-bottom:14px">
+        <span style="font-size:12px;color:#94A8B8;flex:1">Dátum záznamu</span>
+        <input type="date" id="importDate" style="background:#F5F8FC;border:0.5px solid #E2EAF0;border-radius:8px;padding:6px 10px;font-size:13px;font-weight:500;color:#1C2B3A;outline:none;font-family:inherit">
+      </div>
+      <textarea id="importJson" placeholder='Vlož JSON sem...' style="width:100%;min-height:130px;background:#F5F8FC;border:0.5px solid #E2EAF0;border-radius:10px;padding:12px;font-size:13px;font-family:monospace;color:#1C2B3A;outline:none;resize:vertical;line-height:1.5"></textarea>
+      <button onclick="parseImport()" style="width:100%;background:#4A90B8;border:none;border-radius:12px;padding:13px;color:white;font-size:14px;font-weight:500;cursor:pointer;font-family:inherit;margin-top:10px">Skontrolovať</button>
+      <div id="importPreview" style="display:none;margin-top:16px">
+        <div style="font-size:10px;color:#94A8B8;text-transform:uppercase;letter-spacing:.8px;margin-bottom:10px">Náhľad — skontroluj pred uložením</div>
+        <div id="importPreviewList"></div>
+        <div id="importWarnings" style="font-size:11px;color:#E07070;margin-top:8px;line-height:1.7"></div>
+        <button onclick="confirmImport()" id="importConfirmBtn" style="width:100%;background:#2DCE89;border:none;border-radius:12px;padding:13px;color:white;font-size:14px;font-weight:500;cursor:pointer;font-family:inherit;margin-top:12px">Uložiť do tréningu</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script>
+// =============================================
+// TRAINING CONFIG
+// =============================================
+const TRAINING_CONFIG = {
+  weekly_targets: { strength: 3, legs: 2, core: 4, mobility: 3, training_days: 5 },
+  thresholds: {
+    strength_day:       { min_dumbbell_sets: 10 },
+    heavy_strength_day: { min_dumbbell_sets: 16 },
+    legs_day:           { min_leg_sets: 5 },
+    core_day:           { min_core_sets: 5 },
+    mobility_day:       { min_mobility_sets: 5 },
+    training_day:       { min_total_sets: 8 },
+    shoulder_heavy:     { min_sets: 5 }
+  },
+  block_mapping: {
+    core:     ['LL0','LL1','LL2','DBG','DBX','DBI','DBW','DB2','HBK','HBT','HBI','HBS','HBL','HBR','QBR','SIT'],
+    mobility: ['CAT','WV','CAR','WSL','OAS','XHB','TUR','Kt1','Kt2','Kt3','Kt4','PFS','DD','CP','HF','SRB'],
+    strength: ['C1','C1S','C1N','C2','C2R','C3','C4','C4A','C5','C5K','C6','C6S'],
+    legs:     ['HF2','GS','SS','SQ','SQH','LUN','HBF'],
+    shoulder: ['C1','C1S','C1N']
+  },
+  recommendations: {
+    strength:  { icon:'💪', label:'Silový tréning',        intensity:'high',   subtitles:['Telo je pripravené na silový deň.','Dnes sa hodí stredne ťažký silový blok.','Silový deň — nezabudni na rozhýbanie pred cvičením.'] },
+    legs:      { icon:'🦵', label:'Nohy a bedrá',          intensity:'medium', subtitles:['Nohy tento týždeň chýbajú, dnes ich doplň.','Dnes sa hodia nohy a hip flow.','Dnes skús ľahké až stredné nohy.'] },
+    core_back: { icon:'🧘', label:'Core a chrbát',         intensity:'medium', subtitles:['Dnes sa hodí core a stabilita trupu.','Dnes zameraj core, lopatky a chrbticu.','Core deň — hover bear, dead bug, rozhýbanie.'] },
+    mobility:  { icon:'🌊', label:'Mobilita a rozhýbanie', intensity:'low',    subtitles:['Dnes sa hodí rozhýbanie a mobilita.','Dnes odporúčam chrbát, lopatky a trapézy.','Dnes skôr mobilita než činky.'] },
+    light:     { icon:'🌿', label:'Ľahký tréning',         intensity:'low',    subtitles:['Dnes sa hodí ľahká aktivácia.','Dnes odporúčam aktiváciu a rozhýbanie.','Dnes skôr ľahko než silovo.'] },
+    rest:      { icon:'😴', label:'Voľno / regenerácia',   intensity:'low',    subtitles:['Telo skôr potrebuje regeneráciu.','Dnes odporúčam oddych alebo 10–15 min mobilitu.','Dnes sa hodí voľno alebo len jemný reset.'] }
+  }
+};
+
+// =============================================
+// SUPABASE
+// =============================================
 const SUPABASE_URL  = 'https://agwwgltxcosuqgdbcgbp.supabase.co';
 const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFnd3dnbHR4Y29zdXFnZGJjZ2JwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMzNDU0MDgsImV4cCI6MjA4ODkyMTQwOH0.-qAYd4SHVSoIHpMXlo_13ZKYzDa-hSNP0SsoTI6vs74';
-
 const { createClient } = supabase;
 const sb = createClient(SUPABASE_URL, SUPABASE_ANON);
 
@@ -450,12 +486,10 @@ const CATALOG = [
 
 // ---- AUTH ----
 async function loginGoogle(){
-  await sb.auth.signInWithOAuth({provider:'google', options:{redirectTo:window.location.href}});
+  await sb.auth.signInWithOAuth({provider:'google',options:{redirectTo:window.location.href}});
 }
 async function logout(){
-  await sb.auth.signOut();
-  currentUser=null; cachedLogs=[];
-  showLoginScreen();
+  await sb.auth.signOut(); currentUser=null; cachedLogs=[]; showLoginScreen();
 }
 function showLoginScreen(){
   document.getElementById('loadingOverlay').style.display='none';
@@ -473,16 +507,15 @@ function showApp(){
 
 // ---- DB ----
 async function fetchLogs(){
-  const {data,error}=await sb.from('training_logs')
-    .select('*').eq('user_id',currentUser.id)
+  const {data,error}=await sb.from('training_logs').select('*').eq('user_id',currentUser.id)
     .order('date',{ascending:false}).order('created_at',{ascending:true});
   if(error){console.error(error);return}
   cachedLogs=data||[];
 }
 async function insertLog(entry){
   const {error}=await sb.from('training_logs').insert({
-    user_id:currentUser.id, date:entry.date, block:entry.block,
-    code:entry.code, sets:entry.sets, weight:entry.weight
+    user_id:currentUser.id,date:entry.date,block:entry.block,
+    code:entry.code,sets:entry.sets,weight:entry.weight
   });
   if(error) throw error;
 }
@@ -497,8 +530,7 @@ sb.auth.onAuthStateChange(async(event,session)=>{
     currentUser=session.user;
     const name=currentUser.user_metadata?.full_name||currentUser.email||'Luk';
     document.getElementById('homeGreet').textContent=`Ahoj, ${name.split(' ')[0]}`;
-    await fetchLogs();
-    showApp();
+    await fetchLogs(); showApp();
   } else { showLoginScreen(); }
 });
 
@@ -517,6 +549,178 @@ function streak(){
   for(let d of dates){const diff=Math.round((check-new Date(d))/86400000);if(diff===0||diff===1){s++;check=new Date(d)}else break}
   return s;
 }
+function setsOf(log){return Array.isArray(log.sets)?log.sets:[]}
+
+// ---- RECOMMENDATION ENGINE ----
+function classifyDay(logs){
+  const cfg=TRAINING_CONFIG;
+  const bm=cfg.block_mapping;
+  let dumbbell=0, legSets=0, coreSets=0, mobSets=0, shoulderSets=0, total=0;
+  logs.forEach(l=>{
+    const s=setsOf(l); const cnt=s.length;
+    total+=cnt;
+    if(bm.strength.includes(l.code)) dumbbell+=cnt;
+    if(bm.legs.includes(l.code))     legSets+=cnt;
+    if(bm.core.includes(l.code))     coreSets+=cnt;
+    if(bm.mobility.includes(l.code)) mobSets+=cnt;
+    if(bm.shoulder.includes(l.code)) shoulderSets+=cnt;
+  });
+  const t=cfg.thresholds;
+  return {
+    isStrength:      dumbbell >= t.strength_day.min_dumbbell_sets,
+    isHeavyStrength: dumbbell >= t.heavy_strength_day.min_dumbbell_sets,
+    isLegs:          legSets  >= t.legs_day.min_leg_sets,
+    isCore:          coreSets >= t.core_day.min_core_sets,
+    isMobility:      mobSets  >= t.mobility_day.min_mobility_sets,
+    isTrainingDay:   total    >= t.training_day.min_total_sets,
+    isShoulderHeavy: shoulderSets >= t.shoulder_heavy.min_sets,
+    dumbbell, legSets, coreSets, mobSets, total
+  };
+}
+
+function getWeekStats(){
+  const now=new Date(); const td=today();
+  const days=[];
+  for(let i=0;i<7;i++){
+    const d=new Date(now); d.setDate(now.getDate()-i);
+    days.push(d.toISOString().slice(0,10));
+  }
+  let strength=0,legs=0,core=0,mobility=0,training=0;
+  const dayClassifications={};
+  days.forEach(d=>{
+    const logs=cachedLogs.filter(l=>l.date===d);
+    if(!logs.length) return;
+    const c=classifyDay(logs);
+    dayClassifications[d]=c;
+    if(c.isStrength)  strength++;
+    if(c.isLegs)      legs++;
+    if(c.isCore)      core++;
+    if(c.isMobility)  mobility++;
+    if(c.isTrainingDay) training++;
+  });
+  return {strength,legs,core,mobility,training,dayClassifications,days};
+}
+
+function getRecommendation(){
+  const cfg=TRAINING_CONFIG; const tgt=cfg.weekly_targets;
+  const td=today();
+  const stats=getWeekStats();
+  const dc=stats.dayClassifications;
+
+  // Yesterday
+  const yd=new Date(); yd.setDate(yd.getDate()-1);
+  const ydStr=yd.toISOString().slice(0,10);
+  const yesterday=dc[ydStr]||null;
+
+  // Consecutive training days
+  let streak7=0;
+  for(let i=0;i<7;i++){
+    const d=new Date(); d.setDate(d.getDate()-i);
+    const ds=d.toISOString().slice(0,10);
+    if(dc[ds]?.isTrainingDay) streak7++; else break;
+  }
+
+  const reasons=[];
+  let type='light';
+
+  // 1. Overload — 5+ days in a row
+  if(streak7>=5){
+    type='rest';
+    reasons.push(`${streak7} tréningové dni za sebou — telo potrebuje oddych.`);
+    reasons.push('Regenerácia je súčasť tréningu.');
+  }
+  // 2. Heavy strength yesterday → light/mobility
+  else if(yesterday?.isHeavyStrength){
+    type='mobility';
+    reasons.push('Včera bol ťažký silový deň.');
+    reasons.push('Dnes odporúčam rozhýbanie a mobilitu.');
+    if(yesterday.isShoulderHeavy) reasons.push('Ramená a trapézy mali včera veľa práce.');
+  }
+  // 3. Strength yesterday (not heavy) → legs or core
+  else if(yesterday?.isStrength){
+    if(stats.legs < tgt.legs){
+      type='legs';
+      reasons.push('Včera bol silový deň.');
+      reasons.push(`Nohy tento týždeň: ${stats.legs}/${tgt.legs} — dnes ich doplň.`);
+    } else {
+      type='core_back';
+      reasons.push('Včera bol silový deň.');
+      reasons.push('Dnes sa hodí core a stabilita trupu.');
+    }
+  }
+  // 4. Missing legs (highest priority after recovery)
+  else if(stats.legs < tgt.legs && stats.legs === 0){
+    type='legs';
+    reasons.push(`Nohy tento týždeň: ${stats.legs}/${tgt.legs}.`);
+    reasons.push('Nohy tento týždeň chýbajú úplne.');
+  }
+  // 5. Missing strength
+  else if(stats.strength < tgt.strength){
+    type='strength';
+    reasons.push(`Silový tréning tento týždeň: ${stats.strength}/${tgt.strength}.`);
+    if(stats.strength===0) reasons.push('Silový tréning tento týždeň ešte nebol.');
+    else reasons.push('Ešte jeden silový deň by bol ideálny.');
+  }
+  // 6. Missing legs (but at least 1 done)
+  else if(stats.legs < tgt.legs){
+    type='legs';
+    reasons.push(`Nohy tento týždeň: ${stats.legs}/${tgt.legs}.`);
+    reasons.push('Dnes doplň nohový tréning.');
+  }
+  // 7. Missing core
+  else if(stats.core < tgt.core){
+    type='core_back';
+    reasons.push(`Core tento týždeň: ${stats.core}/${tgt.core}.`);
+    reasons.push('Dnes sa hodí core a stabilita.');
+  }
+  // 8. Missing mobility
+  else if(stats.mobility < tgt.mobility){
+    type='mobility';
+    reasons.push(`Mobilita tento týždeň: ${stats.mobility}/${tgt.mobility}.`);
+    reasons.push('Dnes odporúčam rozhýbanie a mobilitu.');
+  }
+  // 9. All targets met
+  else {
+    type='light';
+    reasons.push('Všetky týždenné ciele sú splnené.');
+    reasons.push('Dnes môžeš ísť ľahko alebo si dať voľno.');
+  }
+
+  // Pick subtitle deterministically by day of week
+  const rec=cfg.recommendations[type];
+  const sub=rec.subtitles[new Date().getDay()%rec.subtitles.length];
+
+  return { type, icon:rec.icon, label:rec.label, intensity:rec.intensity, subtitle:sub, reasons, stats };
+}
+
+function renderRecommendation(){
+  const {type,icon,label,intensity,subtitle,reasons,stats}=getRecommendation();
+  const tgt=TRAINING_CONFIG.weekly_targets;
+
+  function pill(val,target,labelText){
+    const cls=val>=target?'full':val>0?'done':'';
+    return `<span class="rec-pill ${cls}">${labelText} ${val}/${target}</span>`;
+  }
+
+  document.getElementById('recCard').innerHTML=`
+    <div class="rec-card">
+      <div class="rec-type-row">
+        <span class="rec-icon">${icon}</span>
+        <span class="rec-type">${label}</span>
+        <span class="rec-intensity ${intensity}">${intensity==='high'?'vysoká':intensity==='medium'?'stredná':'nízka'}</span>
+      </div>
+      <div class="rec-subtitle">${subtitle}</div>
+      <div class="rec-reasons">
+        ${reasons.map(r=>`<div class="rec-reason">${r}</div>`).join('')}
+      </div>
+      <div class="rec-week">
+        ${pill(stats.strength,tgt.strength,'Silový')}
+        ${pill(stats.legs,tgt.legs,'Nohy')}
+        ${pill(stats.core,tgt.core,'Core')}
+        ${pill(stats.mobility,tgt.mobility,'Mobilita')}
+      </div>
+    </div>`;
+}
 
 let prevScreen='home';
 function showScreen(name){
@@ -527,7 +731,7 @@ function showScreen(name){
   const nb=document.getElementById('nb-'+name);
   if(nb) nb.classList.add('active');
   document.getElementById('fabBtn').classList.toggle('hidden',name==='log');
-  if(name==='home') renderHome();
+  if(name==='home'){renderHome();renderRecommendation();}
   if(name==='history') renderHistory();
   if(name==='stats') renderStats();
 }
@@ -543,8 +747,11 @@ function renderHome(){
   document.getElementById('homeTitle').textContent=`Dnes: ${tl.length} ${tl.length===1?'cvik':tl.length<5?'cviky':'cvikov'}`;
   document.getElementById('homeSub').textContent=(s>1?`🔥 ${s} dní séria · `:'')+`${dnames[now.getDay()]} ${now.getDate()}. ${M[now.getMonth()]}`;
   const container=document.getElementById('todayBlocks');
-  if(!tl.length){container.innerHTML='<div class="empty-state">Zatiaľ žiadne cviky. Pridaj prvý!</div>';return}
-  let html='';
+  if(!tl.length){
+    container.innerHTML='<div style="height:12px"></div><div class="empty-state">Zatiaľ žiadne cviky. Pridaj prvý!</div>';
+    return;
+  }
+  let html='<div style="height:8px"></div>';
   CATALOG.forEach(b=>{
     const items=tl.filter(l=>l.block===b.block);
     if(!items.length) return;
@@ -557,7 +764,7 @@ function renderHome(){
             <div class="li-dot"></div>
             <div class="li-main">
               <div class="li-name">${ex?ex.name:l.code}</div>
-              <div class="li-meta">${l.code} · ${(Array.isArray(l.sets)?l.sets:[]).join(' ')}${wt}</div>
+              <div class="li-meta">${l.code} · ${setsOf(l).join(' ')}${wt}</div>
             </div>
             <span class="li-arr">›</span>
             <button class="li-del" onclick="event.stopPropagation();delLog('${l.id}')">✕</button>
@@ -570,28 +777,25 @@ function renderHome(){
 }
 
 async function delLog(id){
-  try{await deleteLogDB(id);cachedLogs=cachedLogs.filter(l=>l.id!==id);renderHome();showToast('Zmazané')}
+  try{await deleteLogDB(id);cachedLogs=cachedLogs.filter(l=>l.id!==id);renderHome();renderRecommendation();showToast('Zmazané')}
   catch(e){showToast('⚠️ Chyba pri mazaní')}
 }
 
 // ---- LOG ----
-let selBlock=null, selCode=null, sets=[], editIdx=null, editingId=null;
+let selBlock=null,selCode=null,sets=[],editIdx=null,editingId=null;
 
-// Open existing log entry by ID for editing
 function openLogForId(id){
   const log=cachedLogs.find(l=>l.id===id);
   if(!log) return;
-  prevScreen='home';
+  prevScreen=document.querySelector('.screen.active')?.id?.replace('screen-','')||'home';
   resetLog();
   document.getElementById('logTitle').textContent='Upraviť cvik';
-  editingId=id;
-  selBlock=log.block; selCode=log.code;
+  editingId=id; selBlock=log.block; selCode=log.code;
   sets=Array.isArray(log.sets)?[...log.sets]:[];
   document.getElementById('logDate').value=log.date;
   if(log.weight) document.getElementById('logWeight').value=log.weight;
   renderBlockChips(); renderExLines();
   document.getElementById('exSection').style.display='block';
-  // Show sel-and-series with data
   const ex=getEx(log.code);
   if(ex){
     document.getElementById('selDisplayInner').innerHTML=`
@@ -616,14 +820,14 @@ function goLog(){
 }
 
 function resetLog(){
-  selBlock=null; selCode=null; sets=[]; editingId=null;
+  selBlock=null;selCode=null;sets=[];editingId=null;
   document.getElementById('logDate').value=today();
   document.getElementById('logWeight').value='';
   document.getElementById('exSection').style.display='none';
   document.getElementById('selAndSeries').style.display='none';
   document.getElementById('dateRowWrap').style.display='none';
   document.getElementById('weightRowWrap').style.display='none';
-  renderBlockChips(); renderSets();
+  renderBlockChips();renderSets();
 }
 
 function renderBlockChips(){
@@ -635,8 +839,8 @@ function renderBlockChips(){
 }
 
 function pickBlock(bname){
-  selBlock=bname; selCode=null; sets=[]; editingId=null;
-  renderBlockChips(); renderExLines();
+  selBlock=bname;selCode=null;sets=[];editingId=null;
+  renderBlockChips();renderExLines();
   document.getElementById('exSection').style.display='block';
   document.getElementById('selAndSeries').style.display='none';
   document.getElementById('dateRowWrap').style.display='none';
@@ -655,7 +859,7 @@ function renderExLines(){
 }
 
 function pickEx(code){
-  selCode=code; editingId=null; sets=[];
+  selCode=code;editingId=null;sets=[];
   renderExLines();
   const ex=getEx(code);
   document.getElementById('selDisplayInner').innerHTML=`
@@ -666,10 +870,8 @@ function pickEx(code){
   document.getElementById('selAndSeries').style.display='block';
   document.getElementById('dateRowWrap').style.display='block';
   renderSets();
-  // Scroll to sel-and-series
   setTimeout(()=>document.getElementById('selAndSeries').scrollIntoView({behavior:'smooth',block:'nearest'}),80);
-  // Auto-open popup for first set
-  setTimeout(()=>addSet(), 150);
+  setTimeout(()=>addSet(),150);
 }
 
 function renderSets(){
@@ -708,12 +910,12 @@ function confirmSet(){
   const v=parseInt(document.getElementById('popupInput').value);
   if(!v||v<=0){closePopup();return}
   if(editIdx!==null) sets[editIdx]=v; else sets.push(v);
-  closePopup(); renderSets();
+  closePopup();renderSets();
 }
 
 function deleteSet(){
   if(editIdx!==null) sets.splice(editIdx,1);
-  closePopup(); renderSets();
+  closePopup();renderSets();
 }
 
 document.getElementById('popupInput').addEventListener('keydown',e=>{
@@ -726,29 +928,24 @@ async function saveAndAnother(){
   const weight=parseFloat(document.getElementById('logWeight').value)||null;
   if(!selBlock||!selCode||!sets.length){showToast('⚠️ Vyber cvik a pridaj aspoň 1 sériu');return}
   const btn=document.getElementById('saveBtnMain');
-  btn.disabled=true; btn.textContent='Ukladám...';
+  btn.disabled=true;btn.textContent='Ukladám...';
   try{
-    if(editingId){
-      // Update existing record — delete + reinsert
-      await deleteLogDB(editingId);
-    }
+    if(editingId) await deleteLogDB(editingId);
     await insertLog({date,block:selBlock,code:selCode,sets:[...sets],weight});
     await fetchLogs();
     showToast('✅ Uložené!');
-    // Reset for next entry — keep block selected
     const keepBlock=selBlock;
-    selCode=null; sets=[]; editingId=null;
+    selCode=null;sets=[];editingId=null;
     document.getElementById('logTitle').textContent='Nový cvik';
     document.getElementById('selAndSeries').style.display='none';
     document.getElementById('dateRowWrap').style.display='none';
     document.getElementById('logWeight').value='';
-    renderExLines();
-    renderSets();
+    renderExLines();renderSets();
     window.scrollTo({top:0,behavior:'smooth'});
   }catch(e){
     showToast('⚠️ Chyba pri ukladaní');
   }finally{
-    btn.disabled=false; btn.textContent='Uložiť';
+    btn.disabled=false;btn.textContent='Uložiť';
   }
 }
 
@@ -766,8 +963,8 @@ function renderHistory(){
       <div class="hist-date"><span>${fmtDate(d)}</span><span style="color:#4A90B8;font-weight:500">${items.length} cvikov</span></div>
       <div class="line-list">
         ${items.map(l=>{
-          const ex=getEx(l.code), wt=l.weight?` · ${l.weight} kg`:'';
-          const s=Array.isArray(l.sets)?l.sets:[];
+          const ex=getEx(l.code),wt=l.weight?` · ${l.weight} kg`:'';
+          const s=setsOf(l);
           return `<div class="line-item" onclick="openLogForId('${l.id}')">
             <div class="li-dot"></div>
             <div class="li-main">
@@ -790,36 +987,26 @@ async function delLogH(id){
 
 // ---- STATS ----
 let statPeriod='day';
-
 function renderStats(){
   document.getElementById('statPeriod').innerHTML=['day','week','month','all'].map(p=>
     `<button class="period-btn ${statPeriod===p?'active':''}" onclick="setStatPeriod('${p}')">${p==='day'?'Dnes':p==='week'?'Týždeň':p==='month'?'Mesiac':'Všetko'}</button>`
   ).join('');
-
-  const now=new Date();
-  const td=today();
+  const now=new Date(), td=today();
   let filtered=cachedLogs;
-  if(statPeriod==='day'){
-    filtered=cachedLogs.filter(l=>l.date===td);
-  } else if(statPeriod==='week'){
-    const day=now.getDay()||7;const mon=new Date(now);mon.setDate(now.getDate()-day+1);
-    filtered=cachedLogs.filter(l=>l.date>=mon.toISOString().slice(0,10));
-  } else if(statPeriod==='month'){
-    filtered=cachedLogs.filter(l=>l.date>=new Date(now.getFullYear(),now.getMonth(),1).toISOString().slice(0,10));
-  }
+  if(statPeriod==='day') filtered=cachedLogs.filter(l=>l.date===td);
+  else if(statPeriod==='week'){const day=now.getDay()||7;const mon=new Date(now);mon.setDate(now.getDate()-day+1);filtered=cachedLogs.filter(l=>l.date>=mon.toISOString().slice(0,10))}
+  else if(statPeriod==='month') filtered=cachedLogs.filter(l=>l.date>=new Date(now.getFullYear(),now.getMonth(),1).toISOString().slice(0,10));
 
-  // Day summary panel
   const dswrap=document.getElementById('daySummaryWrap');
   if(statPeriod==='day'){
-    const dayLogs=filtered;
-    const daySets=dayLogs.reduce((a,l)=>a+(Array.isArray(l.sets)?l.sets.length:0),0);
-    const dayReps=dayLogs.reduce((a,l)=>a+(Array.isArray(l.sets)?l.sets.reduce((b,s)=>b+s,0):0),0);
-    const weightsUsed=dayLogs.filter(l=>l.weight).map(l=>{const ex=getEx(l.code);return `${ex?ex.name:l.code} — ${l.weight} kg`});
+    const daySets=filtered.reduce((a,l)=>a+setsOf(l).length,0);
+    const dayReps=filtered.reduce((a,l)=>a+setsOf(l).reduce((b,s)=>b+s,0),0);
+    const weightsUsed=filtered.filter(l=>l.weight).map(l=>{const ex=getEx(l.code);return `${ex?ex.name:l.code} — ${l.weight} kg`});
     dswrap.innerHTML=`<div style="padding:16px 22px 0">
       <div class="day-summary">
         <div class="day-summary-title">Dnešný sumár · ${fmtDate(td)}</div>
         <div class="day-sum-grid">
-          <div class="day-sum-item"><div class="day-sum-l">Cviky</div><div class="day-sum-v">${dayLogs.length}</div></div>
+          <div class="day-sum-item"><div class="day-sum-l">Cviky</div><div class="day-sum-v">${filtered.length}</div></div>
           <div class="day-sum-item"><div class="day-sum-l">Série</div><div class="day-sum-v">${daySets}</div></div>
           <div class="day-sum-item"><div class="day-sum-l">Opakovania</div><div class="day-sum-v">${dayReps}</div></div>
           <div class="day-sum-item"><div class="day-sum-l">Séria dní 🔥</div><div class="day-sum-v">${streak()}</div></div>
@@ -827,20 +1014,16 @@ function renderStats(){
         ${weightsUsed.length?`<div class="day-weights">${weightsUsed.join('<br>')}</div>`:''}
       </div>
     </div>`;
-  } else {
-    dswrap.innerHTML='';
-  }
+  } else { dswrap.innerHTML=''; }
 
   const days=new Set(filtered.map(l=>l.date)).size;
-  const totalSets=filtered.reduce((a,l)=>a+(Array.isArray(l.sets)?l.sets.length:0),0);
-  const totalReps=filtered.reduce((a,l)=>a+(Array.isArray(l.sets)?l.sets.reduce((b,s)=>b+s,0):0),0);
-
+  const totalSets=filtered.reduce((a,l)=>a+setsOf(l).length,0);
+  const totalReps=filtered.reduce((a,l)=>a+setsOf(l).reduce((b,s)=>b+s,0),0);
   document.getElementById('statGrid').innerHTML=`
     <div class="stat-card"><div class="stat-l">Tréningové dni</div><div class="stat-v">${days}</div></div>
     <div class="stat-card"><div class="stat-l">Celkové série</div><div class="stat-v">${totalSets}</div></div>
     <div class="stat-card"><div class="stat-l">Celkové opakovania</div><div class="stat-v">${totalReps}</div></div>
     <div class="stat-card"><div class="stat-l">Séria dní 🔥</div><div class="stat-v">${streak()}</div></div>`;
-
   const exCount={};
   filtered.forEach(l=>{const ex=getEx(l.code);exCount[ex?ex.name:l.code]=(exCount[ex?ex.name:l.code]||0)+1});
   const top=Object.entries(exCount).sort((a,b)=>b[1]-a[1]).slice(0,6);
@@ -854,31 +1037,23 @@ function renderStats(){
       </div>`).join('')
     :'<div class="empty-state">Žiadne dáta.</div>';
 }
-
 function setStatPeriod(p){statPeriod=p;renderStats()}
 
 // ---- EXPORT ----
 function exportToday(){
-  const td=today();
-  const tl=cachedLogs.filter(l=>l.date===td);
+  const td=today(), tl=cachedLogs.filter(l=>l.date===td);
   if(!tl.length){showToast('Dnes žiadne cviky');return}
-
-  // Group by block
   let lines=[`Tréning ${fmtDate(td)}`,``];
   CATALOG.forEach(b=>{
     const items=tl.filter(l=>l.block===b.block);
     if(!items.length) return;
     lines.push(`${b.block}`);
     items.forEach(l=>{
-      const ex=getEx(l.code);
-      const name=ex?ex.name:l.code;
-      const s=Array.isArray(l.sets)?l.sets:[];
-      const wt=l.weight?` · ${l.weight} kg`:'';
-      lines.push(`${l.code} — ${name}${wt} · ${s.join(' ')}`);
+      const ex=getEx(l.code), s=setsOf(l), wt=l.weight?` · ${l.weight} kg`:'';
+      lines.push(`${l.code} — ${ex?ex.name:l.code}${wt} · ${s.join(' ')}`);
     });
     lines.push('');
   });
-
   const text=lines.join('\n').trim();
   if(navigator.clipboard?.writeText){
     navigator.clipboard.writeText(text).then(()=>showToast('✅ Skopírované!')).catch(()=>fallbackCopy(text));
@@ -887,114 +1062,74 @@ function exportToday(){
 
 function fallbackCopy(text){
   const ta=document.createElement('textarea');
-  ta.value=text; ta.style.position='fixed'; ta.style.opacity='0';
-  document.body.appendChild(ta); ta.focus(); ta.select();
+  ta.value=text;ta.style.position='fixed';ta.style.opacity='0';
+  document.body.appendChild(ta);ta.focus();ta.select();
   try{document.execCommand('copy');showToast('✅ Skopírované!')}
   catch(e){showToast('⚠️ Kopírovanie zlyhalo')}
   document.body.removeChild(ta);
 }
 
 // ---- IMPORT ----
-let importParsed = [];
-
+let importParsed=[];
 function openImport(){
-  document.getElementById('importDate').value = today();
-  document.getElementById('importJson').value = '';
-  document.getElementById('importPreview').style.display = 'none';
-  importParsed = [];
-  document.getElementById('importOverlay').style.display = 'block';
-  document.body.style.overflow = 'hidden';
+  document.getElementById('importDate').value=today();
+  document.getElementById('importJson').value='';
+  document.getElementById('importPreview').style.display='none';
+  importParsed=[];
+  document.getElementById('importOverlay').style.display='block';
+  document.body.style.overflow='hidden';
 }
-
 function closeImport(){
-  document.getElementById('importOverlay').style.display = 'none';
-  document.body.style.overflow = '';
+  document.getElementById('importOverlay').style.display='none';
+  document.body.style.overflow='';
 }
-
 function copyPrompt(){
-  const text = document.getElementById('importPromptBox').textContent;
-  if(navigator.clipboard?.writeText){
-    navigator.clipboard.writeText(text).then(()=>showToast('✅ Prompt skopírovaný!')).catch(()=>fallbackCopy(text));
-  } else { fallbackCopy(text); }
+  const text=document.getElementById('importPromptBox').textContent;
+  if(navigator.clipboard?.writeText){navigator.clipboard.writeText(text).then(()=>showToast('✅ Prompt skopírovaný!')).catch(()=>fallbackCopy(text))}
+  else fallbackCopy(text);
 }
-
 function parseImport(){
-  const raw = document.getElementById('importJson').value.trim();
-  if(!raw){ showToast('⚠️ Vlož JSON'); return; }
-
+  const raw=document.getElementById('importJson').value.trim();
+  if(!raw){showToast('⚠️ Vlož JSON');return}
   let parsed;
-  try {
-    // Strip markdown code fences if ChatGPT added them
-    const clean = raw.replace(/^```[a-z]*\n?/,'').replace(/```$/,'').trim();
-    parsed = JSON.parse(clean);
-  } catch(e) {
-    showToast('⚠️ Neplatný JSON — skontroluj formát');
-    return;
-  }
-
-  if(!Array.isArray(parsed) || !parsed.length){ showToast('⚠️ JSON musí byť pole [ ]'); return; }
-
-  importParsed = [];
-  const warnings = [];
-  const previewLines = [];
-
-  parsed.forEach((item, i) => {
-    const code = (item.code||'').trim().toUpperCase();
-    const sets = Array.isArray(item.sets) ? item.sets.map(Number).filter(n=>n>0) : [];
-    const weight = item.weight ? parseFloat(item.weight) : null;
-
-    if(!code){ warnings.push(`Položka ${i+1}: chýba code`); return; }
-    if(!sets.length){ warnings.push(`${code}: žiadne série`); return; }
-
-    // Find in catalog — case-insensitive
-    const ex = (() => {
-      for(const b of CATALOG){
-        const e = b.exercises.find(x => x.code.toUpperCase() === code);
-        if(e) return {...e, block: b.block};
-      }
-      return null;
-    })();
-
-    if(!ex){ warnings.push(`⚠️ Kód „${code}" neexistuje v katalógu — preskočený`); return; }
-
-    importParsed.push({ code: ex.code, block: ex.block, sets, weight });
-
-    const wt = weight ? ` · ${weight} kg` : '';
-    previewLines.push(`
-      <div style="display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:0.5px solid #E2EAF0">
-        <div style="width:7px;height:7px;border-radius:50%;background:#2DCE89;flex-shrink:0"></div>
-        <div style="flex:1">
-          <div style="font-size:13px;font-weight:500;color:#1C2B3A">${ex.name}</div>
-          <div style="font-size:11px;color:#4A90B8;font-family:monospace;margin-top:2px">${ex.code}${wt} · ${sets.join(' ')}</div>
-        </div>
-      </div>`);
+  try{const clean=raw.replace(/^```[a-z]*\n?/,'').replace(/```$/,'').trim();parsed=JSON.parse(clean)}
+  catch(e){showToast('⚠️ Neplatný JSON — skontroluj formát');return}
+  if(!Array.isArray(parsed)||!parsed.length){showToast('⚠️ JSON musí byť pole [ ]');return}
+  importParsed=[];const warnings=[],previewLines=[];
+  parsed.forEach((item,i)=>{
+    const code=(item.code||'').trim();
+    const sets=Array.isArray(item.sets)?item.sets.map(Number).filter(n=>n>0):[];
+    const weight=item.weight?parseFloat(item.weight):null;
+    if(!code){warnings.push(`Položka ${i+1}: chýba code`);return}
+    if(!sets.length){warnings.push(`${code}: žiadne série`);return}
+    const ex=(()=>{for(const b of CATALOG){const e=b.exercises.find(x=>x.code.toUpperCase()===code.toUpperCase());if(e)return{...e,block:b.block}}return null})();
+    if(!ex){warnings.push(`⚠️ Kód „${code}" neexistuje v katalógu — preskočený`);return}
+    importParsed.push({code:ex.code,block:ex.block,sets,weight});
+    const wt=weight?` · ${weight} kg`:'';
+    previewLines.push(`<div style="display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:0.5px solid #E2EAF0">
+      <div style="width:7px;height:7px;border-radius:50%;background:#2DCE89;flex-shrink:0"></div>
+      <div style="flex:1">
+        <div style="font-size:13px;font-weight:500;color:#1C2B3A">${ex.name}</div>
+        <div style="font-size:11px;color:#4A90B8;font-family:monospace;margin-top:2px">${ex.code}${wt} · ${sets.join(' ')}</div>
+      </div></div>`);
   });
-
-  document.getElementById('importPreviewList').innerHTML = previewLines.join('') || '<div style="font-size:13px;color:#B8C8D4;padding:8px 0">Žiadne platné záznamy</div>';
-  document.getElementById('importWarnings').innerHTML = warnings.join('<br>');
-  document.getElementById('importConfirmBtn').style.display = importParsed.length ? 'block' : 'none';
-  document.getElementById('importPreview').style.display = 'block';
+  document.getElementById('importPreviewList').innerHTML=previewLines.join('')||'<div style="font-size:13px;color:#B8C8D4;padding:8px 0">Žiadne platné záznamy</div>';
+  document.getElementById('importWarnings').innerHTML=warnings.join('<br>');
+  document.getElementById('importConfirmBtn').style.display=importParsed.length?'block':'none';
+  document.getElementById('importPreview').style.display='block';
 }
-
 async function confirmImport(){
-  if(!importParsed.length){ showToast('Nič na uloženie'); return; }
-  const date = document.getElementById('importDate').value || today();
-  const btn = document.getElementById('importConfirmBtn');
-  btn.textContent = 'Ukladám...'; btn.style.background = '#B8C8D4';
-
-  try {
-    for(const item of importParsed){
-      await insertLog({ date, block: item.block, code: item.code, sets: item.sets, weight: item.weight });
-    }
-    await fetchLogs();
-    closeImport();
+  if(!importParsed.length){showToast('Nič na uloženie');return}
+  const date=document.getElementById('importDate').value||today();
+  const btn=document.getElementById('importConfirmBtn');
+  btn.textContent='Ukladám...';btn.style.background='#B8C8D4';
+  try{
+    for(const item of importParsed) await insertLog({date,block:item.block,code:item.code,sets:item.sets,weight:item.weight});
+    await fetchLogs();closeImport();
     showToast(`✅ Importovaných ${importParsed.length} cvikov!`);
     renderHistory();
-  } catch(e) {
-    showToast('⚠️ Chyba pri ukladaní');
-  } finally {
-    btn.textContent = 'Uložiť do tréningu'; btn.style.background = '#2DCE89';
-  }
+  }catch(e){showToast('⚠️ Chyba pri ukladaní')}
+  finally{btn.textContent='Uložiť do tréningu';btn.style.background='#2DCE89'}
 }
 </script>
 </body>
