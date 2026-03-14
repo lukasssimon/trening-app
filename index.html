@@ -12,8 +12,6 @@ body {
   background: #F5F8FC; color: #1C2B3A;
   min-height: 100vh; max-width: 430px; margin: 0 auto; padding-bottom: 80px;
 }
-
-/* LOGIN */
 .login-screen {
   display: flex; flex-direction: column; align-items: center; justify-content: center;
   min-height: 100vh; padding: 40px 32px; text-align: center;
@@ -29,24 +27,17 @@ body {
 }
 .login-btn:hover { border-color: #4A90B8; }
 .google-icon { width: 20px; height: 20px; }
-
-/* LOADING */
 .loading-overlay {
   position: fixed; inset: 0; background: #F5F8FC;
   display: flex; align-items: center; justify-content: center;
   z-index: 500; flex-direction: column; gap: 12px;
 }
-.loading-dot {
-  width: 8px; height: 8px; border-radius: 50%; background: #4A90B8;
-  animation: pulse 1.2s ease-in-out infinite;
-}
+.loading-dot { width: 8px; height: 8px; border-radius: 50%; background: #4A90B8; animation: pulse 1.2s ease-in-out infinite; }
 .loading-dots { display: flex; gap: 6px; }
 .loading-dot:nth-child(2) { animation-delay: .2s; }
 .loading-dot:nth-child(3) { animation-delay: .4s; }
 @keyframes pulse { 0%,100%{opacity:.3;transform:scale(.8)} 50%{opacity:1;transform:scale(1)} }
 .loading-text { font-size: 13px; color: #94A8B8; }
-
-/* NAV */
 .nav {
   position: fixed; bottom: 0; left: 50%; transform: translateX(-50%);
   width: 100%; max-width: 430px;
@@ -58,8 +49,6 @@ body {
 .nb.active .nb-label { color: #4A90B8; }
 .nb-line { height: 2px; width: 14px; border-radius: 1px; background: transparent; margin-top: 4px; }
 .nb.active .nb-line { background: #4A90B8; }
-
-/* FAB */
 .fab {
   position: fixed; bottom: 72px; right: calc(50% - 215px + 18px);
   width: 52px; height: 52px; border-radius: 50%;
@@ -72,26 +61,21 @@ body {
 .fab:hover { background: #3A7FA8; transform: scale(1.06); }
 .fab:active { transform: scale(0.96); }
 .fab.hidden { display: none; }
-
 .screen { display: none; }
 .screen.active { display: block; }
-.sbar { display: flex; justify-content: space-between; padding: 14px 22px 0; font-size: 11px; color: #94A8B8; }
 
 /* HOME */
-.home-head { padding: 20px 22px 0; }
+.home-head { padding: 24px 22px 0; }
 .home-greet { font-size: 13px; color: #94A8B8; margin-bottom: 6px; }
 .home-title { font-size: 24px; font-weight: 600; color: #1C2B3A; }
 .home-sub { font-size: 12px; color: #4A90B8; margin-top: 5px; font-weight: 500; }
 .home-logout { font-size: 11px; color: #C8DFE9; cursor: pointer; margin-top: 6px; display: inline-block; }
 .home-logout:hover { color: #94A8B8; }
-
 .divider { height: 0.5px; background: #E2EAF0; margin: 20px 22px; }
 .sec-label { font-size: 10px; color: #94A8B8; padding: 0 22px; margin-bottom: 4px; text-transform: uppercase; letter-spacing: .8px; }
-
 .block-group { margin-bottom: 4px; }
 .block-group-label { font-size: 10px; color: #94A8B8; text-transform: uppercase; letter-spacing: .8px; padding: 14px 22px 4px; display: flex; align-items: center; gap: 6px; }
 .block-group-label span { font-size: 13px; }
-
 .line-list { padding: 0 22px; }
 .line-item { display: flex; align-items: center; gap: 14px; padding: 13px 0; border-bottom: 0.5px solid #E2EAF0; cursor: pointer; transition: opacity .15s; }
 .line-item:last-child { border-bottom: none; }
@@ -107,19 +91,51 @@ body {
 
 /* LOG */
 #screen-log { background: white; min-height: 100vh; }
-.back-row { display: flex; align-items: center; gap: 10px; padding: 16px 22px 0; cursor: pointer; }
+.back-row { display: flex; align-items: center; gap: 10px; padding: 20px 22px 0; cursor: pointer; }
 .back-arr { width: 28px; height: 28px; border-radius: 8px; background: #F5F8FC; border: 0.5px solid #E2EAF0; display: flex; align-items: center; justify-content: center; }
 .back-ico { width: 7px; height: 7px; border-left: 1.5px solid #94A8B8; border-bottom: 1.5px solid #94A8B8; transform: rotate(45deg) translate(1px,-1px); }
 .back-title { font-size: 16px; font-weight: 600; color: #1C2B3A; }
-
 .f-sec { padding: 20px 22px 0; }
 .f-label { font-size: 10px; color: #94A8B8; text-transform: uppercase; letter-spacing: .8px; margin-bottom: 12px; }
-
 .bchips { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
 .bchip { background: #F5F8FC; border: 0.5px solid #E2EAF0; border-radius: 12px; padding: 10px 12px; font-size: 12px; color: #94A8B8; cursor: pointer; transition: all .15s; text-align: left; font-family: inherit; }
 .bchip .ic { font-size: 15px; display: block; margin-bottom: 4px; }
 .bchip:hover { border-color: #C8DFE9; color: #4A90B8; }
 .bchip.active { background: #E8F3F9; border-color: #4A90B8; color: #4A90B8; font-weight: 500; }
+
+/* Selected exercise + series — shown ABOVE ex list */
+.sel-and-series {
+  margin: 14px 22px 0;
+  background: #F5F8FC; border: 0.5px solid #E2EAF0;
+  border-radius: 14px; padding: 14px;
+  display: none;
+}
+.sel-display-inner { margin-bottom: 12px; }
+.sel-top { display: flex; align-items: center; gap: 8px; margin-bottom: 3px; }
+.sel-code { font-size: 11px; color: #4A90B8; font-family: monospace; font-weight: 600; }
+.sel-name { font-size: 13px; color: #1C2B3A; font-weight: 500; }
+.sel-desc { font-size: 11px; color: #7AAABF; line-height: 1.5; }
+
+.inline-row { display: flex; align-items: baseline; gap: 8px; padding: 10px 0; border-bottom: 0.5px solid #E2EAF0; }
+.inline-label { font-size: 12px; color: #94A8B8; flex: 1; }
+.inline-input { width: 80px; background: white; border: 0.5px solid #E2EAF0; border-radius: 8px; padding: 6px 10px; font-size: 14px; font-weight: 500; color: #1C2B3A; text-align: center; outline: none; font-family: inherit; transition: border-color .15s; }
+.inline-input:focus { border-color: #4A90B8; background: white; }
+.inline-unit { font-size: 12px; color: #94A8B8; }
+
+.series-section { margin-top: 12px; }
+.series-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+.series-label { font-size: 10px; color: #94A8B8; text-transform: uppercase; letter-spacing: .8px; }
+.series-hint { font-size: 11px; color: #4A90B8; font-weight: 500; }
+.sets-row { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 10px; }
+.set-chip { background: #E8F3F9; border-radius: 8px; padding: 6px 10px; font-size: 14px; font-weight: 500; color: #4A90B8; cursor: pointer; border: 1px solid #C8DFE9; transition: all .15s; font-family: inherit; }
+.set-chip:hover { background: #D8EBF5; }
+.set-chip-add { background: white; border: 0.5px dashed #C8DFE9; border-radius: 8px; padding: 6px 10px; font-size: 14px; color: #B8C8D4; cursor: pointer; transition: all .15s; font-family: inherit; }
+.set-chip-add:hover { border-color: #4A90B8; color: #4A90B8; }
+
+.save-area { padding: 16px 22px 6px; }
+.save-btn { width: 100%; background: #4A90B8; border: none; border-radius: 14px; padding: 15px; color: white; font-size: 14px; font-weight: 500; cursor: pointer; font-family: inherit; transition: background .15s; }
+.save-btn:hover { background: #3A7FA8; }
+.save-btn:disabled { background: #B8C8D4; cursor: not-allowed; }
 
 .ex-lines { display: flex; flex-direction: column; }
 .ex-line { display: flex; align-items: center; gap: 10px; padding: 12px 0; border-bottom: 0.5px solid #E2EAF0; cursor: pointer; }
@@ -131,32 +147,7 @@ body {
 .ex-sel { width: 6px; height: 6px; border-radius: 50%; background: #4A90B8; opacity: 0; flex-shrink: 0; }
 .ex-line.active .ex-sel { opacity: 1; }
 
-.sel-display { margin: 14px 22px 0; padding: 12px 14px; background: #E8F3F9; border-radius: 10px; }
-.sel-top { display: flex; align-items: center; gap: 8px; margin-bottom: 3px; }
-.sel-code { font-size: 11px; color: #4A90B8; font-family: monospace; font-weight: 600; }
-.sel-name { font-size: 13px; color: #1C2B3A; font-weight: 500; }
-.sel-desc { font-size: 11px; color: #7AAABF; line-height: 1.5; }
-
-.fields-wrap { padding: 0 22px; }
-.inline-row { display: flex; align-items: baseline; gap: 8px; padding: 14px 0; border-bottom: 0.5px solid #E2EAF0; }
-.inline-label { font-size: 12px; color: #94A8B8; flex: 1; }
-.inline-input { width: 80px; background: #F5F8FC; border: 0.5px solid #E2EAF0; border-radius: 8px; padding: 6px 10px; font-size: 14px; font-weight: 500; color: #1C2B3A; text-align: center; outline: none; font-family: inherit; transition: border-color .15s; }
-.inline-input:focus { border-color: #4A90B8; background: white; }
-.inline-unit { font-size: 12px; color: #94A8B8; }
-
-.series-section { padding: 16px 22px 0; }
-.series-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
-.series-label { font-size: 10px; color: #94A8B8; text-transform: uppercase; letter-spacing: .8px; }
-.series-hint { font-size: 11px; color: #4A90B8; font-weight: 500; }
-.today-loaded { font-size: 11px; color: #94A8B8; margin-bottom: 10px; }
-.today-loaded span { color: #4A90B8; font-weight: 500; }
-
-.sets-row { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 8px; }
-.set-chip { background: #E8F3F9; border-radius: 8px; padding: 6px 10px; font-size: 14px; font-weight: 500; color: #4A90B8; cursor: pointer; border: 1px solid #C8DFE9; transition: all .15s; font-family: inherit; }
-.set-chip:hover { background: #D8EBF5; }
-.set-chip-add { background: #F5F8FC; border: 0.5px dashed #C8DFE9; border-radius: 8px; padding: 6px 10px; font-size: 14px; color: #B8C8D4; cursor: pointer; transition: all .15s; font-family: inherit; }
-.set-chip-add:hover { border-color: #4A90B8; color: #4A90B8; }
-
+/* POPUP */
 .set-edit-popup {
   position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%);
   width: auto; min-width: 180px; background: white; border-radius: 14px;
@@ -172,21 +163,16 @@ body {
 .popup-del:hover { color: #E07070; }
 .popup-overlay { position: fixed; inset: 0; z-index: 199; }
 
-.save-area { padding: 20px 22px 6px; }
-.save-btn { width: 100%; background: #4A90B8; border: none; border-radius: 14px; padding: 15px; color: white; font-size: 14px; font-weight: 500; cursor: pointer; font-family: inherit; transition: background .15s; }
-.save-btn:hover { background: #3A7FA8; }
-.save-btn:disabled { background: #B8C8D4; cursor: not-allowed; }
-.save-btn2 { width: 100%; background: transparent; border: 0.5px solid #E2EAF0; border-radius: 14px; padding: 12px; color: #94A8B8; font-size: 12px; cursor: pointer; font-family: inherit; margin-top: 8px; transition: border-color .15s; }
-.save-btn2:hover { border-color: #4A90B8; color: #4A90B8; }
-
-.hist-head { padding: 20px 22px 0; }
+/* HISTORY */
+.hist-head { padding: 24px 22px 0; }
 .hist-title { font-size: 20px; font-weight: 600; color: #1C2B3A; }
 .hist-day { margin-bottom: 4px; }
 .hist-date { font-size: 10px; color: #94A8B8; text-transform: uppercase; letter-spacing: .8px; padding: 0 22px; margin-bottom: 4px; display: flex; justify-content: space-between; }
 
-.stats-head { padding: 20px 22px 0; }
+/* STATS */
+.stats-head { padding: 24px 22px 0; }
 .stats-title { font-size: 20px; font-weight: 600; color: #1C2B3A; }
-.stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 20px 22px 0; }
+.stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 16px 22px 0; }
 .stat-card { background: white; border: 0.5px solid #E2EAF0; border-radius: 14px; padding: 16px; }
 .stat-l { font-size: 11px; color: #94A8B8; margin-bottom: 6px; }
 .stat-v { font-size: 26px; font-weight: 600; color: #4A90B8; }
@@ -197,9 +183,18 @@ body {
 .top-bar { flex: 1; height: 3px; background: #E2EAF0; border-radius: 2px; overflow: hidden; }
 .top-bar-f { height: 100%; background: #4A90B8; border-radius: 2px; }
 .top-cnt { font-size: 11px; color: #4A90B8; min-width: 24px; text-align: right; font-weight: 500; }
-.period-row { display: flex; gap: 8px; padding: 16px 22px 0; }
+.period-row { display: flex; gap: 8px; padding: 16px 22px 0; flex-wrap: wrap; }
 .period-btn { padding: 6px 14px; font-size: 11px; background: #F5F8FC; border: 0.5px solid #E2EAF0; border-radius: 20px; color: #94A8B8; cursor: pointer; font-family: inherit; transition: all .15s; }
 .period-btn.active { background: #E8F3F9; border-color: #4A90B8; color: #4A90B8; }
+
+/* Day summary */
+.day-summary { margin: 0 22px; background: #E8F3F9; border-radius: 14px; padding: 16px; }
+.day-summary-title { font-size: 10px; color: #4A90B8; text-transform: uppercase; letter-spacing: .8px; margin-bottom: 12px; font-weight: 600; }
+.day-sum-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px; }
+.day-sum-item { background: white; border-radius: 10px; padding: 10px 12px; }
+.day-sum-l { font-size: 10px; color: #94A8B8; margin-bottom: 4px; }
+.day-sum-v { font-size: 20px; font-weight: 600; color: #4A90B8; }
+.day-weights { font-size: 11px; color: #7AAABF; line-height: 1.8; }
 
 .toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%) translateY(-60px); background: #1C2B3A; color: white; font-size: 12px; font-weight: 500; padding: 10px 20px; border-radius: 30px; transition: transform .25s ease; z-index: 999; white-space: nowrap; }
 .toast.show { transform: translateX(-50%) translateY(0); }
@@ -207,17 +202,13 @@ body {
 </head>
 <body>
 
-<!-- LOADING -->
 <div class="loading-overlay" id="loadingOverlay">
   <div class="loading-dots">
-    <div class="loading-dot"></div>
-    <div class="loading-dot"></div>
-    <div class="loading-dot"></div>
+    <div class="loading-dot"></div><div class="loading-dot"></div><div class="loading-dot"></div>
   </div>
   <div class="loading-text">Načítavam...</div>
 </div>
 
-<!-- LOGIN -->
 <div class="login-screen" id="loginScreen" style="display:none">
   <div class="login-title">💪 Tréning</div>
   <div class="login-sub">Zaznamenaj každý cvik</div>
@@ -236,7 +227,6 @@ body {
 
 <!-- HOME -->
 <div class="screen" id="screen-home">
-  <div class="sbar"><span id="sbarTime">9:41</span><span>●●●</span></div>
   <div class="home-head">
     <div class="home-greet" id="homeGreet">Ahoj, Luk</div>
     <div class="home-title" id="homeTitle">Dnes: 0 cvikov</div>
@@ -249,27 +239,21 @@ body {
 
 <!-- LOG -->
 <div class="screen" id="screen-log">
-  <div class="sbar"><span>9:41</span><span>●●●</span></div>
   <div class="back-row" onclick="goBack()">
     <div class="back-arr"><div class="back-ico"></div></div>
     <div class="back-title" id="logTitle">Nový cvik</div>
   </div>
+
   <div class="f-sec" style="margin-top:16px">
     <div class="f-label">Blok</div>
     <div class="bchips" id="blockChips"></div>
   </div>
-  <div class="f-sec" id="exSection" style="display:none;margin-top:18px">
-    <div class="f-label">Cvik</div>
-    <div class="ex-lines" id="exLines"></div>
-  </div>
-  <div id="selDisplay" style="display:none"></div>
-  <div id="logFields" style="display:none">
-    <div class="fields-wrap">
+
+  <!-- Selected exercise + series block — above ex list -->
+  <div class="sel-and-series" id="selAndSeries">
+    <div class="sel-display-inner" id="selDisplayInner"></div>
+    <div id="weightRowWrap" style="display:none">
       <div class="inline-row">
-        <span class="inline-label">Dátum</span>
-        <input type="date" id="logDate" class="inline-input" style="width:130px;font-size:12px;">
-      </div>
-      <div class="inline-row" id="weightRow" style="display:none">
         <span class="inline-label">Váha činiek</span>
         <input type="number" id="logWeight" class="inline-input" placeholder="0" min="0" step="0.5">
         <span class="inline-unit">kg</span>
@@ -280,19 +264,29 @@ body {
         <span class="series-label">Série · opakovania</span>
         <span class="series-hint" id="seriesHint"></span>
       </div>
-      <div id="todayLoaded" class="today-loaded" style="display:none"></div>
       <div class="sets-row" id="setsRow"></div>
     </div>
-    <div class="save-area">
-      <button class="save-btn" id="saveBtnMain" onclick="saveLog()">Uložiť cvik</button>
-      <button class="save-btn2" onclick="saveAndAnother()">Uložiť + pridať ďalší</button>
+    <div class="save-area" style="padding:12px 0 0">
+      <button class="save-btn" id="saveBtnMain" onclick="saveAndAnother()">Uložiť</button>
     </div>
+  </div>
+
+  <!-- Date row -->
+  <div id="dateRowWrap" style="display:none; padding: 0 22px;">
+    <div class="inline-row">
+      <span class="inline-label">Dátum</span>
+      <input type="date" id="logDate" class="inline-input" style="width:130px;font-size:12px;">
+    </div>
+  </div>
+
+  <div class="f-sec" id="exSection" style="display:none; margin-top:14px">
+    <div class="f-label">Cvik</div>
+    <div class="ex-lines" id="exLines"></div>
   </div>
 </div>
 
 <!-- HISTORY -->
 <div class="screen" id="screen-history">
-  <div class="sbar"><span>9:41</span><span>●●●</span></div>
   <div class="hist-head"><div class="hist-title">História</div></div>
   <div class="divider"></div>
   <div id="histContent"></div>
@@ -300,9 +294,9 @@ body {
 
 <!-- STATS -->
 <div class="screen" id="screen-stats">
-  <div class="sbar"><span>9:41</span><span>●●●</span></div>
   <div class="stats-head"><div class="stats-title">Štatistiky</div></div>
   <div class="period-row" id="statPeriod"></div>
+  <div id="daySummaryWrap"></div>
   <div class="stat-grid" id="statGrid"></div>
   <div class="divider" style="margin-top:20px"></div>
   <div class="sec-label" style="margin-top:0">Najčastejšie cviky</div>
@@ -329,12 +323,8 @@ body {
 </div>
 
 <script>
-// =============================================
-// KONFIGURÁCIA — vlož svoje hodnoty zo Supabase
-// =============================================
-const SUPABASE_URL  = 'https://agwwgltxcosuqgdbcgbp.supabase.co';   // napr. https://abcxyz.supabase.co
-const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFnd3dnbHR4Y29zdXFnZGJjZ2JwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMzNDU0MDgsImV4cCI6MjA4ODkyMTQwOH0.-qAYd4SHVSoIHpMXlo_13ZKYzDa-hSNP0SsoTI6vs74';        // dlhý JWT token
-// =============================================
+const SUPABASE_URL  = 'https://agwwgltxcosuqgdbcgbp.supabase.co';
+const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFnd3dnbHR4Y29zdXFnZGJjZ2JwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMzNDU0MDgsImV4cCI6MjA4ODkyMTQwOH0.-qAYd4SHVSoIHpMXlo_13ZKYzDa-hSNP0SsoTI6vs74';
 
 const { createClient } = supabase;
 const sb = createClient(SUPABASE_URL, SUPABASE_ANON);
@@ -406,18 +396,13 @@ const CATALOG = [
 
 // ---- AUTH ----
 async function loginGoogle(){
-  await sb.auth.signInWithOAuth({
-    provider:'google',
-    options:{ redirectTo: window.location.href }
-  });
+  await sb.auth.signInWithOAuth({provider:'google', options:{redirectTo:window.location.href}});
 }
-
 async function logout(){
   await sb.auth.signOut();
   currentUser=null; cachedLogs=[];
   showLoginScreen();
 }
-
 function showLoginScreen(){
   document.getElementById('loadingOverlay').style.display='none';
   document.getElementById('loginScreen').style.display='flex';
@@ -425,7 +410,6 @@ function showLoginScreen(){
   document.getElementById('fabBtn').classList.add('hidden');
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
 }
-
 function showApp(){
   document.getElementById('loadingOverlay').style.display='none';
   document.getElementById('loginScreen').style.display='none';
@@ -436,43 +420,32 @@ function showApp(){
 // ---- DB ----
 async function fetchLogs(){
   const {data,error}=await sb.from('training_logs')
-    .select('*')
-    .eq('user_id', currentUser.id)
-    .order('date', {ascending:false})
-    .order('created_at', {ascending:true});
+    .select('*').eq('user_id',currentUser.id)
+    .order('date',{ascending:false}).order('created_at',{ascending:true});
   if(error){console.error(error);return}
   cachedLogs=data||[];
 }
-
 async function insertLog(entry){
   const {error}=await sb.from('training_logs').insert({
-    user_id: currentUser.id,
-    date: entry.date,
-    block: entry.block,
-    code: entry.code,
-    sets: entry.sets,
-    weight: entry.weight
+    user_id:currentUser.id, date:entry.date, block:entry.block,
+    code:entry.code, sets:entry.sets, weight:entry.weight
   });
   if(error) throw error;
 }
-
 async function deleteLogDB(id){
   const {error}=await sb.from('training_logs').delete().eq('id',id);
   if(error) throw error;
 }
 
 // ---- INIT ----
-sb.auth.onAuthStateChange(async (event, session)=>{
+sb.auth.onAuthStateChange(async(event,session)=>{
   if(session?.user){
     currentUser=session.user;
     const name=currentUser.user_metadata?.full_name||currentUser.email||'Luk';
-    const first=name.split(' ')[0];
-    document.getElementById('homeGreet').textContent=`Ahoj, ${first}`;
+    document.getElementById('homeGreet').textContent=`Ahoj, ${name.split(' ')[0]}`;
     await fetchLogs();
     showApp();
-  } else {
-    showLoginScreen();
-  }
+  } else { showLoginScreen(); }
 });
 
 // ---- UTILS ----
@@ -484,7 +457,6 @@ function fmtDate(d){
 }
 function getEx(code){for(const b of CATALOG){const e=b.exercises.find(x=>x.code===code);if(e)return{...e,block:b.block}}return null}
 function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2000)}
-
 function streak(){
   const dates=[...new Set(cachedLogs.map(l=>l.date))].sort().reverse();
   let s=0,check=new Date(today());
@@ -500,7 +472,7 @@ function showScreen(name){
   document.getElementById('screen-'+name).classList.add('active');
   const nb=document.getElementById('nb-'+name);
   if(nb) nb.classList.add('active');
-  document.getElementById('fabBtn').classList.toggle('hidden', name==='log');
+  document.getElementById('fabBtn').classList.toggle('hidden',name==='log');
   if(name==='home') renderHome();
   if(name==='history') renderHistory();
   if(name==='stats') renderStats();
@@ -514,9 +486,8 @@ function renderHome(){
   const dnames=['nedeľa','pondelok','utorok','streda','štvrtok','piatok','sobota'];
   const now=new Date();
   const M=['jan','feb','mar','apr','máj','jún','júl','aug','sep','okt','nov','dec'];
-  const dateStr=`${dnames[now.getDay()]} ${now.getDate()}. ${M[now.getMonth()]}`;
   document.getElementById('homeTitle').textContent=`Dnes: ${tl.length} ${tl.length===1?'cvik':tl.length<5?'cviky':'cvikov'}`;
-  document.getElementById('homeSub').textContent=(s>1?`🔥 ${s} dní séria · `:'')+dateStr;
+  document.getElementById('homeSub').textContent=(s>1?`🔥 ${s} dní séria · `:'')+`${dnames[now.getDay()]} ${now.getDate()}. ${M[now.getMonth()]}`;
   const container=document.getElementById('todayBlocks');
   if(!tl.length){container.innerHTML='<div class="empty-state">Zatiaľ žiadne cviky. Pridaj prvý!</div>';return}
   let html='';
@@ -527,13 +498,12 @@ function renderHome(){
       <div class="block-group-label"><span>${b.icon}</span>${b.block}</div>
       <div class="line-list">
         ${items.map(l=>{
-          const ex=getEx(l.code);
-          const wt=l.weight?` · ${l.weight} kg`:'';
-          return `<div class="line-item" onclick="openLogForEntry('${l.block}','${l.code}')">
+          const ex=getEx(l.code), wt=l.weight?` · ${l.weight} kg`:'';
+          return `<div class="line-item" onclick="openLogForId('${l.id}')">
             <div class="li-dot"></div>
             <div class="li-main">
               <div class="li-name">${ex?ex.name:l.code}</div>
-              <div class="li-meta">${l.code} · ${l.sets.join(' ')}${wt}</div>
+              <div class="li-meta">${l.code} · ${(Array.isArray(l.sets)?l.sets:[]).join(' ')}${wt}</div>
             </div>
             <span class="li-arr">›</span>
             <button class="li-del" onclick="event.stopPropagation();delLog('${l.id}')">✕</button>
@@ -546,24 +516,38 @@ function renderHome(){
 }
 
 async function delLog(id){
-  try{
-    await deleteLogDB(id);
-    cachedLogs=cachedLogs.filter(l=>l.id!==id);
-    renderHome(); showToast('Zmazané');
-  }catch(e){showToast('⚠️ Chyba pri mazaní')}
+  try{await deleteLogDB(id);cachedLogs=cachedLogs.filter(l=>l.id!==id);renderHome();showToast('Zmazané')}
+  catch(e){showToast('⚠️ Chyba pri mazaní')}
 }
 
 // ---- LOG ----
-let selBlock=null, selCode=null, sets=[], editIdx=null;
+let selBlock=null, selCode=null, sets=[], editIdx=null, editingId=null;
 
-function openLogForEntry(blockName, code){
+// Open existing log entry by ID for editing
+function openLogForId(id){
+  const log=cachedLogs.find(l=>l.id===id);
+  if(!log) return;
   prevScreen='home';
   resetLog();
   document.getElementById('logTitle').textContent='Upraviť cvik';
-  selBlock=blockName;
+  editingId=id;
+  selBlock=log.block; selCode=log.code;
+  sets=Array.isArray(log.sets)?[...log.sets]:[];
+  document.getElementById('logDate').value=log.date;
+  if(log.weight) document.getElementById('logWeight').value=log.weight;
   renderBlockChips(); renderExLines();
   document.getElementById('exSection').style.display='block';
-  pickEx(code);
+  // Show sel-and-series with data
+  const ex=getEx(log.code);
+  if(ex){
+    document.getElementById('selDisplayInner').innerHTML=`
+      <div class="sel-top"><span class="sel-code">${ex.code}</span><span class="sel-name">${ex.name}</span></div>
+      <div class="sel-desc">${ex.desc}</div>`;
+    document.getElementById('weightRowWrap').style.display=ex.w?'block':'none';
+  }
+  document.getElementById('selAndSeries').style.display='block';
+  document.getElementById('dateRowWrap').style.display='block';
+  renderSets();
   showScreen('log');
   document.getElementById('nb-log').classList.add('active');
 }
@@ -578,14 +562,13 @@ function goLog(){
 }
 
 function resetLog(){
-  selBlock=null; selCode=null; sets=[];
+  selBlock=null; selCode=null; sets=[]; editingId=null;
   document.getElementById('logDate').value=today();
   document.getElementById('logWeight').value='';
   document.getElementById('exSection').style.display='none';
-  document.getElementById('selDisplay').style.display='none';
-  document.getElementById('logFields').style.display='none';
-  document.getElementById('weightRow').style.display='none';
-  document.getElementById('todayLoaded').style.display='none';
+  document.getElementById('selAndSeries').style.display='none';
+  document.getElementById('dateRowWrap').style.display='none';
+  document.getElementById('weightRowWrap').style.display='none';
   renderBlockChips(); renderSets();
 }
 
@@ -598,13 +581,11 @@ function renderBlockChips(){
 }
 
 function pickBlock(bname){
-  selBlock=bname; selCode=null; sets=[];
+  selBlock=bname; selCode=null; sets=[]; editingId=null;
   renderBlockChips(); renderExLines();
   document.getElementById('exSection').style.display='block';
-  document.getElementById('selDisplay').style.display='none';
-  document.getElementById('logFields').style.display='none';
-  document.getElementById('todayLoaded').style.display='none';
-  renderSets();
+  document.getElementById('selAndSeries').style.display='none';
+  document.getElementById('dateRowWrap').style.display='none';
 }
 
 function renderExLines(){
@@ -619,36 +600,22 @@ function renderExLines(){
   ).join('');
 }
 
-function getTodayData(code){
-  const td=document.getElementById('logDate').value||today();
-  const existing=cachedLogs.filter(l=>l.date===td&&l.code===code);
-  if(!existing.length) return{sets:[],weight:null,ids:[]};
-  return{
-    sets:existing.flatMap(l=>Array.isArray(l.sets)?l.sets:[]),
-    weight:existing.find(l=>l.weight)?.weight||null,
-    ids:existing.map(l=>l.id)
-  };
-}
-
 function pickEx(code){
-  selCode=code; renderExLines();
+  selCode=code; editingId=null; sets=[];
+  renderExLines();
   const ex=getEx(code);
-  const disp=document.getElementById('selDisplay');
-  disp.style.display='block';
-  disp.innerHTML=`<div class="sel-display">
+  document.getElementById('selDisplayInner').innerHTML=`
     <div class="sel-top"><span class="sel-code">${ex.code}</span><span class="sel-name">${ex.name}</span></div>
-    <div class="sel-desc">${ex.desc}</div>
-  </div>`;
-  const existing=getTodayData(code);
-  sets=[...existing.sets];
-  document.getElementById('weightRow').style.display=ex.w?'flex':'none';
-  if(ex.w&&existing.weight) document.getElementById('logWeight').value=existing.weight;
-  const tl=document.getElementById('todayLoaded');
-  if(existing.sets.length){tl.style.display='block';tl.innerHTML=`Načítané z dnešného tréningu: <span>${existing.sets.join(' ')}</span>`}
-  else tl.style.display='none';
-  document.getElementById('logFields').style.display='block';
+    <div class="sel-desc">${ex.desc}</div>`;
+  document.getElementById('weightRowWrap').style.display=ex.w?'block':'none';
+  document.getElementById('logWeight').value='';
+  document.getElementById('selAndSeries').style.display='block';
+  document.getElementById('dateRowWrap').style.display='block';
   renderSets();
-  setTimeout(()=>disp.scrollIntoView({behavior:'smooth',block:'nearest'}),100);
+  // Scroll to sel-and-series
+  setTimeout(()=>document.getElementById('selAndSeries').scrollIntoView({behavior:'smooth',block:'nearest'}),80);
+  // Auto-open popup for first set
+  setTimeout(()=>addSet(), 150);
 }
 
 function renderSets(){
@@ -700,43 +667,35 @@ document.getElementById('popupInput').addEventListener('keydown',e=>{
   if(e.key==='Escape') closePopup();
 });
 
-async function doSave(){
+async function saveAndAnother(){
   const date=document.getElementById('logDate').value;
   const weight=parseFloat(document.getElementById('logWeight').value)||null;
-  if(!selBlock||!selCode||!sets.length){showToast('⚠️ Vyber cvik a pridaj aspoň 1 sériu');return false}
+  if(!selBlock||!selCode||!sets.length){showToast('⚠️ Vyber cvik a pridaj aspoň 1 sériu');return}
   const btn=document.getElementById('saveBtnMain');
   btn.disabled=true; btn.textContent='Ukladám...';
   try{
-    // Zmaž dnešné záznamy pre tento cvik a vlož nový
-    const existing=getTodayData(selCode);
-    for(const id of existing.ids) await deleteLogDB(id);
+    if(editingId){
+      // Update existing record — delete + reinsert
+      await deleteLogDB(editingId);
+    }
     await insertLog({date,block:selBlock,code:selCode,sets:[...sets],weight});
     await fetchLogs();
-    return true;
+    showToast('✅ Uložené!');
+    // Reset for next entry — keep block selected
+    const keepBlock=selBlock;
+    selCode=null; sets=[]; editingId=null;
+    document.getElementById('logTitle').textContent='Nový cvik';
+    document.getElementById('selAndSeries').style.display='none';
+    document.getElementById('dateRowWrap').style.display='none';
+    document.getElementById('logWeight').value='';
+    renderExLines();
+    renderSets();
+    window.scrollTo({top:0,behavior:'smooth'});
   }catch(e){
     showToast('⚠️ Chyba pri ukladaní');
-    return false;
   }finally{
-    btn.disabled=false; btn.textContent='Uložiť cvik';
+    btn.disabled=false; btn.textContent='Uložiť';
   }
-}
-
-async function saveLog(){
-  const ok=await doSave(); if(!ok) return;
-  showToast('✅ Uložené!'); goBack();
-}
-
-async function saveAndAnother(){
-  const ok=await doSave(); if(!ok) return;
-  sets=[]; selCode=null;
-  renderExLines();
-  document.getElementById('selDisplay').style.display='none';
-  document.getElementById('logFields').style.display='none';
-  document.getElementById('todayLoaded').style.display='none';
-  renderSets();
-  document.getElementById('logTitle').textContent='Nový cvik';
-  showToast('✅ Uložené! Pridaj ďalší.');
-  window.scrollTo({top:0,behavior:'smooth'});
 }
 
 // ---- HISTORY ----
@@ -775,23 +734,58 @@ async function delLogH(id){
 }
 
 // ---- STATS ----
-let statPeriod='week';
+let statPeriod='day';
+
 function renderStats(){
-  document.getElementById('statPeriod').innerHTML=['week','month','all'].map(p=>
-    `<button class="period-btn ${statPeriod===p?'active':''}" onclick="setStatPeriod('${p}')">${p==='week'?'Týždeň':p==='month'?'Mesiac':'Všetko'}</button>`
+  document.getElementById('statPeriod').innerHTML=['day','week','month','all'].map(p=>
+    `<button class="period-btn ${statPeriod===p?'active':''}" onclick="setStatPeriod('${p}')">${p==='day'?'Dnes':p==='week'?'Týždeň':p==='month'?'Mesiac':'Všetko'}</button>`
   ).join('');
+
   const now=new Date();
+  const td=today();
   let filtered=cachedLogs;
-  if(statPeriod==='week'){const day=now.getDay()||7;const mon=new Date(now);mon.setDate(now.getDate()-day+1);filtered=cachedLogs.filter(l=>l.date>=mon.toISOString().slice(0,10))}
-  else if(statPeriod==='month'){filtered=cachedLogs.filter(l=>l.date>=new Date(now.getFullYear(),now.getMonth(),1).toISOString().slice(0,10))}
+  if(statPeriod==='day'){
+    filtered=cachedLogs.filter(l=>l.date===td);
+  } else if(statPeriod==='week'){
+    const day=now.getDay()||7;const mon=new Date(now);mon.setDate(now.getDate()-day+1);
+    filtered=cachedLogs.filter(l=>l.date>=mon.toISOString().slice(0,10));
+  } else if(statPeriod==='month'){
+    filtered=cachedLogs.filter(l=>l.date>=new Date(now.getFullYear(),now.getMonth(),1).toISOString().slice(0,10));
+  }
+
+  // Day summary panel
+  const dswrap=document.getElementById('daySummaryWrap');
+  if(statPeriod==='day'){
+    const dayLogs=filtered;
+    const daySets=dayLogs.reduce((a,l)=>a+(Array.isArray(l.sets)?l.sets.length:0),0);
+    const dayReps=dayLogs.reduce((a,l)=>a+(Array.isArray(l.sets)?l.sets.reduce((b,s)=>b+s,0):0),0);
+    const weightsUsed=dayLogs.filter(l=>l.weight).map(l=>{const ex=getEx(l.code);return `${ex?ex.name:l.code} — ${l.weight} kg`});
+    dswrap.innerHTML=`<div style="padding:16px 22px 0">
+      <div class="day-summary">
+        <div class="day-summary-title">Dnešný sumár · ${fmtDate(td)}</div>
+        <div class="day-sum-grid">
+          <div class="day-sum-item"><div class="day-sum-l">Cviky</div><div class="day-sum-v">${dayLogs.length}</div></div>
+          <div class="day-sum-item"><div class="day-sum-l">Série</div><div class="day-sum-v">${daySets}</div></div>
+          <div class="day-sum-item"><div class="day-sum-l">Opakovania</div><div class="day-sum-v">${dayReps}</div></div>
+          <div class="day-sum-item"><div class="day-sum-l">Séria dní 🔥</div><div class="day-sum-v">${streak()}</div></div>
+        </div>
+        ${weightsUsed.length?`<div class="day-weights">${weightsUsed.join('<br>')}</div>`:''}
+      </div>
+    </div>`;
+  } else {
+    dswrap.innerHTML='';
+  }
+
   const days=new Set(filtered.map(l=>l.date)).size;
   const totalSets=filtered.reduce((a,l)=>a+(Array.isArray(l.sets)?l.sets.length:0),0);
   const totalReps=filtered.reduce((a,l)=>a+(Array.isArray(l.sets)?l.sets.reduce((b,s)=>b+s,0):0),0);
+
   document.getElementById('statGrid').innerHTML=`
     <div class="stat-card"><div class="stat-l">Tréningové dni</div><div class="stat-v">${days}</div></div>
     <div class="stat-card"><div class="stat-l">Celkové série</div><div class="stat-v">${totalSets}</div></div>
     <div class="stat-card"><div class="stat-l">Celkové opakovania</div><div class="stat-v">${totalReps}</div></div>
     <div class="stat-card"><div class="stat-l">Séria dní 🔥</div><div class="stat-v">${streak()}</div></div>`;
+
   const exCount={};
   filtered.forEach(l=>{const ex=getEx(l.code);exCount[ex?ex.name:l.code]=(exCount[ex?ex.name:l.code]||0)+1});
   const top=Object.entries(exCount).sort((a,b)=>b[1]-a[1]).slice(0,6);
@@ -805,6 +799,7 @@ function renderStats(){
       </div>`).join('')
     :'<div class="empty-state">Žiadne dáta.</div>';
 }
+
 function setStatPeriod(p){statPeriod=p;renderStats()}
 </script>
 </body>
