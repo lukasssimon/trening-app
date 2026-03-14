@@ -93,6 +93,15 @@ body {
 .plan-reason{font-size:10px;color:#B8C8D4;line-height:1.5}
 .plan-divider{height:0.5px;background:#E2EAF0;margin:10px 0}
 
+/* RULES TABLE */
+.rules-table { width:100%; border-collapse:collapse; }
+.rules-table th { font-size:9px; color:#94A8B8; text-align:left; padding:4px 6px; font-weight:500; text-transform:uppercase; letter-spacing:.4px; border-bottom:0.5px solid #E2EAF0; }
+.rules-table td { font-size:11px; color:#1C2B3A; padding:8px 6px; border-bottom:0.5px solid #F0F4FA; vertical-align:top; line-height:1.4; }
+.rules-table tr:last-child td { border-bottom:none; }
+.rules-table td:first-child { font-weight:600; white-space:nowrap; }
+.rules-table td:nth-child(2), .rules-table td:nth-child(3) { color:#4A90B8; font-family:monospace; font-size:10px; white-space:nowrap; }
+.rules-table td:last-child { color:#94A8B8; font-size:10px; }
+
 /* TIMETABLE */
 .tt-wrap{margin:0 22px}
 .tt-table{width:100%;border-collapse:collapse}
@@ -227,11 +236,7 @@ body {
     <span class="home-logout" onclick="logout()">odhlásiť sa</span>
   </div>
   <div class="divider"></div>
-  <!-- Today recommendation -->
-  <div class="sec-label">Odporúčané na dnes</div>
-  <div id="recCard"></div>
   <!-- Today workouts -->
-  <div class="divider"></div>
   <div id="todayBlocks"></div>
   <!-- Suggested plan -->
   <div class="divider"></div>
@@ -241,6 +246,14 @@ body {
   <div class="divider"></div>
   <div class="sec-label">Time Table – aktuálny týždeň</div>
   <div class="tt-wrap" id="timeTable"></div>
+  <!-- Recommended today -->
+  <div class="divider"></div>
+  <div class="sec-label">Odporúčané na dnes</div>
+  <div id="recCard"></div>
+  <!-- Training rules -->
+  <div class="divider"></div>
+  <div class="sec-label">Pravidlá tréningu</div>
+  <div class="tt-wrap" id="trainingRules"></div>
   <div style="height:16px"></div>
 </div>
 
@@ -787,7 +800,7 @@ function showScreen(name){
   document.getElementById('screen-'+name).classList.add('active');
   const nb=document.getElementById('nb-'+name);if(nb)nb.classList.add('active');
   document.getElementById('fabBtn').classList.toggle('hidden',name==='log');
-  if(name==='home'){renderHome();renderRecommendation();renderSuggestedPlan();renderTimeTable()}
+  if(name==='home'){renderHome();renderSuggestedPlan();renderTimeTable();renderRecommendation();renderTrainingRules()}
   if(name==='history') renderHistory();
   if(name==='stats') renderStats();
 }
@@ -830,7 +843,7 @@ function renderHome(){
 }
 
 async function delLog(id){
-  try{await deleteLogDB(id);cachedLogs=cachedLogs.filter(l=>l.id!==id);renderHome();renderRecommendation();renderSuggestedPlan();renderTimeTable();showToast('Zmazané')}
+  try{await deleteLogDB(id);cachedLogs=cachedLogs.filter(l=>l.id!==id);renderHome();renderSuggestedPlan();renderTimeTable();renderRecommendation();renderTrainingRules();showToast('Zmazané')}
   catch(e){showToast('⚠️ Chyba pri mazaní')}
 }
 
@@ -1056,7 +1069,32 @@ function renderStats(){
 }
 function setStatPeriod(p){statPeriod=p;renderStats()}
 
-// ---- EXPORT ----
+// ---- TRAINING RULES TABLE ----
+function renderTrainingRules(){
+  const rows=[
+    {area:'Core',        icon:'🧘', weekly:'5× týždenne', threshold:'≥ 4 série', desc:'Cviky stability trupu, zvyčajne na začiatku tréningu.'},
+    {area:'Chrbát / Mob.',icon:'🌊',weekly:'5× týždenne', threshold:'≥ 5 sérií', desc:'Mobilita chrbtice, stabilita lopatiek, aktivácia chrbta.'},
+    {area:'Silový',      icon:'💪', weekly:'3× týždenne', threshold:'≥ 8 sérií', desc:'Cviky s činkami: shoulder press, biceps, RSD a ďalšie.'},
+    {area:'Nohy',        icon:'🦵', weekly:'2× týždenne', threshold:'≥ 4 série', desc:'Drepy, výpady, split squaty a hip flow.'}
+  ];
+  document.getElementById('trainingRules').innerHTML=`
+    <table class="rules-table">
+      <thead><tr>
+        <th>Oblasť</th>
+        <th>Cieľ / týždeň</th>
+        <th>Minimum / deň</th>
+        <th>Popis</th>
+      </tr></thead>
+      <tbody>
+        ${rows.map(r=>`<tr>
+          <td>${r.icon} ${r.area}</td>
+          <td>${r.weekly}</td>
+          <td>${r.threshold}</td>
+          <td>${r.desc}</td>
+        </tr>`).join('')}
+      </tbody>
+    </table>`;
+}
 function exportToday(){
   const td=today(),tl=cachedLogs.filter(l=>l.date===td);
   if(!tl.length){showToast('Dnes žiadne cviky');return}
