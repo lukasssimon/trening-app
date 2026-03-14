@@ -119,6 +119,18 @@ body {
 .tt-cell.today-col{outline:2px solid #4A90B8;outline-offset:-2px}
 .tt-col-today th,.tt-col-today td{background:rgba(74,144,184,.04);border-radius:4px}
 
+
+.rec-week{display:flex;gap:6px;flex-wrap:wrap}
+.rec-pill{font-size:10px;padding:4px 8px;border-radius:20px;background:#F5F8FC;color:#94A8B8;border:0.5px solid #E2EAF0}
+.rec-pill.done{background:#E8F3F9;color:#4A90B8;border-color:#C8DFE9}
+.rec-pill.full{background:#F0F9F4;color:#56B870;border-color:rgba(86,184,112,.3)}
+.debug-card{background:white;border:0.5px solid #E2EAF0;border-radius:14px;padding:12px 14px}
+.debug-row{display:flex;justify-content:space-between;gap:10px;font-size:11px;color:#94A8B8;padding:4px 0}
+.debug-row span:last-child{color:#1C2B3A;max-width:62%;text-align:right;word-break:break-word}
+.debug-details{margin-top:8px}
+.debug-details summary{cursor:pointer;font-size:11px;color:#4A90B8}
+.debug-details pre{margin-top:8px;background:#F5F8FC;border:0.5px solid #E2EAF0;border-radius:10px;padding:10px;font-size:10px;line-height:1.5;white-space:pre-wrap;color:#1C2B3A}
+
 /* LOG */
 #screen-log{background:white;min-height:100vh}
 .back-row{display:flex;align-items:center;gap:10px;padding:20px 22px 0;cursor:pointer}
@@ -263,6 +275,19 @@ body {
   <div class="divider"></div>
   <div class="sec-label">Pravidlá tréningu</div>
   <div class="tt-wrap" id="trainingRules"></div>
+  <div class="divider"></div>
+  <div class="sec-label">Debug</div>
+  <div class="tt-wrap">
+    <div class="debug-card">
+      <div class="debug-row"><span>Stav</span><span id="debugStatus">OK</span></div>
+      <div class="debug-row"><span>Logy</span><span id="debugLogCount">0</span></div>
+      <div class="debug-row"><span>Posledná chyba</span><span id="debugLastError">—</span></div>
+      <details class="debug-details">
+        <summary>Detaily planneru</summary>
+        <pre id="debugPlanner">—</pre>
+      </details>
+    </div>
+  </div>
   <div style="height:16px"></div>
 </div>
 
@@ -508,23 +533,16 @@ function showApp(){
   document.querySelectorAll('.nb').forEach(b=>b.classList.remove('active'));
   document.getElementById('screen-home').classList.add('active');
   document.getElementById('nb-home').classList.add('active');
-  // defer renders to next tick so all functions are guaranteed defined
-  setTimeout(()=>{
-    renderHome();
-    renderWeekDash();
-    renderRecommendation();
-    renderSuggestedPlan();
-    renderTimeTable();
-    renderTrainingRules();
-  }, 0);
+  setTimeout(()=>renderHomeScreen(), 0);
 }
 
 // ---- DB ----
 async function fetchLogs(){
   const {data,error}=await sb.from('training_logs').select('*').eq('user_id',currentUser.id)
     .order('date',{ascending:false}).order('created_at',{ascending:true});
-  if(error){console.error(error);return}
+  if(error){console.error(error); setDebugStatus('CHYBA', error.message); return}
   cachedLogs=data||[];
+  setDebugStatus('OK');
 }
 async function insertLog(e){
   const {error}=await sb.from('training_logs').insert({user_id:currentUser.id,date:e.date,block:e.block,code:e.code,sets:e.sets,weight:e.weight});
@@ -580,6 +598,56 @@ function streak(){
   for(let d of dates){const diff=Math.round((check-new Date(d))/86400000);if(diff===0||diff===1){s++;check=new Date(d)}else break}
   return s;
 }
+
+function setDebugStatus(status, errorText='—'){
+  const statusEl=document.getElementById('debugStatus');
+  const countEl=document.getElementById('debugLogCount');
+  const errEl=document.getElementById('debugLastError');
+  if(statusEl) statusEl.textContent=status;
+  if(countEl) countEl.textContent=String((cachedLogs||[]).length);
+  if(errEl) errEl.textContent=errorText || '—';
+}
+
+function updatePlannerDebug(data){
+  const el=document.getElementById('debugPlanner');
+  if(el) el.textContent=JSON.stringify(data, null, 2);
+}
+
+function safeRender(targetId, renderFn, fallbackText='Sekcia sa nepodarilo načítať.'){
+  try {
+    renderFn();
+  } catch (e) {
+    console.error(`[render:${targetId}]`, e);
+    const el=document.getElementById(targetId);
+    if(el) el.innerHTML=`<div class="empty-state">${fallbackText}</div>`;
+    setDebugStatus('CHYBA', `${targetId}: ${e.message}`);
+  }
+}
+
+function renderHomeScreen(){
+  setDebugStatus('OK');
+  safeRender('todayBlocks', renderHome, 'Dnešný tréning sa nepodarilo načítať.');
+  safeRender('weekDash', renderWeekDash, 'Týždenný prehľad zatiaľ nie je dostupný.');
+  safeRender('timeTable', renderTimeTable, 'Time table sa nepodarilo načítať.');
+  safeRender('recCard', renderRecommendation, 'Odporúčanie sa nepodarilo vypočítať.');
+  safeRender('suggestedPlan', renderSuggestedPlan, 'Navrhovaný plán sa nepodarilo vypočítať.');
+  safeRender('trainingRules', renderTrainingRules, 'Pravidlá sa nepodarilo zobraziť.');
+}
+
+function isTrainingDay(d){
+  const logs=(cachedLogs||[]).filter(l=>l.date===d);
+  return logs.some(l=>setsOf(l).length>0);
+}
+
+window.onerror=function(msg, src, line, col, err){
+  console.error('[window.onerror]', msg, src, line, col, err);
+  setDebugStatus('CHYBA', `${msg} @ ${line||'?'}`);
+};
+window.onunhandledrejection=function(ev){
+  const msg=ev?.reason?.message || String(ev?.reason || 'Unhandled promise rejection');
+  console.error('[unhandledrejection]', ev?.reason);
+  setDebugStatus('CHYBA', msg);
+};
 
 // Monday of current week
 function getMonday(d){
@@ -639,6 +707,30 @@ function areaStreakBefore(area,beforeDate,weekData){
   return s;
 }
 
+
+function renderWeekDash(){
+  const wd=getWeekData(new Date());
+  const w=wd.weekly;
+  const tgt=CFG.weekly_targets;
+  const items=[
+    {key:'core', icon:'🧘', label:'Core'},
+    {key:'mobility', icon:'🌊', label:'Mobilita'},
+    {key:'strength', icon:'💪', label:'Silový'},
+    {key:'legs', icon:'🦵', label:'Nohy'}
+  ];
+  const html=`<div class="week-dash">${items.map(item=>{
+    const val=w[item.key]||0;
+    const target=tgt[item.key]||0;
+    const cls=val>=target?'full':val>0?'warn':'';
+    return `<div class="week-dash-item">
+      <div class="week-dash-icon">${item.icon}</div>
+      <div class="week-dash-val ${cls}">${val}/${target}</div>
+      <div class="week-dash-label">${item.label}</div>
+    </div>`;
+  }).join('')}</div>`;
+  document.getElementById('weekDash').innerHTML=html;
+}
+
 // ---- TODAY RECOMMENDATION ----
 function getRecommendation(){
   const td=today();
@@ -655,8 +747,7 @@ function getRecommendation(){
   let consec=0;
   for(let i=1;i<=7;i++){
     const d=dateStr(addDays(new Date(),-i));
-    const logs=cachedLogs.filter(l=>l.date===d);
-    if(logs.length&&setsOf(logs[0]).length) consec++;
+    if(isTrainingDay(d)) consec++;
     else break;
   }
 
@@ -682,17 +773,21 @@ function getRecommendation(){
 
   const rec=CFG.rec_types[type];
   const sub=rec.subtitles[new Date().getDay()%rec.subtitles.length];
-  return{type,icon:rec.icon,label:rec.label,intensity:rec.intensity,subtitle:sub,reasons,weekly:w};
+  const result={type,icon:rec.icon,label:rec.label,intensity:rec.intensity,subtitle:sub,reasons,weekly:w};
+  updatePlannerDebug({mode:'todayRecommendation', result, weeklyTargets:tgt, yesterday:ydComp});
+  return result;
 }
 
 function renderRecommendation(){
+  const container=document.getElementById('recCard');
+  if(!container) return;
   const{type,icon,label,intensity,subtitle,reasons,weekly}=getRecommendation();
   const tgt=CFG.weekly_targets;
   function pill(a,val,t){
     const cls=val>=t?'full':val>0?'done':'';
     return`<span class="rec-pill ${cls}">${CFG.area_icons[a]} ${val}/${t}</span>`;
   }
-  document.getElementById('recCard').innerHTML=`
+  container.innerHTML=`
     <div class="rec-card">
       <div class="rec-type-row">
         <span class="rec-icon">${icon}</span>
@@ -781,13 +876,15 @@ function pickDayAreas(targetDate, weekData){
 }
 
 function renderSuggestedPlan(){
+  const container=document.getElementById('suggestedPlan');
+  if(!container) return;
   const now=new Date();
   const wd=getWeekData(now);
   const tgt=CFG.weekly_targets;
   const w=wd.weekly;
   const allMet=Object.keys(tgt).every(a=>(w[a]||0)>=tgt[a]);
   if(allMet){
-    document.getElementById('suggestedPlan').innerHTML=`<div class="plan-card" style="padding:14px 18px">
+    container.innerHTML=`<div class="plan-card" style="padding:14px 18px">
       <div style="font-size:13px;color:#56B870;font-weight:500;margin-bottom:4px">✅ Všetky ciele splnené</div>
       <div style="font-size:12px;color:#94A8B8">Dnes môže byť regenerácia alebo voliteľný tréning.</div>
     </div>`;
@@ -801,7 +898,7 @@ function renderSuggestedPlan(){
     const{areas,allMet:dayAllMet,reason}=pickDayAreas(ds,effectiveWd);
     planDays.push({date:ds,dayName:CFG.day_labels_full[d.getDay()],areas,allMet:dayAllMet,reason});
   }
-  document.getElementById('suggestedPlan').innerHTML=`<div class="plan-card">
+  container.innerHTML=`<div class="plan-card">
     ${planDays.map((pd,i)=>`
       ${i>0?'<div class="plan-divider"></div>':''}
       <div class="plan-day">
@@ -820,6 +917,8 @@ function renderSuggestedPlan(){
 
 // ---- TIMETABLE ----
 function renderTimeTable(){
+  const container=document.getElementById('timeTable');
+  if(!container) return;
   const mon=getMonday(new Date());
   const days=[];
   for(let i=0;i<7;i++) days.push(addDays(mon,i));
@@ -853,7 +952,7 @@ function renderTimeTable(){
     </tr>`).join('')}
     </tbody>
   </table>`;
-  document.getElementById('timeTable').innerHTML=html;
+  container.innerHTML=html;
 }
 
 // ---- SCREEN NAV ----
@@ -865,7 +964,7 @@ function showScreen(name){
   document.getElementById('screen-'+name).classList.add('active');
   const nb=document.getElementById('nb-'+name);if(nb)nb.classList.add('active');
   document.getElementById('fabBtn').classList.toggle('hidden',name==='log');
-  if(name==='home'){renderHome();renderWeekDash();renderRecommendation();renderSuggestedPlan();renderTimeTable();renderTrainingRules()}
+  if(name==='home'){renderHomeScreen()}
   if(name==='history') renderHistory();
   if(name==='stats') renderStats();
 }
@@ -1132,19 +1231,17 @@ function renderStats(){
     ?top.map(([n,c],i)=>`<div class="top-item"><span class="top-n">#${i+1}</span><span style="font-size:12px;color:#1C2B3A;flex:1">${n}</span><div class="top-bar"><div class="top-bar-f" style="width:${Math.round(c/maxC*100)}%"></div></div><span class="top-cnt">${c}×</span></div>`).join('')
     :'<div class="empty-state">Žiadne dáta.</div>';
 }
-// Start app — must be last line so all functions are defined
-initApp();
-
-
 // ---- TRAINING RULES TABLE ----
 function renderTrainingRules(){
+  const container=document.getElementById('trainingRules');
+  if(!container) return;
   const rows=[
     {area:'Core',        icon:'🧘', weekly:'5× týždenne', threshold:'≥ 4 série', desc:'Cviky stability trupu, zvyčajne na začiatku tréningu.'},
     {area:'Chrbát / Mob.',icon:'🌊',weekly:'5× týždenne', threshold:'≥ 5 sérií', desc:'Mobilita chrbtice, stabilita lopatiek, aktivácia chrbta.'},
     {area:'Silový',      icon:'💪', weekly:'3× týždenne', threshold:'≥ 8 sérií', desc:'Cviky s činkami: shoulder press, biceps, RSD a ďalšie.'},
     {area:'Nohy',        icon:'🦵', weekly:'2× týždenne', threshold:'≥ 4 série', desc:'Drepy, výpady, split squaty a hip flow.'}
   ];
-  document.getElementById('trainingRules').innerHTML=`
+  container.innerHTML=`
     <table class="rules-table">
       <thead><tr>
         <th>Oblasť</th>
@@ -1223,6 +1320,9 @@ async function confirmImport(){
   }catch(e){showToast('⚠️ Chyba pri ukladaní')}
   finally{btn.textContent='Uložiť do tréningu';btn.style.background='#2DCE89'}
 }
+
+// Start app — must be last line so all functions are defined
+initApp();
 </script>
 </body>
 </html>
