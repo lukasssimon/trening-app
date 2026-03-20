@@ -1449,6 +1449,37 @@ function removeLastSet(){
   addingSetInline=false;
   editIdx=null;
   renderSets();
+  persistCurrentLog({toastMessage:'✅ Série aktualizované'});
+}
+
+async function persistCurrentLog(options={}){
+  const {toastMessage='✅ Uložené!', silent=false}=options;
+  const date=document.getElementById('logDate').value;
+  const weightRaw=document.getElementById('logWeight').value;
+  const weight=weightRaw==='' ? null : (parseFloat(weightRaw)||null);
+  if(!selBlock||!selCode) return false;
+  try{
+    if(editingId && sets.length===0){
+      await deleteLogDB(editingId);
+      editingId=null;
+      await fetchLogs();
+      renderHomeScreen();
+      if(!silent) showToast('✅ Záznam odstránený');
+      return true;
+    }
+    if(!sets.length) return false;
+    if(editingId) await deleteLogDB(editingId);
+    await insertLog({date,block:selBlock,code:selCode,sets:[...sets],weight});
+    await fetchLogs();
+    syncExistingLogForCurrentSelection();
+    renderHomeScreen();
+    if(!silent) showToast(toastMessage);
+    return true;
+  }catch(e){
+    console.error(e);
+    if(!silent) showToast('⚠️ Chyba pri ukladaní');
+    return false;
+  }
 }
 
 function confirmInlineSet(){
@@ -1459,23 +1490,23 @@ function confirmInlineSet(){
   addingSetInline=false;
   editIdx=null;
   renderSets();
+  persistCurrentLog({toastMessage:'✅ Séria uložená'});
 }
 
 async function saveAndAnother(){
-  const date=document.getElementById('logDate').value;
-  const weight=parseFloat(document.getElementById('logWeight').value)||null;
   if(!selBlock||!selCode||!sets.length){showToast('⚠️ Vyber cvik a pridaj aspoň 1 sériu');return}
   const btn=document.getElementById('saveBtnMain');
   btn.disabled=true;btn.textContent='Ukladám...';
   try{
-    if(editingId) await deleteLogDB(editingId);
-    await insertLog({date,block:selBlock,code:selCode,sets:[...sets],weight});
-    await fetchLogs();showToast('✅ Uložené!');
+    const ok=await persistCurrentLog({silent:true});
+    if(!ok) throw new Error('save failed');
+    showToast('✅ Uložené!');
     selCode=null;sets=[];editingId=null;
     document.getElementById('logTitle').textContent='Nový cvik';
     document.getElementById('selAndSeries').style.display='none';
     document.getElementById('dateRowWrap').style.display='none';
     document.getElementById('logWeight').value='';
+    const infoEl=document.getElementById('selectedInfo'); if(infoEl) infoEl.style.display='none';
     renderExLines();renderSets();
     window.scrollTo({top:0,behavior:'smooth'});
   }catch(e){showToast('⚠️ Chyba pri ukladaní')}
