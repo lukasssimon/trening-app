@@ -487,9 +487,6 @@ body {
       </div>
       <div class="sets-row" id="setsRow"></div>
     </div>
-    <div class="save-area">
-      <button class="save-btn" id="saveBtnMain" onclick="saveAndAnother()">Uložiť</button>
-    </div>
   </div>
   <div id="dateRowWrap" class="date-mobile-row" style="display:none;padding:0 16px">
     <div class="inline-row">
@@ -1491,26 +1488,6 @@ function confirmInlineSet(){
   editIdx=null;
   renderSets();
   persistCurrentLog({toastMessage:'✅ Séria uložená'});
-}
-
-async function saveAndAnother(){
-  if(!selBlock||!selCode||!sets.length){showToast('⚠️ Vyber cvik a pridaj aspoň 1 sériu');return}
-  const btn=document.getElementById('saveBtnMain');
-  btn.disabled=true;btn.textContent='Ukladám...';
-  try{
-    const ok=await persistCurrentLog({silent:true});
-    if(!ok) throw new Error('save failed');
-    showToast('✅ Uložené!');
-    selCode=null;sets=[];editingId=null;
-    document.getElementById('logTitle').textContent='Nový cvik';
-    document.getElementById('selAndSeries').style.display='none';
-    document.getElementById('dateRowWrap').style.display='none';
-    document.getElementById('logWeight').value='';
-    const infoEl=document.getElementById('selectedInfo'); if(infoEl) infoEl.style.display='none';
-    renderExLines();renderSets();
-    window.scrollTo({top:0,behavior:'smooth'});
-  }catch(e){showToast('⚠️ Chyba pri ukladaní')}
-  finally{btn.disabled=false;btn.textContent='Uložiť'}
 }
 
 // ---- HISTORY ----
