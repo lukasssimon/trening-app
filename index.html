@@ -202,6 +202,12 @@ body {
 .tt-cell.today-col{outline:2px solid #4A90B8;outline-offset:-2px}
 .tt-col-today th,.tt-col-today td{background:rgba(74,144,184,.04);border-radius:4px}
 
+.tt-toolbar{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px;flex-wrap:wrap}
+.tt-nav-group{display:flex;align-items:center;gap:8px}
+.tt-nav-btn{background:white;border:1px solid #D9E7F0;border-radius:999px;padding:8px 12px;font-size:12px;font-weight:700;color:#4A90B8;cursor:pointer;font-family:inherit}
+.tt-nav-btn:disabled{opacity:.45;cursor:not-allowed}
+.tt-week-label{font-size:12px;color:#7C98AF;font-weight:700}
+
 .debug-card{background:white;border:0.5px solid #E2EAF0;border-radius:14px;padding:12px 14px}
 .debug-row{display:flex;justify-content:space-between;gap:10px;font-size:11px;color:#94A8B8;padding:4px 0}
 .debug-row span:last-child{color:#1C2B3A;max-width:62%;text-align:right;word-break:break-word}
@@ -425,14 +431,14 @@ body {
   <!-- Weekly dashboard -->
   <div class="divider"></div>
   <div id="weekDash"></div>
+  <!-- Timetable -->
+  <div class="divider"></div>
+  <div class="sec-label">Time Table</div>
+  <div class="tt-wrap" id="timeTable"></div>
   <!-- Suggested plan -->
   <div class="divider"></div>
   <div class="sec-label">Navrhovaný plán</div>
   <div id="suggestedPlan"></div>
-  <!-- Timetable -->
-  <div class="divider"></div>
-  <div class="sec-label">Time Table – aktuálny týždeň</div>
-  <div class="tt-wrap" id="timeTable"></div>
   <!-- Today workouts -->
   <div class="divider"></div>
   <div class="sec-label">Dnešný tréning</div>
@@ -640,6 +646,7 @@ const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFz
 const { createClient } = supabase;
 const sb = createClient(SUPABASE_URL, SUPABASE_ANON);
 let currentUser=null, cachedLogs=[];
+let timetableWeekOffset=0;
 
 const CATALOG = [
   {block:"Blok 1 CORE",icon:"🧘",exercises:[
@@ -846,6 +853,17 @@ function getMonday(d){
 }
 function dateStr(d){return d.toISOString().slice(0,10)}
 function addDays(d,n){const r=new Date(d);r.setDate(r.getDate()+n);return r}
+function getWeekStartFromOffset(offset=0){
+  return getMonday(addDays(new Date(), offset * 7));
+}
+function formatWeekRange(mon){
+  const start=new Date(mon);
+  const end=addDays(start,6);
+  const monthNames=['jan','feb','mar','apr','máj','jún','júl','aug','sep','okt','nov','dec'];
+  const startLabel=`${start.getDate()}. ${monthNames[start.getMonth()]}`;
+  const endLabel=`${end.getDate()}. ${monthNames[end.getMonth()]}`;
+  return `${startLabel} – ${endLabel}`;
+}
 
 // ---- AREA ANALYSIS ----
 // Returns {core, mobility, strength, legs} set counts for a list of logs
@@ -974,7 +992,7 @@ function getUrgencyScore(area, state, targetDateStr){
   return base * urgency;
 }
 
-function pickDayAreas(targetDateStr, state, prevMainArea=null){
+function pickDayAreas(targetDateStr, state, prevMainArea=null, prevAreas=[]){
   const tgt=CFG.weekly_targets;
   const w=state.weekly;
   const realPrev=state.prevCompleted || getPreviousRealCompleted(targetDateStr);
@@ -986,13 +1004,16 @@ function pickDayAreas(targetDateStr, state, prevMainArea=null){
     scores[area]=getUrgencyScore(area, state, targetDateStr);
   }
 
+  const prevHasLegs = realPrev.legs || prevMainArea==='legs' || prevAreas.includes('legs');
+  const prevHasStrength = realPrev.strength || prevMainArea==='strength' || prevAreas.includes('strength');
+
   // hard rules across real history and virtual future
-  if(realPrev.strength || prevMainArea==='strength') scores.strength=-Infinity;
-  if(realPrev.legs || prevMainArea==='legs') scores.legs=-Infinity;
+  if(prevHasStrength) scores.strength=-Infinity;
+  if(prevHasLegs) scores.legs=-Infinity;
 
   // soft repeat penalties for support categories only
-  if(realPrev.core || prevMainArea==='core') scores.core-=12;
-  if(realPrev.mobility || prevMainArea==='mobility') scores.mobility-=10;
+  if(realPrev.core || prevMainArea==='core' || prevAreas.includes('core')) scores.core-=12;
+  if(realPrev.mobility || prevMainArea==='mobility' || prevAreas.includes('mobility')) scores.mobility-=10;
 
   const priorityOrder=['strength','legs','core','mobility'];
   const ranked=priorityOrder
@@ -1009,6 +1030,8 @@ function pickDayAreas(targetDateStr, state, prevMainArea=null){
     if(area===main) continue;
     if(supports.length>=2) break;
     if((main==='strength' && area==='legs') || (main==='legs' && area==='strength')) continue;
+    if(area==='legs' && prevHasLegs) continue;
+    if(area==='strength' && prevHasStrength) continue;
     if((state.weekly[area]||0) >= (CFG.weekly_targets[area]||0) && (area==='strength' || area==='legs')) continue;
     const score=scores[area];
     if(score>8 || (['core','mobility'].includes(area) && score>0)) supports.push(area);
@@ -1018,8 +1041,8 @@ function pickDayAreas(targetDateStr, state, prevMainArea=null){
   const reasons=[];
   const mainLabel={strength:'Silový',legs:'Nohy',core:'Core',mobility:'Mobilita',rest:'Voľno'}[main];
   if(main!=='rest') reasons.push(`${mainLabel}: ${w[main]||0}/${tgt[main]||0}`);
-  if(realPrev.strength && main!=='strength') reasons.push('Včera bol silový');
-  if(realPrev.legs && main!=='legs') reasons.push('Včera boli nohy');
+  if(prevHasStrength && main!=='strength') reasons.push('Bez silového 2 dni po sebe');
+  if(prevHasLegs && !areas.includes('legs')) reasons.push('Bez nôh 2 dni po sebe');
   const deficits=Object.keys(tgt)
     .map(a=>({a,remaining:Math.max(0,(tgt[a]||0)-(w[a]||0))}))
     .filter(x=>x.remaining>0)
@@ -1056,6 +1079,7 @@ function renderSuggestedPlan(){
 
   const planDays=[];
   let prevMainArea=null;
+  let prevAreas=[];
   for(let i=0;i<=2;i++){
     const dayDate=addDays(now,i);
     const ds=dateStr(dayDate);
@@ -1067,17 +1091,21 @@ function renderSuggestedPlan(){
     }
 
     const label=i===0 ? `${CFG.day_labels_full[dayDate.getDay()]} – Dnes` : CFG.day_labels_full[dayDate.getDay()];
-    const picked=pickDayAreas(ds, simulatedState, prevMainArea);
+    const picked=pickDayAreas(ds, simulatedState, prevMainArea, prevAreas);
     planDays.push({date:ds,dayName:label,...picked,weeklyBefore:cloneWeeklyState(simulatedState.weekly)});
 
     if(!picked.allMet && picked.main && picked.main!=='rest'){
       simulatedState.weekly[picked.main]=(simulatedState.weekly[picked.main]||0)+1;
       simulatedState.prevCompleted={strength:false,legs:false,core:false,mobility:false};
-      simulatedState.prevCompleted[picked.main]=true;
+      picked.areas.forEach(area=>{
+        if(simulatedState.prevCompleted.hasOwnProperty(area)) simulatedState.prevCompleted[area]=true;
+      });
       prevMainArea=picked.main;
+      prevAreas=[...picked.areas];
     } else {
       simulatedState.prevCompleted={strength:false,legs:false,core:false,mobility:false};
       prevMainArea='rest';
+      prevAreas=[];
     }
   }
 
@@ -1107,10 +1135,15 @@ function renderSuggestedPlan(){
 }
 
 // ---- TIMETABLE ----
+function changeTimetableWeek(delta){
+  timetableWeekOffset += delta;
+  renderTimeTable();
+}
+
 function renderTimeTable(){
   const container=document.getElementById('timeTable');
   if(!container) return;
-  const mon=getMonday(new Date());
+  const mon=getWeekStartFromOffset(timetableWeekOffset);
   const days=[];
   for(let i=0;i<7;i++) days.push(addDays(mon,i));
   const td=today();
@@ -1125,7 +1158,16 @@ function renderTimeTable(){
       return sum;
     },0);
   })});
-  let html=`<table class="tt-table">
+
+  const disableNext = timetableWeekOffset >= 0;
+  let html=`<div class="tt-toolbar">
+    <div class="tt-nav-group">
+      <button class="tt-nav-btn" onclick="changeTimetableWeek(-1)">← Predchádzajúci</button>
+      <button class="tt-nav-btn" onclick="changeTimetableWeek(1)" ${disableNext?'disabled':''}>Nasledujúci →</button>
+    </div>
+    <div class="tt-week-label">${formatWeekRange(mon)}</div>
+  </div>
+  <table class="tt-table">
     <thead class="tt-head"><tr>
       <th></th>
       ${days.map((d,i)=>`<th style="${dateStr(d)===td?'color:#4A90B8;font-weight:600':''}">${dayLabels[i]}</th>`).join('')}
