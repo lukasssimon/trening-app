@@ -1084,6 +1084,217 @@ body{
   }
 }
 
+
+/* ===== V3 MOBILE + CONTRAST FIXES ===== */
+.home-visual{
+  min-height:860px;
+}
+.home-visual::before{
+  inset:auto 50% 36px 50%;
+  width:min(30vw,360px);
+  height:300px;
+}
+.home-visual::after{
+  bottom:46px;
+  width:min(24vw,220px);
+  height:340px;
+}
+.home-visual-image{
+  background-size:contain;
+  background-repeat:no-repeat;
+  background-position:center bottom;
+}
+.home-visual-fade{
+  height:280px;
+  background:linear-gradient(180deg,rgba(8,8,18,0) 0%, rgba(8,9,20,.18) 20%, rgba(8,9,20,.64) 58%, rgba(8,8,18,.96) 84%, rgba(8,8,18,1) 100%);
+}
+
+.period-row{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:10px;
+  padding:16px 18px 0;
+}
+.period-btn{
+  width:100%;
+  min-width:0;
+  text-align:center;
+  padding:12px 8px;
+  font-size:12px;
+  color:#e8edff;
+  border-color:rgba(161,135,255,.30);
+}
+.period-btn.active{
+  background:linear-gradient(135deg,rgba(255,255,255,.96),rgba(232,245,255,.92));
+  color:#2b6ea8;
+  border-color:rgba(255,255,255,.88);
+}
+
+.trend-toolbar{
+  display:flex;
+  flex-direction:column;
+  gap:14px;
+  margin-bottom:18px;
+}
+.trend-nav-row{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:12px;
+  width:100%;
+}
+.trend-nav-btn{
+  width:100%;
+  min-width:0;
+  text-align:center;
+  justify-content:center;
+  padding:14px 10px;
+  font-size:12px;
+  white-space:nowrap;
+  color:#eef2ff;
+  border-color:rgba(161,135,255,.30);
+}
+.trend-nav-btn:disabled{
+  opacity:1;
+  color:#b8c1df;
+  background:linear-gradient(180deg,rgba(255,255,255,.18),rgba(255,255,255,.10));
+  border-color:rgba(255,255,255,.20);
+}
+.trend-range-label{
+  color:#f0f3ff;
+}
+
+.stats-hero{
+  padding:20px 20px 18px;
+}
+.stats-hero-pill{
+  background:linear-gradient(180deg,#ffffff,#f1eaff);
+  border:1px solid rgba(255,255,255,.90);
+  box-shadow:0 12px 28px rgba(9,10,28,.18);
+}
+.stats-hero-pill-label{
+  color:#7c86a8;
+}
+.stats-hero-pill-value{
+  color:#a078ff !important;
+  font-size:36px;
+  font-weight:900;
+  text-shadow:none;
+}
+.stats-hero-title{
+  color:#f6f3ff;
+}
+.stats-hero-sub{
+  color:#d7d4ea;
+}
+.stat-l,
+.record-label,
+.day-sum-l,
+.block-meta,
+.gap-val,
+.top-sub,
+.week-dash-label,
+.ai-sub,
+.recovery-sub,
+.plan-reason,
+.home-hero-note,
+.sec-label,
+.block-group-label,
+.hist-date,
+.tt-week-label,
+.tt-head th,
+.tt-row td:first-child,
+.debug-row,
+.debug-details summary,
+.f-label,
+.inline-label,
+.series-label,
+.series-hint,
+.stats-section-title{
+  color:#c0c8e6;
+}
+.insight-badge{
+  color:#26174d !important;
+  background:linear-gradient(135deg,#fffaff,#efe7ff);
+}
+.empty-state{
+  color:#c6cdeb;
+}
+
+@media (min-width:1100px){
+  .home-visual{
+    min-height:1120px;
+  }
+  .home-visual::before{
+    bottom:18px;
+    width:min(32vw,400px);
+    height:340px;
+  }
+  .home-visual::after{
+    bottom:24px;
+    width:min(26vw,250px);
+    height:380px;
+  }
+  .home-visual-image{
+    background-size:contain;
+    background-position:center bottom;
+  }
+  .home-visual-fade{
+    height:320px;
+  }
+}
+
+@media (max-width:640px){
+  .home-visual{
+    min-height:820px;
+    padding:14px 10px 0;
+  }
+  .home-visual::before{
+    width:240px;
+    height:290px;
+    bottom:102px;
+  }
+  .home-visual::after{
+    width:132px;
+    height:340px;
+    bottom:120px;
+  }
+  .home-visual-image{
+    background-size:contain;
+    background-position:center bottom;
+  }
+  .home-visual-fade{
+    height:300px;
+    background:linear-gradient(180deg,rgba(8,8,18,0) 0%, rgba(8,9,20,.12) 18%, rgba(8,9,20,.56) 52%, rgba(8,8,18,.92) 80%, rgba(8,8,18,1) 100%);
+  }
+  .home-hero{
+    margin:-34px 10px 0;
+  }
+  .period-row{
+    grid-template-columns:repeat(4,minmax(0,1fr));
+    gap:8px;
+    padding:14px 10px 0;
+  }
+  .period-btn{
+    padding:12px 6px;
+    font-size:11px;
+    border-radius:18px;
+  }
+  .trend-nav-row{
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+  }
+  .trend-nav-btn{
+    padding:12px 8px;
+    font-size:11px;
+  }
+  .stats-hero-pill{
+    min-width:132px;
+  }
+  .stats-hero-pill-value{
+    font-size:40px;
+  }
+}
+
 </style>
 </head>
 <body>
