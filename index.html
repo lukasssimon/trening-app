@@ -10,7 +10,7 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="AI tréner">
 <meta name="application-name" content="AI tréner">
-<meta name="theme-color" content="#4A90B8">
+<meta name="theme-color" content="#08111f">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
@@ -467,6 +467,285 @@ body {
   }
 }
 
+
+/* ===== MODERN AI THEME OVERRIDES ===== */
+:root{
+  --bg-0:#040b16;
+  --bg-1:#091427;
+  --bg-2:#0c1c34;
+  --glass:rgba(10,20,39,.72);
+  --glass-strong:rgba(9,18,36,.92);
+  --line:rgba(135,175,255,.16);
+  --line-soft:rgba(255,255,255,.06);
+  --text:#edf4ff;
+  --muted:#98abc5;
+  --muted-2:#6d85a6;
+  --blue:#63b8ff;
+  --blue-2:#2a7fff;
+  --glow:0 18px 48px rgba(31,104,255,.18);
+}
+body{
+  background:
+    radial-gradient(circle at top, rgba(50,113,255,.20), transparent 34%),
+    linear-gradient(180deg, #07111f 0%, #040914 38%, #03070f 100%);
+  color:var(--text);
+}
+.login-screen,.loading-overlay,#screen-log{background:transparent}
+.login-btn,.head-action-btn,.hero-action-btn,.tt-nav-btn,.period-btn,.trend-nav-btn,.ai-chip,.ai-btn.secondary{
+  background:rgba(11,24,46,.7);
+  border:1px solid var(--line);
+  color:var(--text);
+  backdrop-filter:blur(14px);
+  -webkit-backdrop-filter:blur(14px);
+}
+.login-title,.back-title,.hist-title,.stats-title,.home-title,.ai-title,.chatgpt-title,.recovery-title,.plan-day-label,.block-name,.top-name,.record-value,.li-name,.sel-name{
+  color:var(--text);
+}
+.login-sub,.loading-text,.home-greet,.home-sub,.home-logout,.sec-label,.hist-date,.stats-hero-sub,.record-label,.li-meta,.insight-sub,.ai-sub,.trend-range-label,.block-meta,.day-sum-l,.day-weights,.gap-val,.plan-reason,.week-dash-label,.home-hero-note,.tt-week-label,.tt-head th,.tt-row td:first-child,.debug-row,.debug-details summary,.f-label,.inline-label,.series-label,.series-hint,.ex-name-t,.stats-section-title{
+  color:var(--muted);
+}
+.nav{
+  background:rgba(4,11,22,.88);
+  border-top:1px solid rgba(125,167,255,.12);
+  backdrop-filter:blur(18px);
+  -webkit-backdrop-filter:blur(18px);
+}
+.nb-label{color:#7f93af}
+.nb.active .nb-label{color:#8fd1ff}
+.nb.active .nb-line{background:#55bcff; box-shadow:0 0 16px rgba(85,188,255,.7);}
+.fab{
+  background:linear-gradient(135deg,#1c7dff,#5cd0ff);
+  box-shadow:0 14px 32px rgba(27,126,255,.32);
+}
+.home-head{padding:0 0 0}
+.home-kicker{display:none}
+.home-visual{
+  position:relative;
+  min-height:540px;
+  padding:24px 22px 0;
+  overflow:hidden;
+}
+.home-visual-top{
+  position:absolute;
+  top:20px;
+  left:22px;
+  right:22px;
+  z-index:4;
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:12px;
+}
+.brand-lockup{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:10px 14px;
+  border:1px solid rgba(130,176,255,.16);
+  border-radius:22px;
+  background:linear-gradient(180deg,rgba(7,16,32,.78),rgba(7,16,32,.54));
+  backdrop-filter:blur(14px);
+  -webkit-backdrop-filter:blur(14px);
+  box-shadow:0 10px 32px rgba(0,0,0,.18);
+}
+.brand-avatar{
+  width:48px;height:48px;border-radius:16px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:26px;
+  background:linear-gradient(135deg,rgba(77,123,255,.28),rgba(42,210,255,.22));
+  box-shadow:inset 0 0 24px rgba(130,198,255,.18);
+}
+.brand-title{font-size:16px;font-weight:800;color:#f5f9ff}
+.brand-subtitle{font-size:12px;color:#9cb4d1;margin-top:2px}
+.import-top-btn{
+  border-radius:18px;
+  min-width:104px;
+  min-height:56px;
+  background:linear-gradient(180deg,rgba(18,39,76,.92),rgba(10,26,52,.86));
+  color:#dceaff;
+}
+.home-visual-image{
+  position:absolute;
+  inset:0;
+  background-image:
+    linear-gradient(180deg, rgba(3,10,21,.14) 0%, rgba(4,11,22,.28) 24%, rgba(3,9,18,.82) 74%, rgba(3,8,15,.98) 100%),
+    url('a_futuristic_hi_tech_gym_fitness_interior_scene_wi.png');
+  background-size:cover;
+  background-position:center top;
+  border-bottom-left-radius:34px;
+  border-bottom-right-radius:34px;
+  filter:saturate(1.02) contrast(1.02);
+  box-shadow:0 28px 80px rgba(0,0,0,.38);
+}
+.home-visual-fade{
+  position:absolute;left:0;right:0;bottom:0;height:160px;z-index:1;
+  background:linear-gradient(180deg,rgba(4,8,15,0) 0%, rgba(4,8,15,.85) 56%, rgba(4,8,15,1) 100%);
+}
+.home-hero{
+  position:relative;
+  z-index:5;
+  margin:-108px 18px 0;
+  background:linear-gradient(180deg,rgba(247,251,255,.96),rgba(233,242,252,.92));
+  border:1px solid rgba(255,255,255,.62);
+  border-radius:30px;
+  padding:26px 20px 18px;
+  box-shadow:0 24px 70px rgba(5,13,26,.35);
+}
+.home-hero-top{display:block}
+.home-greet{font-size:16px;color:#7f92ab;margin-bottom:8px}
+.home-title{font-size:clamp(34px,9vw,48px);color:#132645;font-weight:900;letter-spacing:-.03em}
+.home-sub{font-size:15px;color:#2667b1;margin-top:10px;font-weight:800}
+.home-logout{color:#9cb4cb;margin-top:10px}
+.home-hero-grid{
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:14px;
+  margin-top:22px;
+}
+.home-hero-tile{
+  background:linear-gradient(180deg,rgba(255,255,255,.94),rgba(240,245,251,.92));
+  border:1px solid rgba(201,216,234,.72);
+  border-radius:24px;
+  padding:18px 16px;
+  min-height:136px;
+  box-shadow:0 8px 18px rgba(23,44,73,.08);
+}
+.home-hero-tile:nth-child(1){background:linear-gradient(180deg,#eef6ff,#e3efff)}
+.home-hero-tile:nth-child(2){background:linear-gradient(180deg,#fff3ea,#ffe8d8)}
+.home-hero-tile:nth-child(3){background:linear-gradient(180deg,#e7fff0,#d7f7e2)}
+.home-hero-label{font-size:12px;color:#5a6780}
+.home-hero-value{font-size:52px;color:#132645}
+.home-hero-value.small{font-size:48px;color:#163157}
+.home-hero-note{font-size:14px;color:#51627f}
+.divider{
+  background:linear-gradient(90deg, transparent, rgba(121,163,255,.18), transparent);
+  margin:22px 18px;
+}
+.sec-label{padding:0 18px;color:#7f97b6}
+.ai-card,.recovery-card,.plan-card,.stats-card,.trend-card,.insight-card,.debug-card,.stat-card,.stats-hero,.day-summary,.chatgpt-card{
+  background:linear-gradient(180deg,rgba(8,19,38,.86),rgba(8,18,35,.74));
+  border:1px solid var(--line);
+  box-shadow:var(--glow);
+  backdrop-filter:blur(18px);
+  -webkit-backdrop-filter:blur(18px);
+}
+.ai-card,.recovery-card,.plan-card,.stats-card,.trend-card,.insight-card,.chatgpt-card{margin-left:18px;margin-right:18px}
+.week-dash{padding:0 18px}
+.week-dash-item{
+  background:linear-gradient(180deg,rgba(10,20,40,.9),rgba(10,18,34,.78));
+  border:1px solid var(--line);
+  box-shadow:var(--glow);
+}
+.week-dash-icon{filter:drop-shadow(0 0 10px rgba(85,188,255,.35))}
+.week-dash-val{color:#f2f7ff}
+.week-dash-label{color:#8fa8c7}
+.line-list,.tt-wrap,.stat-grid,.top-list,.insight-list{padding-left:18px;padding-right:18px}
+.line-item,.block-item,.gap-row,.top-item,.ex-line{border-color:var(--line-soft)}
+.block-group-label{padding-left:18px;padding-right:18px;color:#8298b5}
+.li-arr,.li-del{color:#5f789a}
+.li-dot{background:linear-gradient(135deg,#4eb2ff,#89d4ff); box-shadow:0 0 10px rgba(78,178,255,.55)}
+.tt-cell{background:rgba(255,255,255,.04);color:#607898}
+.tt-cell.done{background:rgba(78,178,255,.16);color:#bfe8ff}
+.tt-cell.today-col{outline-color:#55bcff}
+.back-arr,.record-item,.day-sum-item,.recovery-item{
+  background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.03));
+  border:1px solid var(--line);
+}
+.sel-and-series{
+  background:linear-gradient(180deg,rgba(9,18,34,.94),rgba(7,14,27,.86));
+  border:1px solid var(--line);
+}
+.inline-input,.set-inline-input,.ai-export,.chatgpt-export,.chatgpt-field textarea,#importJson,#importDate,.inline-unit{
+  background:rgba(255,255,255,.04);
+  border:1px solid var(--line);
+  color:var(--text);
+}
+.set-chip{
+  background:linear-gradient(180deg,rgba(32,106,220,.24),rgba(20,70,160,.20));
+  border:1px solid rgba(106,176,255,.24);
+  color:#dcebff;
+}
+.set-chip-add{
+  background:rgba(255,255,255,.02);
+  border:1.5px dashed rgba(121,163,255,.24);
+  color:#8fa8c7;
+}
+.ex-lines{background:transparent}
+.ex-line.active{
+  background:linear-gradient(90deg,rgba(69,153,255,.18),rgba(69,153,255,.06));
+  border-left-color:#5fc3ff;
+}
+.bchip{
+  background:linear-gradient(180deg,rgba(10,20,40,.9),rgba(10,18,34,.78));
+  border:1px solid var(--line);
+  color:#cfe2ff;
+}
+.bchip.active{
+  background:linear-gradient(180deg,rgba(33,109,223,.34),rgba(16,55,133,.26));
+  color:#fff;
+  border-color:rgba(117,180,255,.42);
+}
+.ai-card{
+  overflow:hidden;
+  position:relative;
+}
+.ai-card::before{
+  content:"";
+  position:absolute;inset:0 0 auto 0;height:180px;
+  background:linear-gradient(135deg,rgba(31,129,255,.28),rgba(101,83,255,.20));
+  pointer-events:none;
+}
+.ai-card-top,.ai-meta,.ai-format-row,.ai-actions,#chatgptExport{position:relative;z-index:2}
+.ai-title{font-size:26px}
+.ai-btn{
+  background:linear-gradient(135deg,#1577ff,#5d41ff);
+  border:none;
+  color:white;
+  box-shadow:0 12px 28px rgba(40,100,255,.28);
+}
+.ai-btn.secondary{
+  background:rgba(255,255,255,.06);
+  color:#d8e9ff;
+  border:1px solid rgba(144,183,255,.24);
+}
+.ai-chip{background:rgba(255,255,255,.04)}
+.ai-chip.active{
+  background:linear-gradient(135deg,rgba(23,103,223,.62),rgba(17,58,151,.78));
+  color:white;border-color:transparent;
+}
+.ai-export{
+  min-height:188px;
+  border-radius:20px;
+  font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+}
+.stats-hero-title,.stat-v,.day-sum-v,.recovery-item-value,.top-cnt,.trend-val,.insight-badge,.gap-val,.stats-hero-pill-value{color:#dff2ff}
+.block-fill.core,.trend-fill,.top-bar-f{background:linear-gradient(90deg,#2192ff,#6ad3ff)}
+.block-fill.mobility{background:linear-gradient(90deg,#31d39a,#7bf0c3)}
+.block-fill.strength{background:linear-gradient(90deg,#ff6c97,#ff8d66)}
+.block-fill.legs{background:linear-gradient(90deg,#ffbf47,#ffd96e)}
+.rules-table th{color:#84a2c7;border-color:var(--line)}
+.rules-table td{color:#dfe9f8;border-color:var(--line-soft)}
+.rules-table td:last-child{color:#9ab2cd}
+#screen-history .divider,#screen-stats .divider,#screen-home .divider{margin-left:18px;margin-right:18px}
+#screen-stats .stats-head,#screen-history .hist-head{padding-left:18px;padding-right:18px}
+@media (max-width:640px){
+  .home-visual{min-height:500px}
+  .home-visual-top{top:16px;left:14px;right:14px}
+  .brand-lockup{padding:10px 12px;gap:10px}
+  .brand-avatar{width:44px;height:44px;font-size:24px}
+  .brand-title{font-size:15px}
+  .brand-subtitle{font-size:11px}
+  .import-top-btn{min-width:96px;min-height:52px}
+  .home-hero{margin:-92px 10px 0;padding:24px 16px 16px}
+  .home-hero-grid{gap:12px}
+  .home-hero-tile{min-height:128px}
+  .home-hero-value,.home-hero-value.small{font-size:42px}
+  .week-dash{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .line-list,.tt-wrap,.stat-grid,.top-list,.insight-list{padding-left:0;padding-right:0}
+  .ai-card,.recovery-card,.plan-card,.stats-card,.trend-card,.insight-card,.chatgpt-card{margin-left:10px;margin-right:10px}
+  .divider{margin-left:10px;margin-right:10px}
+  .sec-label,.block-group-label,#screen-stats .stats-head,#screen-history .hist-head{padding-left:10px;padding-right:10px}
+}
+
 </style>
 </head>
 <body>
@@ -495,7 +774,20 @@ body {
 <!-- HOME -->
 <div class="screen" id="screen-home">
   <div class="home-head">
-    <div class="home-kicker">AI tréner</div>
+    <div class="home-visual">
+      <div class="home-visual-top">
+        <div class="brand-lockup">
+          <div class="brand-avatar">🤖</div>
+          <div>
+            <div class="brand-title">AI tréner</div>
+            <div class="brand-subtitle">Tvoj inteligentný tréningový partner</div>
+          </div>
+        </div>
+        <button class="hero-action-btn import-top-btn" onclick="openImport()">Import</button>
+      </div>
+      <div class="home-visual-image"></div>
+      <div class="home-visual-fade"></div>
+    </div>
     <div class="home-hero">
       <div class="home-hero-top">
         <div>
@@ -503,9 +795,6 @@ body {
           <div class="home-title" id="homeTitle">Dnes: 0 cvikov</div>
           <div class="home-sub" id="homeSub"></div>
           <span class="home-logout" onclick="logout()">odhlásiť sa</span>
-        </div>
-        <div class="home-hero-actions">
-          <button class="hero-action-btn" onclick="openImport()">Import</button>
         </div>
       </div>
       <div class="home-hero-grid" id="homeHeroTiles"></div>
@@ -698,10 +987,10 @@ const CFG = {
   weekly_targets: { core:5, mobility:5, strength:3, legs:3 },
   thresholds:     { core:4, mobility:5, strength:8, legs:5 },
   block_mapping: {
-    core:     ['LL0','LL1','LL2','DBG','DBX','DBI','DBW','DB2','HBK','HBT','HBI','HBS','HBL','HBR','QBR','SIT'],
+    core:     ['LL0','LL1','DBG','DBX','DBI','DBW','HBK','HBT','HBI','HBS','HBL','HBR','QBR','SIT'],
     mobility: ['CAT','WV','CAR','WSL','OAS','XHB','TUR','Kt1','Kt2','Kt3','Kt4','PFS','DD','CP','DHS','DHF','SRB'],
     strength: ['C1','C1S','C1N','C2','C2R','C3','C4','C4A','C5','C5K','C6','C6S'],
-    legs:     ['HF2','GS','SS','SQ','SQW','SQH','LUN','HBF']
+    legs:     ['HF2','GS','SS','SQ','SQW']
   },
   // Area priority: legs > strength > core > mobility
   area_priority: ['legs','strength','core','mobility'],
@@ -749,12 +1038,10 @@ const CATALOG = [
   {block:"Blok 1 CORE",icon:"🧘",exercises:[
     {code:"LL0",name:"Dych do chrbta",desc:"Ležíš na chrbte a pomaly dýchaš, aby sa rozširoval hrudník a chrbát.",w:false},
     {code:"LL1",name:"1 cm zdvih nôh",desc:"Ležíš na chrbte a držíš obe nohy asi 1 cm nad zemou.",w:false},
-    {code:"LL2",name:"Nohy zdvihnuté o pár cm",desc:"Nohy držíš mierne vyššie nad zemou a udržuješ napätie v bruchu.",w:false},
     {code:"DBG",name:"Dead bug základný",desc:"Ležíš na chrbte, ruky hore a striedavo spúšťaš jednu nohu dole.",w:false},
     {code:"DBX",name:"Dead bug krížový",desc:"Pravá ruka a ľavá noha idú dole a potom opačne.",w:false},
     {code:"DBI",name:"Dead bug rovnaká strana",desc:"Spúšťaš dole rovnakú ruku a nohu na jednej strane.",w:false},
     {code:"DBW",name:"Dead bug s činkou",desc:"Držíš činku nad hlavou a pri spúšťaní nohy ide činka mierne dole.",w:true},
-    {code:"DB2",name:"Dead bug s dvoma činkami",desc:"V každej ruke držíš činku nad hlavou, pohyb robia iba nohy.",w:true},
     {code:"HBK",name:"Hover bear kolená hore",desc:"Na štyroch zdvihneš kolená pár cm nad zem a držíš stabilný trup.",w:false},
     {code:"HBT",name:"Hover bear shoulder taps",desc:"V hover bear pozícii sa striedavo dotýkaš rukou opačného pleca.",w:false},
     {code:"HBI",name:"Hover bear s dvihom nohy",desc:"V hover bear pozícii zdvihneš jednu nohu bez pohybu panvy.",w:false},
@@ -803,9 +1090,6 @@ const CATALOG = [
     {code:"SS",name:"Split squat",desc:"Jedna noha vpredu, druhá vzadu, ideš dole ku kolenu.",w:true},
     {code:"SQ",name:"Bodyweight squat",desc:"Zo stoja ideš do drepu bez váhy.",w:false},
     {code:"SQW",name:"Weighted squat",desc:"Drep s činkou alebo závažím.",w:true},
-    {code:"SQH",name:"Hlboký mobilizačný drep",desc:"Hlboký drep a zostaneš v ňom pre mobilitu.",w:false},
-    {code:"LUN",name:"Výpad vpred",desc:"Vykročíš jednou nohou a znížiš telo k zemi.",w:false},
-    {code:"HBF",name:"Hover bear – pohyb nôh",desc:"V hover bear robíš malé posuny alebo zdvihy nôh.",w:false}
   ]}
 ];
 
@@ -1621,21 +1905,28 @@ function renderHome(){
   document.getElementById('homeSub').textContent=`${dnames[now.getDay()]} ${now.getDate()}. ${M[now.getMonth()]}`;
   const heroTiles=document.getElementById('homeHeroTiles');
   if(heroTiles){
+    const weekData = getWeekData(now);
+    const activeDays = weekData.days.filter(d=>isTrainingDay(d)).length;
     heroTiles.innerHTML=`
       <div class="home-hero-tile">
-        <div class="home-hero-label">Dnes</div>
+        <div class="home-hero-label">Dnešný stav</div>
         <div class="home-hero-value">${tl.length}</div>
         <div class="home-hero-note">${totalSetsToday} sérií dnes</div>
       </div>
       <div class="home-hero-tile">
         <div class="home-hero-label">Séria dní</div>
-        <div class="home-hero-value small">🔥 ${s}</div>
-        <div class="home-hero-note">koľko dní ideš za sebou</div>
+        <div class="home-hero-value small">${s}</div>
+        <div class="home-hero-note">🔥 dni za sebou</div>
       </div>
       <div class="home-hero-tile">
         <div class="home-hero-label">Tento týždeň</div>
         <div class="home-hero-value small">${weeklyKg}</div>
         <div class="home-hero-note">objem s váhou</div>
+      </div>
+      <div class="home-hero-tile">
+        <div class="home-hero-label">Aktívne dni</div>
+        <div class="home-hero-value small">${activeDays}/7</div>
+        <div class="home-hero-note">v tomto týždni</div>
       </div>`;
   }
   const container=document.getElementById('todayBlocks');
