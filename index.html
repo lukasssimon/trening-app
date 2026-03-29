@@ -3,13 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>Tréning</title>
+<title>AI tréner</title>
 <link rel="icon" href="icon.png">
 <link rel="apple-touch-icon" href="icon.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="Tréning">
-<meta name="application-name" content="Tréning">
+<meta name="apple-mobile-web-app-title" content="AI tréner">
+<meta name="application-name" content="AI tréner">
 <meta name="theme-color" content="#4A90B8">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
@@ -91,6 +91,33 @@ body {
 .home-sub{font-size:14px;color:#4A90B8;margin-top:6px;font-weight:500}
 .home-logout{font-size:11px;color:#C8DFE9;cursor:pointer;margin-top:6px;display:inline-block}
 .home-logout:hover{color:#94A8B8}
+.home-hero{margin:0 22px;background:linear-gradient(135deg,#ffffff 0%,#f3f8fd 100%);border:1px solid #DCE8F0;border-radius:28px;padding:22px;box-shadow:0 10px 24px rgba(28,43,58,.05)}
+.home-hero-top{display:flex;align-items:flex-start;justify-content:space-between;gap:14px}
+.home-kicker{font-size:12px;color:#7C98AF;text-transform:uppercase;letter-spacing:1px;font-weight:800;margin-bottom:8px}
+.home-hero-actions{display:flex;gap:8px;flex-shrink:0}
+.hero-action-btn{background:white;border:1px solid #D6E5EF;border-radius:14px;padding:10px 14px;font-size:13px;font-weight:800;color:#4A90B8;cursor:pointer;font-family:inherit;box-shadow:0 4px 10px rgba(74,144,184,.08)}
+.hero-action-btn:hover{background:#F8FBFE}
+.home-hero-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:18px}
+.home-hero-tile{background:white;border:1px solid #E2EAF0;border-radius:20px;padding:16px 14px;box-shadow:0 4px 10px rgba(28,43,58,.03)}
+.home-hero-label{font-size:11px;color:#94A8B8;text-transform:uppercase;letter-spacing:.8px;font-weight:800;margin-bottom:8px}
+.home-hero-value{font-size:30px;font-weight:900;color:#1C2B3A;line-height:1}
+.home-hero-value.small{font-size:24px;color:#4A90B8}
+.home-hero-note{font-size:13px;color:#7C98AF;line-height:1.45;margin-top:8px}
+.ai-card{margin:0 22px 4px;background:linear-gradient(135deg,#ffffff 0%,#f6fbff 100%);border:1px solid #DCE8F0;border-radius:24px;padding:20px;box-shadow:0 8px 22px rgba(28,43,58,.05)}
+.ai-card-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:14px}
+.ai-badge{font-size:12px;color:#4A90B8;font-weight:900;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px}
+.ai-title{font-size:24px;font-weight:900;color:#1C2B3A;line-height:1.1}
+.ai-sub{font-size:14px;color:#7C98AF;line-height:1.55;margin-top:6px;max-width:56ch}
+.ai-actions{display:flex;gap:10px;flex-wrap:wrap}
+.ai-btn{background:#E8F3F9;border:1px solid #C8DFE9;border-radius:14px;padding:12px 16px;font-size:14px;font-weight:800;color:#4A90B8;cursor:pointer;font-family:inherit}
+.ai-btn.secondary{background:white;color:#7C98AF;border-color:#E2EAF0}
+.ai-format-row{display:flex;gap:8px;flex-wrap:wrap;margin:2px 0 14px}
+.ai-chip{background:white;border:1px solid #E2EAF0;border-radius:999px;padding:8px 12px;font-size:12px;font-weight:800;color:#7C98AF;cursor:pointer;font-family:inherit}
+.ai-chip.active{background:#E8F3F9;border-color:#4A90B8;color:#4A90B8}
+.ai-export{width:100%;min-height:170px;background:#F8FBFE;border:1px solid #E2EAF0;border-radius:18px;padding:14px;font-size:13px;color:#1C2B3A;line-height:1.6;resize:vertical;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;outline:none;white-space:pre-wrap}
+.ai-meta{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px}
+.ai-meta-pill{background:white;border:1px solid #E2EAF0;border-radius:999px;padding:8px 12px;font-size:12px;font-weight:800;color:#4A90B8}
+@media (max-width:640px){.home-hero-top,.ai-card-top{flex-direction:column}.home-hero-actions{width:100%}.hero-action-btn{width:100%}.home-hero-grid{grid-template-columns:1fr}.ai-actions{flex-direction:column}.ai-btn{width:100%}}
 .home-top-row{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
 .home-head-actions{display:flex;align-items:center;gap:8px;flex-shrink:0}
 .head-action-btn{background:white;border:0.5px solid #E2EAF0;border-radius:12px;padding:9px 12px;font-size:12px;font-weight:700;color:#4A90B8;cursor:pointer;font-family:inherit;box-shadow:0 2px 8px rgba(74,144,184,.06)}
@@ -450,7 +477,7 @@ body {
 </div>
 
 <div class="login-screen" id="loginScreen" style="display:none">
-  <div class="login-title">💪 Tréning</div>
+  <div class="login-title">🤖 AI tréner</div>
   <div class="login-sub">Zaznamenaj každý cvik</div>
   <button class="login-btn" onclick="loginGoogle()">
     <svg class="google-icon" viewBox="0 0 24 24">
@@ -468,17 +495,20 @@ body {
 <!-- HOME -->
 <div class="screen" id="screen-home">
   <div class="home-head">
-    <div class="home-top-row">
-      <div>
-        <div class="home-greet" id="homeGreet">Ahoj, Luk</div>
-        <div class="home-title" id="homeTitle">Dnes: 0 cvikov</div>
-        <div class="home-sub" id="homeSub"></div>
-        <div class="home-metric" id="homeWeeklyKg">Tento týždeň: <span>0 kg</span></div>
-        <span class="home-logout" onclick="logout()">odhlásiť sa</span>
+    <div class="home-kicker">AI tréner</div>
+    <div class="home-hero">
+      <div class="home-hero-top">
+        <div>
+          <div class="home-greet" id="homeGreet">Ahoj, Luk</div>
+          <div class="home-title" id="homeTitle">Dnes: 0 cvikov</div>
+          <div class="home-sub" id="homeSub"></div>
+          <span class="home-logout" onclick="logout()">odhlásiť sa</span>
+        </div>
+        <div class="home-hero-actions">
+          <button class="hero-action-btn" onclick="openImport()">Import</button>
+        </div>
       </div>
-      <div class="home-head-actions">
-        <button class="head-action-btn secondary" onclick="openImport()">Import</button>
-      </div>
+      <div class="home-hero-grid" id="homeHeroTiles"></div>
     </div>
   </div>
   <!-- Weekly dashboard -->
@@ -502,7 +532,7 @@ body {
   <div id="leastUsedExercises"></div>
   <!-- ChatGPT workflow -->
   <div class="divider"></div>
-  <div class="sec-label">ChatGPT tréner</div>
+  <div class="sec-label">AI tréner</div>
   <div id="chatgptWorkflow"></div>
   <!-- Today workouts -->
   <div class="divider"></div>
@@ -1030,6 +1060,17 @@ function formatKg(value){
   return `${Math.round(value).toLocaleString('sk-SK')} kg`;
 }
 
+function getSelectedAIExportFormat(){
+  return window.aiExportFormat || 'compact';
+}
+
+function setAIExportFormat(format){
+  window.aiExportFormat = format;
+  document.querySelectorAll('.ai-chip').forEach(btn=>btn.classList.toggle('active', btn.dataset.format===format));
+  const output=document.getElementById('chatgptExport');
+  if(output && output.value.trim()) output.value=buildChatGPT7DaySummary();
+}
+
 function buildChatGPT7DaySummary(){
   const end=new Date();
   const days=[];
@@ -1038,53 +1079,46 @@ function buildChatGPT7DaySummary(){
     const ds=dateStr(d);
     const logs=(cachedLogs||[]).filter(l=>l.date===ds);
     const counts=areaSetCounts(logs);
-    const dayLines=[];
+    const blockSummary=[];
     CATALOG.forEach(block=>{
       const items=logs.filter(l=>l.block===block.block);
       if(!items.length) return;
-      dayLines.push(`${block.block}:`);
-      items.forEach(l=>{
-        const ex=getEx(l.code);
-        const wt=l.weight ? ` · ${l.weight} kg` : '';
-        dayLines.push(`- ${l.code} ${ex ? ex.name : l.code}${wt} · série: ${setsOf(l).join(', ')}`);
-      });
+      const itemText=items.map(l=>{
+        const wt=l.weight ? `@${l.weight}kg` : '';
+        return `${l.code}${wt}[${setsOf(l).join('/')}]`;
+      }).join(' ');
+      blockSummary.push(`${block.block}: ${itemText}`);
     });
-    const activeAreas=['core','mobility','strength','legs'].filter(a=>counts[a]>0).map(a=>CFG.area_labels[a]);
-    const shortSummary = logs.length
-      ? `Súhrn: ${logs.length} cvikov, ${logs.reduce((s,l)=>s+setsOf(l).length,0)} sérií, bloky: ${activeAreas.join(', ') || '—'}.`
-      : 'Súhrn: voľno / bez záznamu.';
     days.push({
       date: ds,
       title: `${CFG.day_labels_full[d.getDay()]} ${fmtDate(ds)}`,
-      body: dayLines.length ? dayLines.join('\n') : 'Bez tréningu.',
-      summary: shortSummary
+      logs,
+      setCount: logs.reduce((s,l)=>s+setsOf(l).length,0),
+      areas: ['core','mobility','strength','legs'].filter(a=>counts[a]>0).map(a=>CFG.area_labels[a]).join(', ') || 'voľno',
+      compact: blockSummary.length ? blockSummary.join(' | ') : 'Bez tréningu.'
     });
   }
 
-  const feeling=(document.getElementById('chatgptFeeling')?.value || '').trim() || 'neuvedené';
-  const pain=(document.getElementById('chatgptPain')?.value || '').trim() || 'bez doplnenia';
   const weeklyKg=formatKg(calculateWeeklyKg(new Date()));
+  const format=getSelectedAIExportFormat();
 
-  return `Tu je môj tréningový kontext za posledných 7 dní.
+  if(format==='ultra'){
+    return [
+      'Navrhni mi dalsi trening na dnes podla tychto 7 dni.',
+      `Tyzden s vahou: ${weeklyKg}`,
+      ...days.map(day=>`${day.date}: ${day.compact}`)
+    ].join('\n');
+  }
 
-Tento týždeň objem s váhou: ${weeklyKg}
-
-Ako sa cítim:
-${feeling}
-
-Bolesť / obmedzenia:
-${pain}
-
-Tréningy za posledných 7 dní:
-
-${days.map(day=>`${day.title}
-${day.body}
-${day.summary}`).join('\n\n')}
-
-Na základe tohto mi navrhni ďalší tréning na dnes.
-Chcem jednoduchý, konkrétny návrh po blokoch, s odporúčanými sériami a opakovaniami.`;
+  return [
+    'Navrhni mi dalsi trening na dnes.',
+    `Tento tyzden s vahou: ${weeklyKg}`,
+    'Poslednych 7 dni:',
+    ...days.map(day=>`${day.title} · ${day.logs.length} cvikov · ${day.setCount} serii · ${day.areas}\n${day.compact}`),
+    '',
+    'Vystup chcem po blokoch, konkretne serie a opakovania, bez zbytocne dlheho textu.'
+  ].join('\n\n');
 }
-
 
 function renderWeekDash(){
   const wd=getWeekData(new Date());
@@ -1096,8 +1130,6 @@ function renderWeekDash(){
     {key:'strength', icon:'💪', label:'Silový'},
     {key:'legs', icon:'🦵', label:'Nohy'}
   ];
-  const weeklyKgEl=document.getElementById('homeWeeklyKg');
-  if(weeklyKgEl) weeklyKgEl.innerHTML=`Tento týždeň: <span>${formatKg(calculateWeeklyKg(new Date()))}</span>`;
   const html=`<div class="week-dash">${items.map(item=>{
     const val=w[item.key]||0;
     const target=tgt[item.key]||0;
@@ -1533,30 +1565,29 @@ function renderLeastUsedExercises(){
 function renderChatGPTWorkflow(){
   const el=document.getElementById('chatgptWorkflow');
   if(!el) return;
-  el.innerHTML=`<div class="chatgpt-card">
-    <div class="chatgpt-top">
+  const weeklyKg=formatKg(calculateWeeklyKg(new Date()));
+  el.innerHTML=`<div class="ai-card">
+    <div class="ai-card-top">
       <div>
-        <div class="chatgpt-badge">7 dní pre trénera</div>
-        <div class="chatgpt-title">Export pre ChatGPT</div>
-        <div class="chatgpt-sub">Doplň ako sa cítiš, prípadnú bolesť a appka Ti pripraví prompt za posledných 7 dní.</div>
+        <div class="ai-badge">AI tréner</div>
+        <div class="ai-title">Rýchly export pre tréningový návrh</div>
+        <div class="ai-sub">Bez zbytočných polí navyše. Appka pripraví kompaktný text za posledných 7 dní, ktorý len skopíruješ do chatu.</div>
       </div>
-      <button class="chatgpt-btn secondary" onclick="openImport()">Import</button>
+      <button class="ai-btn secondary" onclick="openImport()">Import</button>
     </div>
-    <div class="chatgpt-inputs">
-      <div class="chatgpt-field">
-        <label for="chatgptFeeling">Ako sa cítim</label>
-        <textarea id="chatgptFeeling" placeholder="Napr. som svieži, trochu unavený, core je citlivý..."></textarea>
-      </div>
-      <div class="chatgpt-field">
-        <label for="chatgptPain">Bolesť / obmedzenia</label>
-        <textarea id="chatgptPain" placeholder="Napr. pravé rameno len jemne, brucho/core nechcem preťažiť..."></textarea>
-      </div>
+    <div class="ai-meta">
+      <div class="ai-meta-pill">7 dní histórie</div>
+      <div class="ai-meta-pill">Tento týždeň: ${weeklyKg}</div>
     </div>
-    <div class="chatgpt-actions">
-      <button class="chatgpt-btn" onclick="generateChatGPTExport()">Vygenerovať sumár 7 dní</button>
-      <button class="chatgpt-btn secondary" onclick="copyChatGPTExport()">Kopírovať prompt</button>
+    <div class="ai-format-row">
+      <button class="ai-chip active" data-format="compact" onclick="setAIExportFormat('compact')">Kompaktný</button>
+      <button class="ai-chip" data-format="ultra" onclick="setAIExportFormat('ultra')">Ultra stručný</button>
     </div>
-    <textarea id="chatgptExport" class="chatgpt-export" placeholder="Po kliknutí sa sem pripraví text pre ChatGPT trénera."></textarea>
+    <div class="ai-actions">
+      <button class="ai-btn" onclick="generateChatGPTExport()">Vygenerovať text</button>
+      <button class="ai-btn secondary" onclick="copyChatGPTExport()">Kopírovať text</button>
+    </div>
+    <textarea id="chatgptExport" class="ai-export" placeholder="Po kliknutí sa sem pripraví krátky text pre AI trénera."></textarea>
   </div>`;
 }
 
@@ -1584,8 +1615,29 @@ function renderHome(){
   const dnames=['nedeľa','pondelok','utorok','streda','štvrtok','piatok','sobota'];
   const now=new Date();
   const M=['jan','feb','mar','apr','máj','jún','júl','aug','sep','okt','nov','dec'];
+  const totalSetsToday=tl.reduce((sum,l)=>sum+setsOf(l).length,0);
+  const weeklyKg=formatKg(calculateWeeklyKg(now));
   document.getElementById('homeTitle').textContent=`Dnes: ${tl.length} ${tl.length===1?'cvik':tl.length<5?'cviky':'cvikov'}`;
-  document.getElementById('homeSub').textContent=(s>1?`🔥 ${s} dní séria · `:'')+`${dnames[now.getDay()]} ${now.getDate()}. ${M[now.getMonth()]}`;
+  document.getElementById('homeSub').textContent=`${dnames[now.getDay()]} ${now.getDate()}. ${M[now.getMonth()]}`;
+  const heroTiles=document.getElementById('homeHeroTiles');
+  if(heroTiles){
+    heroTiles.innerHTML=`
+      <div class="home-hero-tile">
+        <div class="home-hero-label">Dnes</div>
+        <div class="home-hero-value">${tl.length}</div>
+        <div class="home-hero-note">${totalSetsToday} sérií dnes</div>
+      </div>
+      <div class="home-hero-tile">
+        <div class="home-hero-label">Séria dní</div>
+        <div class="home-hero-value small">🔥 ${s}</div>
+        <div class="home-hero-note">koľko dní ideš za sebou</div>
+      </div>
+      <div class="home-hero-tile">
+        <div class="home-hero-label">Tento týždeň</div>
+        <div class="home-hero-value small">${weeklyKg}</div>
+        <div class="home-hero-note">objem s váhou</div>
+      </div>`;
+  }
   const container=document.getElementById('todayBlocks');
   if(!tl.length){container.innerHTML='<div style="height:4px"></div><div class="empty-state">Zatiaľ žiadne cviky. Pridaj prvý!</div>';return}
   let html='';
