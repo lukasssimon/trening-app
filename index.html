@@ -1536,10 +1536,10 @@ const CFG = {
   weekly_targets: { core:5, mobility:5, strength:3, legs:3 },
   thresholds:     { core:4, mobility:5, strength:8, legs:5 },
   block_mapping: {
-    core:     ['LL0','LL1','DBG','DBX','DBI','DBW','HBK','HBT','HBI','HBS','HBL','HBR','QBR','SIT'],
-    mobility: ['CAT','WV','CAR','WSL','OAS','XHB','TUR','Kt1','Kt2','Kt3','Kt4','PFS','DD','CP','DHS','DHF','SRB'],
+    core:     ['LL0','LL1','DBG','DBX','DBI','DBW','HBK','HBT','HBU','SPK','HBI','HBS','HBL','HBR','QBR','SIT'],
+    mobility: ['CAT','WV','CAR','WSL','WSG','FAR','OAS','XHB','TUR','Kt1','Kt2','Kt3','Kt4','PFS','DD','CP','DHS','DHF','SRB'],
     strength: ['C1','C1S','C1N','C2','C2R','C3','C4','C4A','C5','C5K','C6','C6S'],
-    legs:     ['HF2','GS','SS','SQ','SQW']
+    legs:     ['HF2','GS','SS','SST','SQ','SQW']
   },
   // Area priority: legs > strength > core > mobility
   area_priority: ['legs','strength','core','mobility'],
@@ -1593,6 +1593,8 @@ const CATALOG = [
     {code:"DBW",name:"Dead bug s činkou",desc:"Držíš činku nad hlavou a pri spúšťaní nohy ide činka mierne dole.",w:true},
     {code:"HBK",name:"Hover bear kolená hore",desc:"Na štyroch zdvihneš kolená pár cm nad zem a držíš stabilný trup.",w:false},
     {code:"HBT",name:"Hover bear shoulder taps",desc:"V hover bear pozícii sa striedavo dotýkaš rukou opačného pleca.",w:false},
+    {code:"HBU",name:"Hover bear tap – kolená hore",desc:"V hover bear pozícii zdvihneš kolená, zdvihneš jednu ruku a ťukneš si na opačné rameno. Trup drž stabilný bez kývania a rotácie.",w:false},
+    {code:"SPK",name:"Side plank na kolenách",desc:"Ležíš na boku, kolená sú pokrčené, opieraš sa o lakeť a zdvihneš panvu hore. Drž boky pevné a dýchaj pokojne.",w:false},
     {code:"HBI",name:"Hover bear s dvihom nohy",desc:"V hover bear pozícii zdvihneš jednu nohu bez pohybu panvy.",w:false},
     {code:"HBS",name:"Hover bear statika",desc:"Na štyroch s kolenami nad zemou držíš stabilnú pozíciu.",w:false},
     {code:"HBL",name:"Hover bear zdvih kolien 1 cm",desc:"Zo štyroch zdvihneš kolená asi 1 cm a krátko držíš.",w:false},
@@ -1605,6 +1607,8 @@ const CATALOG = [
     {code:"WV",name:"Arm circles dozadu",desc:"Stojíš rovno a robíš veľké kruhy rukami smerom dozadu.",w:false},
     {code:"CAR",name:"Controlled arm rotation",desc:"Jednu ruku pomaly otáčaš veľkým kruhom v ramene.",w:false},
     {code:"WSL",name:"Wall shoulder lift",desc:"Pri stene zdvíhaš ruky hore a dole a zapájaš lopatky.",w:false},
+    {code:"WSG",name:"Ground W raise",desc:"Ležíš na zemi, ruky sú v tvare W. Jemne zdvihneš ruky a aktivuješ horný chrbát a lopatky bez napätia v krku.",w:false},
+    {code:"FAR",name:"Floor arm arc",desc:"Ležíš na zemi, jednu ruku máš na kolene a druhou robíš veľký oblúk od prednej časti hlavy smerom dozadu. Pohyb je pomalý a plynulý.",w:false},
     {code:"OAS",name:"Overhead arm stretch",desc:"Stojíš v miernom výpade a vystieraš ruky dopredu alebo hore.",w:false},
     {code:"XHB",name:"Predklon zdvih rúk dozadu",desc:"V miernom predklone zdvíhaš vystreté ruky dozadu za telo.",w:false},
     {code:"TUR",name:"Turtle (korytnačka)",desc:"Zo štyroch zatláčaš lopatky hore a dole.",w:false},
@@ -1637,6 +1641,7 @@ const CATALOG = [
     {code:"HF2",name:"Hip flow",desc:"Pohyb bedrom dopredu a do rotácie 15–10–5.",w:false},
     {code:"GS",name:"Goblet squat",desc:"Držíš činku pri hrudi a ideš do hlbokého drepu.",w:true},
     {code:"SS",name:"Split squat",desc:"Jedna noha vpredu, druhá vzadu, ideš dole ku kolenu.",w:true},
+    {code:"SST",name:"Supported single-leg touch",desc:"Držíš sa rebriny alebo detskej stoličky, stojíš na jednej nohe a ideš pomaly dole tak, aby sa druhé koleno jemne dotklo zeme.",w:false},
     {code:"SQ",name:"Bodyweight squat",desc:"Zo stoja ideš do drepu bez váhy.",w:false},
     {code:"SQW",name:"Weighted squat",desc:"Drep s činkou alebo závažím.",w:true},
   ]}
@@ -3027,7 +3032,7 @@ async function confirmImport(){
   const btn=document.getElementById('importConfirmBtn');btn.textContent='Ukladám...';btn.style.background='#B8C8D4';
   try{
     for(const item of importParsed) await insertLog({date,block:item.block,code:item.code,sets:item.sets,weight:item.weight});
-    await fetchLogs();closeImport();showToast(`✅ Importovaných ${importParsed.length} cvikov!`);renderHistory();
+    await fetchLogs();closeImport();showToast(`✅ Importovaných ${importParsed.length} cvikov!`);renderHomeScreen();if(document.getElementById('screen-history')?.classList.contains('active')) renderHistory();if(document.getElementById('screen-stats')?.classList.contains('active')) renderStats();
   }catch(e){showToast('⚠️ Chyba pri ukladaní')}
   finally{btn.textContent='Uložiť do tréningu';btn.style.background='#2DCE89'}
 }
