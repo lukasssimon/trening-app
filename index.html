@@ -1538,7 +1538,7 @@ const CFG = {
   block_mapping: {
     core:     ['LL0','LL1','DBG','DBX','DBI','DBW','HBK','HBT','HBU','SPK','HBI','HBS','HBL','HBR','QBR','SIT'],
     mobility: ['CAT','WV','CAR','WSL','WSG','FAR','OAS','XHB','TUR','Kt1','Kt2','Kt3','Kt4','KT6','KT9','PFS','DD','CP','DHS','DHF','SRB'],
-    strength: ['C1','C1S','C1N','C2','C2R','C3','C4','C4A','C5','C5K','C6','C6S','NEG','SCP','PUAC','PUAW','PUC','PUW','C7','C8','C9'],
+    strength: ['C1','C1S','C1N','C2','C2R','C3','C4','C4A','C5','C5K','C6','TRI','C6S','NEG','SCP','PUAC','PUAW','PUC','PUW','C7','C8','C9'],
     legs:     ['HF2','GS','SS','SST','SQ','SQW']
   },
   // Area priority: legs > strength > core > mobility
@@ -1637,6 +1637,7 @@ const CATALOG = [
     {code:"C5",name:"Kliky",desc:"Spúšťaš hrudník k zemi a vytlačíš sa späť hore.",w:false},
     {code:"C5K",name:"Kliky na kolenách",desc:"Rovnaký pohyb ako klik, kolená na zemi.",w:false},
     {code:"C6",name:"Dead bug s činkou",desc:"Ležíš, držíš činku nad hlavou, pohyb nohy + činka dole.",w:true},
+  {code:"TRI",name:"Triceps extension nad hlavou s jednoručkou",desc:"Drž jednu činku oboma rukami nad hlavou, lakte smerujú dopredu. Pomaly spusti činku za hlavu a vytlač späť. Ramená vedome drž dole; ak cítiš trapézy alebo rameno, cvik vynechaj. Odporúčanie: 3 kg, 2–3 × 10–12.",w:true},
     {code:"C6S",name:"Dead bug – činky hore",desc:"Držíš činky nad hlavou, pohyb robia iba nohy.",w:true},
     {code:"NEG",name:"Negatívny zhyb",desc:"Začínam v hornej polohe zhybu s bradou nad hrazdou. Následne sa veľmi pomaly a kontrolovane spúšťam až do úplného visu s vystretými rukami.",w:false},
     {code:"SCP",name:"Scapular pull-up",desc:"Visím na hrazde s vystretými lakťami. Bez ohýbania lakťov aktivujem lopatky a ramená a nadvihnem telo iba o niekoľko centimetrov. Potom sa kontrolovane vrátim do visu.",w:false},
