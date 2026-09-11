@@ -3008,12 +3008,39 @@ function getStrengthProgressData(code){
     const logs = (cachedLogs||[]).filter(l => l.code===code && l.date>=weekStart && l.date<=weekEnd);
 
     if(weighted){
-      const weightedLogs = logs.filter(l => l.weight !== null && l.weight !== undefined && Number(l.weight)>0);
-      const maxWeight = weightedLogs.length ? Math.max(...weightedLogs.map(l=>Number(l.weight))) : null;
-      const atMax = maxWeight===null ? [] : weightedLogs.filter(l=>Number(l.weight)===maxWeight);
-      const repsAtMax = atMax.reduce((sum,l)=>sum + setsOf(l).reduce((a,b)=>a+Number(b||0),0),0);
-      const setsAtMax = atMax.reduce((sum,l)=>sum + setsOf(l).length,0);
-      weeks.push({weekStart,maxWeight,repsAtMax,setsAtMax,totalReps:0});
+      // Maximum sa pocita SAMOSTATNE pre kazdy tyzden.
+      // Priklad: tyzden A max 7 kg -> pocitaju sa reps iba zo 7 kg.
+      //          tyzden B max 6 kg -> pocitaju sa reps iba zo 6 kg.
+      // Buduce maximum 8 kg preto nijako neodfiltruje starsie 7/6/5 kg tyzdne.
+      const weightedLogs = logs.filter(
+        l => l.weight !== null && l.weight !== undefined && Number(l.weight) > 0
+      );
+
+      const weekMaxWeight = weightedLogs.length
+        ? Math.max(...weightedLogs.map(l => Number(l.weight)))
+        : null;
+
+      const logsAtWeekMax = weekMaxWeight === null
+        ? []
+        : weightedLogs.filter(l => Number(l.weight) === weekMaxWeight);
+
+      const repsAtWeekMax = logsAtWeekMax.reduce(
+        (sum,l) => sum + setsOf(l).reduce((a,b) => a + Number(b || 0), 0),
+        0
+      );
+
+      const setsAtWeekMax = logsAtWeekMax.reduce(
+        (sum,l) => sum + setsOf(l).length,
+        0
+      );
+
+      weeks.push({
+        weekStart,
+        maxWeight: weekMaxWeight,
+        repsAtMax: repsAtWeekMax,
+        setsAtMax: setsAtWeekMax,
+        totalReps: 0
+      });
     }else{
       const totalReps = logs.reduce((sum,l)=>sum + setsOf(l).reduce((a,b)=>a+Number(b||0),0),0);
       const maxSetReps = logs.reduce((best,l)=>{
