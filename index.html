@@ -1537,8 +1537,8 @@ const CFG = {
   thresholds:     { core:4, mobility:5, strength:8, legs:5 },
   block_mapping: {
     core:     ['LL0','LL1','DBG','DBX','DBI','DBW','HBK','HBT','HBU','SPK','HBI','HBS','HBL','HBR','QBR','SIT'],
-    mobility: ['CAT','WV','CAR','WSL','WSG','FAR','OAS','XHB','TUR','Kt1','Kt2','Kt3','Kt4','PFS','DD','CP','DHS','DHF','SRB'],
-    strength: ['C1','C1S','C1N','C2','C2R','C3','C4','C4A','C5','C5K','C6','C6S'],
+    mobility: ['CAT','WV','CAR','WSL','WSG','FAR','OAS','XHB','TUR','Kt1','Kt2','Kt3','Kt4','KT6','KT9','PFS','DD','CP','DHS','DHF','SRB'],
+    strength: ['C1','C1S','C1N','C2','C2R','C3','C4','C4A','C5','C5K','C6','C6S','NEG','SCP','PUAC','PUAW','PUC','PUW','C7','C8','C9'],
     legs:     ['HF2','GS','SS','SST','SQ','SQW']
   },
   // Area priority: legs > strength > core > mobility
@@ -1616,6 +1616,8 @@ const CATALOG = [
     {code:"Kt2",name:"Trapézy – zdvih hlavy 1 mm",desc:"Ležíš na chrbte a veľmi jemne zdvihneš hlavu nad zem.",w:false},
     {code:"Kt3",name:"Lakeť hore + pohľad",desc:"Ležíš s lakťami na zemi, zdvihneš jeden lakeť nad hlavu.",w:false},
     {code:"Kt4",name:"Kľak – posun rúk",desc:"V kľaku posúvaš ruky dopredu a dozadu.",w:false},
+    {code:"KT6",name:"Rotácia hrudníka na štyroch – lakeť hore",desc:"Som na štyroch. Jednou rukou sa opieram o zem. Druhú ruku si položím k uchu. Najskôr sa lakťom tejto ruky približujem smerom k opornej ruke. Potom sa cez hrudnú chrbticu otáčam opačným smerom a lakeť otváram čo najvyššie hore. Pohyb robím pomaly a kontrolovane.",w:false},
+    {code:"KT9",name:"Placeholder",desc:"Rezervované pre budúci cvik.",w:false},
     {code:"PFS",name:"Prone finger support",desc:"Ležíš na bruchu opretý o prsty rúk.",w:false},
     {code:"DD",name:"Down dog",desc:"Zo štyroch vystieraš nohy a tlačíš boky hore.",w:false},
     {code:"CP",name:"Child pose",desc:"Z kľaku sadneš na päty a natiahneš ruky dopredu.",w:false},
@@ -1635,7 +1637,16 @@ const CATALOG = [
     {code:"C5",name:"Kliky",desc:"Spúšťaš hrudník k zemi a vytlačíš sa späť hore.",w:false},
     {code:"C5K",name:"Kliky na kolenách",desc:"Rovnaký pohyb ako klik, kolená na zemi.",w:false},
     {code:"C6",name:"Dead bug s činkou",desc:"Ležíš, držíš činku nad hlavou, pohyb nohy + činka dole.",w:true},
-    {code:"C6S",name:"Dead bug – činky hore",desc:"Držíš činky nad hlavou, pohyb robia iba nohy.",w:true}
+    {code:"C6S",name:"Dead bug – činky hore",desc:"Držíš činky nad hlavou, pohyb robia iba nohy.",w:true},
+    {code:"NEG",name:"Negatívny zhyb",desc:"Začínam v hornej polohe zhybu s bradou nad hrazdou. Následne sa veľmi pomaly a kontrolovane spúšťam až do úplného visu s vystretými rukami.",w:false},
+    {code:"SCP",name:"Scapular pull-up",desc:"Visím na hrazde s vystretými lakťami. Bez ohýbania lakťov aktivujem lopatky a ramená a nadvihnem telo iba o niekoľko centimetrov. Potom sa kontrolovane vrátim do visu.",w:false},
+    {code:"PUAC",name:"Zhyb s pomocou – úzky úchop",desc:"Robím celý zhyb na hrazde s pomocou odporovej gumy alebo inej asistencie. Ruky sú bližšie pri sebe. Väčší dôraz je na biceps a paže.",w:false},
+    {code:"PUAW",name:"Zhyb s pomocou – širší úchop",desc:"Robím celý zhyb na hrazde s pomocou odporovej gumy alebo inej asistencie. Ruky sú ďalej od seba. Väčší dôraz je na chrbát.",w:false},
+    {code:"PUC",name:"Zhyb bez pomoci – úzky úchop",desc:"Robím zhyb bez akejkoľvek pomoci. Ruky sú bližšie pri sebe. Z visu sa vytiahnem až do hornej polohy zhybu a kontrolovane sa vrátim dole.",w:false},
+    {code:"PUW",name:"Zhyb bez pomoci – širší úchop",desc:"Robím zhyb bez akejkoľvek pomoci. Ruky sú ďalej od seba. Z visu sa vytiahnem až do hornej polohy zhybu a kontrolovane sa vrátim dole.",w:false},
+    {code:"C7",name:"Placeholder",desc:"Rezervované pre budúci cvik.",w:false},
+    {code:"C8",name:"Placeholder",desc:"Rezervované pre budúci cvik.",w:false},
+    {code:"C9",name:"Placeholder",desc:"Rezervované pre budúci cvik.",w:false}
   ]},
   {block:"Blok 4 Nohy",icon:"🦵",exercises:[
     {code:"HF2",name:"Hip flow",desc:"Pohyb bedrom dopredu a do rotácie 15–10–5.",w:false},
