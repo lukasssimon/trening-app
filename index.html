@@ -1295,6 +1295,184 @@ body{
   }
 }
 
+
+/* ===== STRENGTH PROGRESS ===== */
+.strength-progress-wrap{
+  padding:18px 18px 0;
+}
+.strength-progress-card{
+  background:var(--surface);
+  border:1px solid rgba(145,120,255,.22);
+  border-radius:22px;
+  padding:16px;
+  box-shadow:var(--glow);
+}
+.strength-progress-top{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  flex-wrap:wrap;
+  margin-bottom:14px;
+}
+.strength-progress-title{
+  font-size:18px;
+  font-weight:800;
+  color:#f3f5ff;
+}
+.strength-progress-sub{
+  font-size:12px;
+  color:#b6c0db;
+  margin-top:4px;
+  line-height:1.45;
+}
+.strength-ex-switch{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+}
+.strength-ex-btn{
+  border:1px solid rgba(161,135,255,.24);
+  background:rgba(255,255,255,.06);
+  color:#dfe6ff;
+  border-radius:999px;
+  padding:9px 12px;
+  font-size:12px;
+  font-weight:800;
+  cursor:pointer;
+  font-family:inherit;
+}
+.strength-ex-btn.active{
+  background:linear-gradient(135deg,rgba(90,215,255,.90),rgba(111,136,255,.86) 45%,rgba(255,87,200,.72));
+  color:#fff;
+  border-color:transparent;
+}
+.strength-chart-box{
+  margin-top:14px;
+  background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.025));
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:18px;
+  padding:14px 12px 12px;
+}
+.strength-chart-title{
+  font-size:13px;
+  font-weight:800;
+  color:#eef2ff;
+  margin-bottom:2px;
+}
+.strength-chart-sub{
+  font-size:11px;
+  color:#9fa9c8;
+  margin-bottom:12px;
+}
+.strength-chart-scroll{
+  overflow-x:auto;
+  padding-bottom:6px;
+  -webkit-overflow-scrolling:touch;
+}
+.strength-chart{
+  display:flex;
+  align-items:flex-end;
+  gap:6px;
+  height:210px;
+  min-width:980px;
+  padding:8px 4px 0;
+  border-bottom:1px solid rgba(255,255,255,.10);
+}
+.strength-week{
+  width:14px;
+  min-width:14px;
+  height:100%;
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-end;
+  align-items:center;
+  position:relative;
+}
+.strength-bar{
+  width:100%;
+  min-height:0;
+  border-radius:8px 8px 3px 3px;
+  background:linear-gradient(180deg,var(--cyan),var(--blue) 50%,var(--violet));
+  box-shadow:0 0 12px rgba(111,136,255,.20);
+  position:relative;
+  transition:transform .15s ease, filter .15s ease;
+}
+.strength-bar.reps{
+  background:linear-gradient(180deg,var(--pink),var(--violet) 58%,var(--blue));
+}
+.strength-bar:hover{
+  transform:scaleX(1.08);
+  filter:brightness(1.12);
+}
+.strength-bar-value{
+  position:absolute;
+  left:50%;
+  transform:translateX(-50%);
+  bottom:calc(100% + 4px);
+  font-size:9px;
+  font-weight:900;
+  color:#f6f5ff;
+  white-space:nowrap;
+  text-shadow:0 1px 5px rgba(0,0,0,.5);
+}
+.strength-week-label{
+  position:absolute;
+  top:calc(100% + 6px);
+  left:50%;
+  transform:translateX(-50%) rotate(-55deg);
+  transform-origin:top center;
+  font-size:9px;
+  color:#8d99b8;
+  white-space:nowrap;
+}
+.strength-empty{
+  width:100%;
+  height:3px;
+  border-radius:3px;
+  background:rgba(255,255,255,.08);
+}
+.strength-legend{
+  margin-top:32px;
+  font-size:11px;
+  color:#9ca8c7;
+}
+.strength-kpis{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:10px;
+  margin-top:12px;
+}
+.strength-kpi{
+  background:rgba(255,255,255,.045);
+  border:1px solid rgba(255,255,255,.07);
+  border-radius:14px;
+  padding:10px 11px;
+}
+.strength-kpi-label{
+  font-size:9px;
+  color:#9ba6c5;
+  text-transform:uppercase;
+  letter-spacing:.6px;
+  font-weight:800;
+}
+.strength-kpi-value{
+  font-size:20px;
+  font-weight:900;
+  color:#f1f4ff;
+  margin-top:4px;
+}
+@media (max-width:640px){
+  .strength-progress-wrap{padding:16px 10px 0}
+  .strength-progress-card{padding:14px 12px}
+  .strength-ex-switch{width:100%}
+  .strength-ex-btn{flex:1;min-width:52px;text-align:center}
+  .strength-chart{min-width:900px;height:190px}
+  .strength-kpis{grid-template-columns:1fr 1fr 1fr;gap:7px}
+  .strength-kpi{padding:9px 8px}
+  .strength-kpi-value{font-size:17px}
+}
+
 </style>
 </head>
 <body>
@@ -1475,6 +1653,11 @@ body{
   <div class="stats-section">
     <div class="stats-section-title">Posledných 30 dní</div>
     <div class="stats-card" id="trend30"></div>
+  </div>
+
+  <div class="stats-section">
+    <div class="stats-section-title">Silový progres · 56 týždňov</div>
+    <div id="strengthProgress"></div>
   </div>
 
   <div class="stats-section">
@@ -2802,6 +2985,148 @@ async function delLogH(id){
   catch(e){showToast('⚠️ Chyba')}
 }
 
+
+// ---- STRENGTH PROGRESS ----
+let strengthProgressCode = 'C1';
+const STRENGTH_PROGRESS_CODES = ['C1','C2','C4','C5','TRI'];
+
+function getWeekKeyForDate(dateValue){
+  const d = new Date(`${dateValue}T12:00:00`);
+  return dateStr(getMonday(d));
+}
+
+function getStrengthProgressData(code){
+  const ex = getEx(code);
+  const weighted = !!ex?.w;
+  const currentMonday = getMonday(new Date());
+  const weeks = [];
+
+  for(let i=55;i>=0;i--){
+    const ws = addDays(currentMonday, -7*i);
+    const weekStart = dateStr(ws);
+    const weekEnd = dateStr(addDays(ws,6));
+    const logs = (cachedLogs||[]).filter(l => l.code===code && l.date>=weekStart && l.date<=weekEnd);
+
+    if(weighted){
+      const weightedLogs = logs.filter(l => l.weight !== null && l.weight !== undefined && Number(l.weight)>0);
+      const maxWeight = weightedLogs.length ? Math.max(...weightedLogs.map(l=>Number(l.weight))) : null;
+      const atMax = maxWeight===null ? [] : weightedLogs.filter(l=>Number(l.weight)===maxWeight);
+      const repsAtMax = atMax.reduce((sum,l)=>sum + setsOf(l).reduce((a,b)=>a+Number(b||0),0),0);
+      const setsAtMax = atMax.reduce((sum,l)=>sum + setsOf(l).length,0);
+      weeks.push({weekStart,maxWeight,repsAtMax,setsAtMax,totalReps:0});
+    }else{
+      const totalReps = logs.reduce((sum,l)=>sum + setsOf(l).reduce((a,b)=>a+Number(b||0),0),0);
+      const maxSetReps = logs.reduce((best,l)=>{
+        const m = setsOf(l).length ? Math.max(...setsOf(l).map(v=>Number(v||0))) : 0;
+        return Math.max(best,m);
+      },0);
+      const totalSets = logs.reduce((sum,l)=>sum + setsOf(l).length,0);
+      weeks.push({weekStart,maxWeight:null,repsAtMax:0,setsAtMax:0,totalReps,maxSetReps,totalSets});
+    }
+  }
+
+  return {code, ex, weighted, weeks};
+}
+
+function strengthWeekLabel(dateValue){
+  const d = new Date(`${dateValue}T12:00:00`);
+  return `${d.getDate()}.${d.getMonth()+1}.`;
+}
+
+function renderStrengthBars(weeks, valueKey, maxValue, kind, unit){
+  const safeMax = Math.max(1,maxValue||1);
+  return `<div class="strength-chart-scroll"><div class="strength-chart">
+    ${weeks.map((w,idx)=>{
+      const value = Number(w[valueKey]||0);
+      const pct = value>0 ? Math.max(3, Math.round((value/safeMax)*100)) : 0;
+      const showLabel = idx%4===0 || idx===weeks.length-1;
+      return `<div class="strength-week" title="${strengthWeekLabel(w.weekStart)} · ${value}${unit}">
+        ${value>0
+          ? `<div class="strength-bar ${kind==='reps'?'reps':''}" style="height:${pct}%"><div class="strength-bar-value">${value}</div></div>`
+          : `<div class="strength-empty"></div>`}
+        ${showLabel?`<div class="strength-week-label">${strengthWeekLabel(w.weekStart)}</div>`:''}
+      </div>`;
+    }).join('')}
+  </div></div>`;
+}
+
+function setStrengthProgressCode(code){
+  if(!STRENGTH_PROGRESS_CODES.includes(code)) return;
+  strengthProgressCode = code;
+  renderStrengthProgress();
+}
+
+function renderStrengthProgress(){
+  const root = document.getElementById('strengthProgress');
+  if(!root) return;
+
+  const data = getStrengthProgressData(strengthProgressCode);
+  const {ex,weighted,weeks} = data;
+  const activeWeeks = weeks.filter(w=>weighted ? w.maxWeight : w.totalReps);
+  const latest = [...activeWeeks].reverse()[0];
+
+  const maxWeightOverall = weighted && activeWeeks.length ? Math.max(...activeWeeks.map(w=>w.maxWeight||0)) : 0;
+  const maxRepsAtWeight = weighted && activeWeeks.length ? Math.max(...activeWeeks.map(w=>w.repsAtMax||0)) : 0;
+  const maxWeeklyReps = !weighted && activeWeeks.length ? Math.max(...activeWeeks.map(w=>w.totalReps||0)) : 0;
+  const maxSingleSet = !weighted && activeWeeks.length ? Math.max(...activeWeeks.map(w=>w.maxSetReps||0)) : 0;
+
+  root.innerHTML = `<div class="strength-progress-card">
+    <div class="strength-progress-top">
+      <div>
+        <div class="strength-progress-title">${strengthProgressCode} · ${ex?.name || strengthProgressCode}</div>
+        <div class="strength-progress-sub">${weighted
+          ? 'Maximálna váha a počet opakovaní vykonaných s touto maximálnou váhou v každom týždni.'
+          : 'C5 je bez váhy, preto sledujeme maximálny počet opakovaní v jednej sérii a celkový týždenný počet opakovaní.'}</div>
+      </div>
+      <div class="strength-ex-switch">
+        ${STRENGTH_PROGRESS_CODES.map(code=>`<button class="strength-ex-btn ${code===strengthProgressCode?'active':''}" onclick="setStrengthProgressCode('${code}')">${code}</button>`).join('')}
+      </div>
+    </div>
+
+    ${weighted ? `
+      <div class="strength-kpis">
+        <div class="strength-kpi"><div class="strength-kpi-label">Najvyššia váha</div><div class="strength-kpi-value">${maxWeightOverall || 0} kg</div></div>
+        <div class="strength-kpi"><div class="strength-kpi-label">Najviac reps pri max</div><div class="strength-kpi-value">${maxRepsAtWeight || 0}</div></div>
+        <div class="strength-kpi"><div class="strength-kpi-label">Aktívne týždne</div><div class="strength-kpi-value">${activeWeeks.length}</div></div>
+      </div>
+
+      <div class="strength-chart-box">
+        <div class="strength-chart-title">Max váha po týždňoch</div>
+        <div class="strength-chart-sub">Číslo nad stĺpcom = kg. Prázdny týždeň = cvik nebol zaznamenaný.</div>
+        ${renderStrengthBars(weeks,'maxWeight',Math.max(1,maxWeightOverall),'weight',' kg')}
+        <div class="strength-legend">← potiahni graf do strán · posledných 56 týždňov</div>
+      </div>
+
+      <div class="strength-chart-box">
+        <div class="strength-chart-title">Opakovania s max váhou</div>
+        <div class="strength-chart-sub">Koľko opakovaní si v danom týždni spravil práve s najvyššou váhou toho týždňa.</div>
+        ${renderStrengthBars(weeks,'repsAtMax',Math.max(1,maxRepsAtWeight),'reps',' op.')}
+        <div class="strength-legend">Napr. ak bolo maximum 7 kg, stĺpec ukazuje iba opakovania vykonané so 7 kg.</div>
+      </div>
+    ` : `
+      <div class="strength-kpis">
+        <div class="strength-kpi"><div class="strength-kpi-label">Max séria</div><div class="strength-kpi-value">${maxSingleSet || 0} op.</div></div>
+        <div class="strength-kpi"><div class="strength-kpi-label">Max týždeň</div><div class="strength-kpi-value">${maxWeeklyReps || 0} op.</div></div>
+        <div class="strength-kpi"><div class="strength-kpi-label">Aktívne týždne</div><div class="strength-kpi-value">${activeWeeks.length}</div></div>
+      </div>
+
+      <div class="strength-chart-box">
+        <div class="strength-chart-title">Maximum v jednej sérii</div>
+        <div class="strength-chart-sub">Najvyšší počet opakovaní v jednej sérii C5 v danom týždni.</div>
+        ${renderStrengthBars(weeks,'maxSetReps',Math.max(1,maxSingleSet),'weight',' op.')}
+        <div class="strength-legend">← potiahni graf do strán · posledných 56 týždňov</div>
+      </div>
+
+      <div class="strength-chart-box">
+        <div class="strength-chart-title">Celkové opakovania za týždeň</div>
+        <div class="strength-chart-sub">Súčet všetkých opakovaní C5 v danom týždni.</div>
+        ${renderStrengthBars(weeks,'totalReps',Math.max(1,maxWeeklyReps),'reps',' op.')}
+        <div class="strength-legend">Pri C5 nesledujeme kg, preto druhý graf ukazuje týždenný objem.</div>
+      </div>
+    `}
+  </div>`;
+}
+
 // ---- STATS ----
 let statPeriod='day';
 
@@ -2975,6 +3300,8 @@ function renderStats(){
       <div class="record-value">${maxSingleExerciseReps.reps ? `${maxSingleExerciseReps.name} · ${maxSingleExerciseReps.reps}` : '—'}</div>
     </div>
   </div>`;
+
+  renderStrengthProgress();
 }
 
 function setStatPeriod(period){
