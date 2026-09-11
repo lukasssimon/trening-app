@@ -1682,10 +1682,33 @@ function showApp(){
 
 // ---- DB ----
 async function fetchLogs(){
-  const {data,error}=await sb.from('training_logs').select('*').eq('user_id',currentUser.id)
-    .order('date',{ascending:false}).order('created_at',{ascending:true});
-  if(error){console.error(error); setDebugStatus('CHYBA', error.message); return}
-  cachedLogs=data||[];
+  const PAGE_SIZE = 1000;
+  let from = 0;
+  let allLogs = [];
+
+  while(true){
+    const {data,error}=await sb
+      .from('training_logs')
+      .select('*')
+      .eq('user_id',currentUser.id)
+      .order('date',{ascending:false})
+      .order('created_at',{ascending:true})
+      .range(from, from + PAGE_SIZE - 1);
+
+    if(error){
+      console.error(error);
+      setDebugStatus('CHYBA', error.message);
+      return;
+    }
+
+    allLogs.push(...(data || []));
+
+    if(!data || data.length < PAGE_SIZE) break;
+
+    from += PAGE_SIZE;
+  }
+
+  cachedLogs = allLogs;
   setDebugStatus('OK');
 }
 async function insertLog(e){
